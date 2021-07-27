@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 //Model
 use App\Models\WebSetting;
 
-use App\Models\Provinsi;
-//use App\Models\Kabupaten;
 use App\Models\Kabupaten;
+//use App\Models\Kecamatan;
+use App\Models\Kecamatan;
 //use App\Models\V_user;
 //use DB;
 use Exception;
@@ -17,7 +17,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 
 
-class KabupatenController extends Controller
+class KecamatanController extends Controller
 {
 
 
@@ -28,13 +28,13 @@ public function index()
 {
     return csrf_token(); 
 }
-    public function getKab()
+    public function getKec()
     {
-        $data = Kabupaten::all();
+        $data = Kecamatan::all();
 
         if($data){
             $response = [
-                'message'		=> 'Show Kabupaten',
+                'message'		=> 'Show Kecamatan',
                 'data' 		    => $data,
             ];
 
@@ -48,18 +48,18 @@ public function index()
         return response()->json($response, 500);
     }
 
-    public function showKab($id)
+    public function showKec($id)
     {
-        $data = new Kabupaten();
-        $data =  $data->select('id_Kabupaten','nama_Kabupaten','id_provinsi','KodeDepdagri',
+        $data = new Kecamatan();
+        $data =  $data->select('id_kecamatan','nama_kecamatan','id_kabupaten','KodeDepdagri',
         'IsActive','RegionalID','OriginalID','OriginalNama','OriginalKode','Created',
         'CreatedBy','LastModifiedBy','id_Kabupaten_old','nama_Kabupaten_old')
-                ->find($id);
+             ->find($id);
         
         try {
            if($data){
                 $response = [
-                    'message'		=> 'Udapte Kabupaten Sukses',
+                    'message'		=> 'Udapte Kecamatan Sukses',
                     'data' 		    => $data,
                 ];
 
@@ -86,7 +86,7 @@ public function index()
         return view('datamaster.provCreate', ['id' => '','action' => 'add']);
     }
 */
-    public function storeKab(Request $request)
+    public function storeKec(Request $request)
     {
          if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
@@ -97,7 +97,7 @@ public function index()
         
         $this->validate($request, [
 
-            'nama_kabupaten'   => 'required',
+            'nama_kecamatan'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
         ]);
@@ -105,8 +105,8 @@ public function index()
         try {
             DB::beginTransaction();
             
-            $p = new Kabupaten([
-                'nama_kabupaten' => $request->input('nama_kabupaten'),
+            $p = new Kecamatan([
+                'nama_kecamatan' => $request->input('nama_kecamatan'),
                 'KodeDepdagri' => $request->input('KodeDepdagri'),
                 'IsActive' => $request->input('IsActive'),
                 /*'RegionalID' => $request->input('RegionalID'),
@@ -142,9 +142,9 @@ public function index()
 
     }
 
-    public function deleteKab($id)
+    public function deleteKec($id)
     {
-        DB::table('kabupaten')->where('id', $id)->delete();
+        DB::table('kecamatan')->where('id', $id)->delete();
 //        return redirect()->route('prov');
     }
 /*
@@ -153,7 +153,7 @@ public function index()
         return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
     }
 */
-    public function updateKab(Request $request)
+    public function updateKec(Request $request)
     {
 
         //
@@ -163,22 +163,22 @@ public function index()
             $dataReq = $request->json()->all();
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
-            $nama_kabupaten=$arrDataReq["nama_kabupaten"];
+            $nama_kecamatan=$arrDataReq["nama_kecamatan"];
             $KodeDepdagri=$arrDataReq["KodeDepdagri"];
             $IsActive=$arrDataReq["IsActive"];
-            $id_kabupaten=$arrDataReq["id_kabupaten"];
+            $id_kecamatan=$arrDataReq["id_kecamatan"];
         }else{
 
-            $nama_kabupaten=$request->input["nama_kabupaten"];
+            $nama_kecamatan=$request->input["nama_kecamatan"];
             $KodeDepdagri=$request->input["KodeDepdagri"];
             $IsActive=$request->input["IsActive"];
-            $id_kabupaten=$request->input["id_kabupaten"];
+            $id_kecamatan=$request->input["id_kecamatan"];
         }
         
   /*
         $this->validate($request, [
 
-            'nama_kabupaten'   => 'required',
+            'nama_kecamatan'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
         ]);
@@ -187,9 +187,9 @@ public function index()
         try {
             DB::beginTransaction();
       
-            $p = Kabupaten::find($id_kabupaten);
+            $p = Kecamatan::find($id_kecamatan);
 
-                $p->nama_kabupaten = $nama_kabupaten;
+                $p->nama_kecamatan = $nama_kecamatan;
                 $p->KodeDepdagri = $KodeDepdagri;
                 $p->IsActive = $IsActive;
                 /*$p->RegionalID = $request->input('RegionalID');
@@ -200,8 +200,8 @@ public function index()
                 $p->CreatedBy = $request->input('CreatedBy');
                 $p->LastModified = $request->input('LastModified');
                 $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_kabupaten_old = $request->input('id_kabupaten_old');
-                $p->nama_kabupaten_old = $request->input('nama_kabupaten_old');*/
+                $p->id_kecamatan_old = $request->input('id_kecamatan_old');
+                $p->nama_kecamatan_old = $request->input('nama_kecamatan_old');*/
 
 
             
@@ -209,7 +209,7 @@ public function index()
             DB::commit();
 
             $response = [
-                'message'        => 'Update Master Kabupaten Suskses',
+                'message'        => 'Update Master Kecamatan Suskses',
                 'data'         => $p
             ];
 

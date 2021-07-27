@@ -32,6 +32,11 @@ $router->delete('/provinsi/deleteProv', 'ProvinsiController@deleteProv');
 $router->get('/kabupaten/getKabupaten','KabupatenController@getKab');
 $router->post('/kabupaten/storeKab','KabupatenController@storeKab');
 $router->post('/kabupaten/updateProv','KabupatenController@updateKab');
-// $router->('/kabupaten/getKabupaten','KabupatenController@getKab');
+$router->delete('/kabupaten/deleteKab','KabupatenController@deleteKab');
 
 
+//Kecamatan
+$router->get('/kecamatan/getKecamatan','KecamatanController@getKec');
+$router->post('/kecamatan/storeKec','KecamatanController@storeKec');
+$router->post('/kecamatan/updateProv','KecamatanController@updateKec');
+$router->delete('/kecamatan/deleteKec','KecamatanController@deleteKec');
