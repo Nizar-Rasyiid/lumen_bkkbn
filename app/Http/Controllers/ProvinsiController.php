@@ -89,24 +89,30 @@ public function index()
          if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
         ) {
-            $request = json_decode($request->payload, true);
+            $dataReq = $request->json()->all();
+            $Arryrequest = json_decode(json_encode($dataReq), true);
 
+        }else{
+            $Arryrequest["nama_provinsi"] =$request->$request->input("nama_provinsi");
+            $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
+            $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        
-        $this->validate($request, [
+        echo json_encode($Arryrequest);
+        //console.log($Arryrequest)
+/*        $this->validate($Arryrequest, [
 
             'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
-        ]);
+        ]);*/
 
         try {
             DB::beginTransaction();
             
             $p = new Provinsi([
-                'nama_provinsi' => $request->input('nama_provinsi'),
-                'KodeDepdagri' => $request->input('KodeDepdagri'),
-                'IsActive' => $request->input('IsActive'),
+                'nama_provinsi' => $Arryrequest['nama_provinsi'],
+                'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
+                'IsActive' => $Arryrequest['IsActive'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
