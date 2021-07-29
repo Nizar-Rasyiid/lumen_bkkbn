@@ -85,6 +85,7 @@ $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware

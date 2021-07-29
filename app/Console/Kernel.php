@@ -13,6 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
+<<<<<<< HEAD
+=======
+        //
+>>>>>>> cafea2949e97fa665b6cfd1a80d1d19dcd912595
     ];
 
     /**

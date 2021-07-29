@@ -6,7 +6,10 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
+<<<<<<< HEAD
         "flipbox/lumen-generator": "^8.2",
+=======
+>>>>>>> cafea2949e97fa665b6cfd1a80d1d19dcd912595
         "laravel/lumen-framework": "^8.0"
     },
     "require-dev": {
