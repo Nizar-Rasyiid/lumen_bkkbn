@@ -32,7 +32,7 @@ $router->get('/kabupaten/getKabupaten','KabupatenController@getKab');
 $router->post('/kabupaten/storeKab',   'KabupatenController@storeKab');
 $router->post('/kabupaten/updateKab',   'KabupatenController@updateKab');
 
-//Kecamatan
+//Kecamatann
 $router->get('/kecamatan/getKecamatan','KecamatanController@getKec');
 $router->post('/kecamatan/storeKec',   'KecamatanController@storeKec');
 $router->post('/kecamatan/updateKec',   'KecamatanController@updateKec');
