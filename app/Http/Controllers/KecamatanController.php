@@ -16,7 +16,10 @@ class KecamatanController extends Controller
 
     public function getKec()
     {
-        $data = Kecamatan::all();
+        $data = DB::table('kecamatan')
+                ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+                ->select('kecamatan.*','kabupaten.nama_kabupaten')
+                ->get();
 
         if($data){
             $response = [

@@ -28,6 +28,7 @@ $router->post('/provinsi/storeProv',   'ProvinsiController@storeProv');
 $router->post('/provinsi/updateProv',   'ProvinsiController@updateProv');
 
 //Kabupaten
+$router->post('/kabupaten/showKabupaten','KabupatenController@showKab');
 $router->get('/kabupaten/getKabupaten','KabupatenController@getKab');
 $router->post('/kabupaten/storeKab',   'KabupatenController@storeKab');
 $router->post('/kabupaten/updateKab',   'KabupatenController@updateKab');
