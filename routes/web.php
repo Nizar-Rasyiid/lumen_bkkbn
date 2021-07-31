@@ -34,6 +34,7 @@ $router->post('/kabupaten/updateKab',   'KabupatenController@updateKab');
 
 //Kecamatan
 $router->get('/kecamatan/getKecamatan','KecamatanController@getKec');
+<<<<<<< HEAD
 $router->post('/kecamatan/storeKec',   'KecamatanController@storeKec');
 $router->post('/kecamatan/updateKec',   'KecamatanController@updateKec');
 
@@ -42,3 +43,8 @@ $router->get('/kelurahan/getKelurahan','KelurahanController@getKel');
 $router->post('/kelurahan/storeKel',   'KelurahanController@storeKel');
 $router->post('/kelurahan/updateKel',   'KelurahanController@updateKel');
 $router->delete('/kelurahan/deleteKel/{id}',   'KelurahanController@deleteKel');
+=======
+$router->post('/kecamatan/storeKec','KecamatanController@storeKec');
+$router->post('/kecamatan/updateProv','KecamatanController@updateKec');
+$router->delete('/kecamatan/deleteKec','KecamatanController@deleteKec');
+>>>>>>> cafea2949e97fa665b6cfd1a80d1d19dcd912595
