@@ -12,7 +12,7 @@ class V_user extends Model
     protected $table = 'v_user';
     //public $incrementing = false;
     protected $fillable = [
-      'id',
+    //   'id',
       'PeriodeSensus',
       'UserName',
       'Password',
@@ -20,31 +20,32 @@ class V_user extends Model
       'NIK',
       'Jabatan',
       'Foto',
-      'KabupatenKotaID',
-      'NoTelepon',
-      'Email',
-      'NIP',
-      'IsTemporary',
-      'RoleID',
-      'TingkatWilayahID',
-      'IsActive',
-      'CreatedDate',
-      'CreatedBy',
-      'LastModified',
-      'LastModifiedBy',
-      'Smartphone',
-      'EmailSent',
+    //   'KabupatenKotaID',
+    //   'NoTelepon',
+    //   'Email',
+    //   'NIP',
+    //   'IsTemporary',
+    //   'RoleID',
+    //   'TingkatWilayahID',
+    //   'IsActive',
+    //   'CreatedDate',
+    //   'CreatedBy',
+    //   'LastModified',
+    //   'LastModifiedBy',
+    //   'Smartphone',
+    //   'EmailSent',
 
 
     ];
+    
     public function UserRoleID()
     {
         return $this->belongsTo('App\Models\V_role', 'id', 'RoleID');
     }
-    public function UserTingkatWilayahID()
-    {
-        return $this->belongsTo('App\Models\TingkatWilayah', 'id', 'TingkatWilayahID');
-    }
+    // public function UserTingkatWilayahID()
+    // {
+    //     return $this->belongsTo('App\Models\TingkatWilayah', 'id', 'TingkatWilayahID');
+    // }
     public function UserKabupatenKotaID()
     {
         return $this->belongsTo('App\Models\Kabupaten', 'id_kabupaten', 'KabupatenKotaID');

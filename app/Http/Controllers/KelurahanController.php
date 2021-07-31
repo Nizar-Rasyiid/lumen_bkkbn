@@ -4,23 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use Illuminate\Support\Facades\DB;
 
-class KecamatanController extends Controller
+class KelurahanController extends Controller
 {
     public function index()
     {
         return csrf_token(); 
     }
 
-    public function getKec()
+    public function getKel()
     {
-        $data = Kecamatan::all();
+        $data = Kelurahan::all();
 
         if($data){
             $response = [
-                'message'		=> 'Show Kecamatan',
+                'message'		=> 'Show Kelurahan',
                 'data' 		    => $data,
             ];
 
@@ -34,18 +34,18 @@ class KecamatanController extends Controller
         return response()->json($response, 500);
     }
 
-    public function showKec($id)
+    public function showKel($id)
     {
-        $data = new Kecamatan();
-        $data =  $data->select('id_kecamatan','nama_kecamatan','KodeDepdagri','id_kabupaten',
+        $data = new Kelurahan();
+        $data =  $data->select('id_kelurahan','nama_kelurahan','KodeDepdagri','nama_kecamatan','id_kecamatan',
         'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
-        'CreatedBy','LastModifiedBy','id_kabupaten_old','nama_kecamatan_old')
+        'CreatedBy','LastModifiedBy','id_kecamatan_old','nama_kelurahan_old')
                 ->find($id);
         
         try {
            if($data){
                 $response = [
-                    'message'		=> 'Update Kecamatan Sukses',
+                    'message'		=> 'Update Kelurahan Sukses',
                     'data' 		    => $data,
                 ];
 
@@ -64,7 +64,7 @@ class KecamatanController extends Controller
         }
     }
 
-    public function storeKec(Request $request)
+    public function storeKel(Request $request)
     {
          if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
@@ -73,8 +73,9 @@ class KecamatanController extends Controller
             $Arryrequest = json_decode(json_encode($dataReq), true);
 
         }else{
+            $Arryrequest["nama_kelurahan"] =$request->$request->input("nama_kelurahan");
             $Arryrequest["nama_kecamatan"] =$request->$request->input("nama_kecamatan");
-            $Arryrequest["id_kabupaten"] =$request->$request->input("id_kabupaten");
+            $Arryrequest["id_kecamatan"] =$request->$request->input("id_kecamatan");
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
@@ -89,9 +90,10 @@ class KecamatanController extends Controller
         try {
             DB::beginTransaction();
             
-            $p = new Kecamatan([
+            $p = new Kelurahan([
+                'nama_kelurahan' => $Arryrequest['nama_kelurahan'],
                 'nama_kecamatan' => $Arryrequest['nama_kecamatan'],
-                'id_kabupaten' => $Arryrequest['id_kabupaten'],
+                'id_kecamatan' => $Arryrequest['id_kecamatan'],
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'IsActive' => $Arryrequest['IsActive'],
                 /*'RegionalID' => $request->input('RegionalID'),
@@ -102,7 +104,7 @@ class KecamatanController extends Controller
                 'CreatedBy' => $request->input('CreatedBy'),
                 'LastModified' => $request->input('LastModified'),
                 'LastModifiedBy' => $request->input('LastModifiedBy'),
-                'id_kabupaten_old' => $request->input('id_kabupaten_old'),
+                'id_kecamatan_old' => $request->input('id_kecamatan_old'),
                 'nama_provinsi_old' => $request->input('nama_provinsi_old')*/
             ]);
 
@@ -127,10 +129,10 @@ class KecamatanController extends Controller
 
     }
 
-    public function deleteKec($id)
+    public function deleteKel($id)
     {
-        $kab = Kecamatan::where('id_kecamatan', $id)->first();
-        if ($kab->delete()) {
+        $kel = Kelurahan::where('id_kelurahan', $id)->first();
+        if ($kel->delete()) {
             print("berhasil delete");
         }else{
             print("gagal delete");
@@ -143,7 +145,7 @@ class KecamatanController extends Controller
         return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
     }
 */
-    public function updateKec(Request $request)
+    public function updateKel(Request $request)
     {
 
         //
@@ -153,18 +155,20 @@ class KecamatanController extends Controller
             $dataReq = $request->json()->all();
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
-            $nama_kecamatan=$arrDataReq["nama_kecamatan"];
-            $id_kecamatan=$arrDataReq["id_kecamatan"];
+            $nama_kelurahan=$arrDataReq["nama_kelurahan"];
+            $id_kelurahan=$arrDataReq["id_kelurahan"];
             $KodeDepdagri=$arrDataReq["KodeDepdagri"];
             $IsActive=$arrDataReq["IsActive"];
-            $id_kabupaten=$arrDataReq["id_kabupaten"];
+            $nama_kecamatan=$arrDataReq["nama_kecamatan"];
+            $id_kecamatan=$arrDataReq["id_kecamatan"];
         }else{
 
-            $nama_kecamatan=$request->input["nama_kecamatan"];
-            $id_kabupaten=$request->input["id_kabupaten"];
+            $nama_kelurahan=$request->input["nama_kelurahan"];
+            $id_kecamatan=$request->input["id_kecamatan"];
             $KodeDepdagri=$request->input["KodeDepdagri"];
             $IsActive=$request->input["IsActive"];
-            $id_kecamatan=$request->input["id_kecamatan"];
+            $nama_kecamatan=$arrDataReq["nama_kecamatan"];
+            $id_kelurahan=$request->input["id_kelurahan"];
         }
         
   /*
@@ -178,10 +182,11 @@ class KecamatanController extends Controller
         try {
             DB::beginTransaction();
       
-            $p = Kecamatan::find($id_kecamatan);
+            $p = Kelurahan::find($id_kelurahan);
 
+                $p->nama_kelurahan = $nama_kelurahan;
                 $p->nama_kecamatan = $nama_kecamatan;
-                $p->id_kabupaten = $id_kabupaten;
+                $p->id_kecamatan = $id_kecamatan;
                 $p->KodeDepdagri = $KodeDepdagri;
                 $p->IsActive = $IsActive;
                 /*$p->RegionalID = $request->input('RegionalID');
@@ -192,7 +197,7 @@ class KecamatanController extends Controller
                 $p->CreatedBy = $request->input('CreatedBy');
                 $p->LastModified = $request->input('LastModified');
                 $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_kabupaten_old = $request->input('id_kabupaten_old');
+                $p->id_kecamatan_old = $request->input('id_kecamatan_old');
                 $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
 
 
@@ -201,7 +206,7 @@ class KecamatanController extends Controller
             DB::commit();
 
             $response = [
-                'message'        => 'Update Master Kabupaten Suskses',
+                'message'        => 'Update Master kelurahan Suskses',
                 'data'         => $p
             ];
 

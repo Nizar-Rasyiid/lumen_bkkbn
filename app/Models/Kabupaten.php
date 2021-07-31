@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kabupaten extends Model
 {
-    protected $table     = 'Kabupaten';
+    protected $table     = 'kabupaten';
+    protected $fillable     = ['id_provinsi','nama_kabupaten','KodeDepdagri','IsActive'];
     //public $incrementing = false;
-    public $primaryKey = 'id_provinsi';
+    public $primaryKey = 'id_kabupaten';
+    public $timestamps = false;
     //public $timestamps = false;
     public function KabupatenKotaProvinsiID()
     {

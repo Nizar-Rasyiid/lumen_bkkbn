@@ -4,37 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-//Model
-use App\Models\WebSetting;
-
-use App\Models\Provinsi;
-//use App\Models\Kabupaten;
 use App\Models\Kabupaten;
-//use App\Models\V_user;
-//use DB;
-use Exception;
-
 use Illuminate\Support\Facades\DB;
-
 
 class KabupatenController extends Controller
 {
+        public function index()
+    {
+        return csrf_token(); 
+    }
 
-
-
-    //provisi ################################################
-
-public function index()
-{
-    return csrf_token(); 
-}
     public function getKab()
     {
         $data = Kabupaten::all();
 
         if($data){
             $response = [
-                'message'		=> 'Show Kabupaten',
+                'message'		=> 'Show kabupaten',
                 'data' 		    => $data,
             ];
 
@@ -51,15 +37,15 @@ public function index()
     public function showKab($id)
     {
         $data = new Kabupaten();
-        $data =  $data->select('id_Kabupaten','nama_Kabupaten','id_provinsi','KodeDepdagri',
-        'IsActive','RegionalID','OriginalID','OriginalNama','OriginalKode','Created',
-        'CreatedBy','LastModifiedBy','id_Kabupaten_old','nama_Kabupaten_old')
+        $data =  $data->select('id_kabupaten','nama_kabupaten','KodeDepdagri','id_provinsi',
+        'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
+        'CreatedBy','LastModifiedBy','id_kabupaten_old','nama_kabupaten_old')
                 ->find($id);
         
         try {
            if($data){
                 $response = [
-                    'message'		=> 'Udapte Kabupaten Sukses',
+                    'message'		=> 'Update Kabupaten Sukses',
                     'data' 		    => $data,
                 ];
 
@@ -76,39 +62,38 @@ public function index()
             ];
             return response()->json($response, 500);
         }
-                
-
-
     }
 
-/*    public function createProv()
-    {
-        return view('datamaster.provCreate', ['id' => '','action' => 'add']);
-    }
-*/
     public function storeKab(Request $request)
     {
          if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
         ) {
-            $request = json_decode($request->payload, true);
+            $dataReq = $request->json()->all();
+            $Arryrequest = json_decode(json_encode($dataReq), true);
 
+        }else{
+            $Arryrequest["nama_kabupaten"] =$request->$request->input("nama_kabupaten");
+            $Arryrequest["id_provinsi"] =$request->$request->input("id_provinsi");
+            $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
+            $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        
-        $this->validate($request, [
-
-            'nama_kabupaten'   => 'required',
+        echo json_encode($Arryrequest);
+        //console.log($Arryrequest)
+/*        $this->validate($Arryrequest, [
+            'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
-        ]);
+        ]);*/
 
         try {
             DB::beginTransaction();
             
             $p = new Kabupaten([
-                'nama_kabupaten' => $request->input('nama_kabupaten'),
-                'KodeDepdagri' => $request->input('KodeDepdagri'),
-                'IsActive' => $request->input('IsActive'),
+                'nama_kabupaten' => $Arryrequest['nama_kabupaten'],
+                'id_provinsi' => $Arryrequest['id_provinsi'],
+                'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
+                'IsActive' => $Arryrequest['IsActive'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
@@ -117,8 +102,8 @@ public function index()
                 'CreatedBy' => $request->input('CreatedBy'),
                 'LastModified' => $request->input('LastModified'),
                 'LastModifiedBy' => $request->input('LastModifiedBy'),
-                'id_kabupaten_old' => $request->input('id_kabupaten_old'),
-                'nama_kabupaten_old' => $request->input('nama_kabupaten_old')*/
+                'id_provinsi_old' => $request->input('id_provinsi_old'),
+                'nama_provinsi_old' => $request->input('nama_provinsi_old')*/
             ]);
 
             $p->save();
@@ -144,7 +129,12 @@ public function index()
 
     public function deleteKab($id)
     {
-        DB::table('kabupaten')->where('id', $id)->delete();
+        $kab = Kabupaten::where('id_kabupaten', $id)->first();
+        if ($kab->delete()) {
+            print("berhasil delete");
+        }else{
+            print("gagal delete");
+        }
 //        return redirect()->route('prov');
     }
 /*
@@ -164,12 +154,14 @@ public function index()
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
             $nama_kabupaten=$arrDataReq["nama_kabupaten"];
+            $id_provinsi=$arrDataReq["id_provinsi"];
             $KodeDepdagri=$arrDataReq["KodeDepdagri"];
             $IsActive=$arrDataReq["IsActive"];
             $id_kabupaten=$arrDataReq["id_kabupaten"];
         }else{
 
             $nama_kabupaten=$request->input["nama_kabupaten"];
+            $id_provinsi=$request->input["id_provinsi"];
             $KodeDepdagri=$request->input["KodeDepdagri"];
             $IsActive=$request->input["IsActive"];
             $id_kabupaten=$request->input["id_kabupaten"];
@@ -177,8 +169,7 @@ public function index()
         
   /*
         $this->validate($request, [
-
-            'nama_kabupaten'   => 'required',
+            'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
         ]);
@@ -190,6 +181,7 @@ public function index()
             $p = Kabupaten::find($id_kabupaten);
 
                 $p->nama_kabupaten = $nama_kabupaten;
+                $p->id_provinsi = $id_provinsi;
                 $p->KodeDepdagri = $KodeDepdagri;
                 $p->IsActive = $IsActive;
                 /*$p->RegionalID = $request->input('RegionalID');
@@ -200,8 +192,8 @@ public function index()
                 $p->CreatedBy = $request->input('CreatedBy');
                 $p->LastModified = $request->input('LastModified');
                 $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_kabupaten_old = $request->input('id_kabupaten_old');
-                $p->nama_kabupaten_old = $request->input('nama_kabupaten_old');*/
+                $p->id_provinsi_old = $request->input('id_provinsi_old');
+                $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
 
 
             
@@ -229,8 +221,5 @@ public function index()
         ];
 
         return response()->json($response, 200);
-    }         
-    //end prov ################################
-
-
+    }
 }
