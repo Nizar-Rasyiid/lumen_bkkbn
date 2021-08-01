@@ -108,6 +108,7 @@ public function index()
 
         try {
             DB::beginTransaction();
+            
             $p = new Provinsi([
                 'nama_provinsi' => $Arryrequest['nama_provinsi'],
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
@@ -147,13 +148,12 @@ public function index()
 
     public function deleteProv($id)
     {
-        DB::table('provinsi')->where('id_provinsi', $id)->delete();
-
-        return response()->json($response = [
-            'message'   => 'Data Berhasil dihapus',
-            'response'  => 200
-        ]);
-
+        $prov = Provinsi::where('id_provinsi', $id)->first();
+        if ($prov->delete()) {
+            print("berhasil delete");
+        }else{
+            print("gagal delete");
+        }
 //        return redirect()->route('prov');
     }
 /*

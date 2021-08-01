@@ -16,7 +16,10 @@ class KecamatanController extends Controller
 
     public function getKec()
     {
-        $data = Kecamatan::all();
+        $data = DB::table('kecamatan')
+                ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+                ->select('kecamatan.*','kabupaten.nama_kabupaten')
+                ->get();
 
         if($data){
             $response = [
@@ -34,13 +37,25 @@ class KecamatanController extends Controller
         return response()->json($response, 500);
     }
 
-    public function showKec($id)
+    public function showKec(Request $request)
     {
-        $data = new Kecamatan();
-        $data =  $data->select('id_kecamatan','nama_kecamatan','KodeDepdagri','id_kabupaten',
-        'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
-        'CreatedBy','LastModifiedBy','id_kabupaten_old','nama_kecamatan_old')
-                ->find($id);
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kabupaten = $arrDataReq["id_kabupaten"];
+        }else{
+            $id_kabupaten = $request->input["id_kabupaten"];
+        }
+
+        $data = DB::table('kecamatan')
+        ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+        ->select('kecamatan.*','kabupaten.nama_kabupaten')
+        ->where('kecamatan.id_kabupaten', $id_kabupaten)
+        ->get();
+
         
         try {
            if($data){
@@ -81,7 +96,8 @@ class KecamatanController extends Controller
         echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
-            'nama_provinsi'   => 'required',
+
+            'nama_kabupaten'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
         ]);*/
@@ -103,7 +119,7 @@ class KecamatanController extends Controller
                 'LastModified' => $request->input('LastModified'),
                 'LastModifiedBy' => $request->input('LastModifiedBy'),
                 'id_kabupaten_old' => $request->input('id_kabupaten_old'),
-                'nama_provinsi_old' => $request->input('nama_provinsi_old')*/
+                'nama_kabupaten_old' => $request->input('nama_provinsi_old')*/
             ]);
 
             $p->save();
@@ -169,6 +185,7 @@ class KecamatanController extends Controller
         
   /*
         $this->validate($request, [
+
             'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',

@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 //Model
 //use App\Models\WebSetting;
 //use App\Models\Provinsi;
-use App\Models\Kabupaten;
 use App\Models\V_user;
 use DB;
 
@@ -69,7 +68,7 @@ public function index()
         }
         $data = new V_user();
         $data =  $data->select('id','UserName','NamaLengkap',
-        'NIP','NIK','KabupatenKotaID','RoleID','Jabatan','Foto')
+        'NIP','NIK','KabupatenKotaID','TingkatWilayahID','RoleID','Jabatan','Foto')
                 ->where(['UserName'=>$UserName,/*$request->input('UserName'),*/
             'Password'=>md5($password)])->get();
             
@@ -94,7 +93,7 @@ public function index()
 
                 return response()->json($response, 200);
 
-    
+
         } catch (\Exception $e) {
             DB::rollback();
             $response = [

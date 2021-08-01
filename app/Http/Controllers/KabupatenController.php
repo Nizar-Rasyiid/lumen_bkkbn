@@ -16,7 +16,30 @@ class KabupatenController extends Controller
 
     public function getKab()
     {
-        $data = Kabupaten::all();
+        $data = DB::table('kabupaten')
+                ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+                ->select('kabupaten.*','provinsi.nama_provinsi')
+                ->get();
+
+                // $data_json = json_decode($data, true);
+                // $array_kabupaten_kota_provinsi_id = array();
+                // foreach ($data_json as $key=>$value) {
+                //     echo($key. ' ');
+                    
+                //     foreach ($value as $key2=>$value2) {
+                //             $valueProvinsi = $value;
+                //         if ($key=='kabupaten_kota_provinsi_i_d') {
+                //             if ($key2 =='nama_provinsi') {
+                //                 $valueProvinsi = $value2;
+                //             }
+                //         }
+                //     }
+                //     $value = $valueProvinsi;
+                //     $array_kabupaten_kota_provinsi_id[$key]=$value;    
+                // }
+                
+                // var_dump($array_kabupaten_kota_provinsi_id);
+                // die();
 
         if($data){
             $response = [
@@ -24,6 +47,7 @@ class KabupatenController extends Controller
                 'data' 		    => $data,
             ];
 
+            // echo(response()->json(data));
             return response()->json($response, 200);
         }
 
@@ -34,34 +58,40 @@ class KabupatenController extends Controller
         return response()->json($response, 500);
     }
 
-    public function showKab($id)
+    public function showKab(Request $request)
     {
-        $data = new Kabupaten();
-        $data =  $data->select('id_kabupaten','nama_kabupaten','KodeDepdagri','id_provinsi',
-        'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
-        'CreatedBy','LastModifiedBy','id_kabupaten_old','nama_kabupaten_old')
-                ->find($id);
-        
-        try {
-           if($data){
-                $response = [
-                    'message'		=> 'Update Kabupaten Sukses',
-                    'data' 		    => $data,
-                ];
-
-                return response()->json($response, 200);
-            }
-
-
-
-        } catch (\Exception $e) {
-            DB::rollback();
-            $response = [
-                'message'        => 'Transaction DB Error',
-                'data'      => $e->getMessage()
-            ];
-            return response()->json($response, 500);
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_provinsi=$arrDataReq["id_provinsi"];
+        }else{
+            $id_provinsi=$request->input["id_provinsi"];
         }
+
+        $data = DB::table('kabupaten')
+                ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+                ->select('kabupaten.*','provinsi.nama_provinsi')
+                ->where('kabupaten.id_provinsi', $id_provinsi)
+                ->get();
+
+        if($data){
+            $response = [
+                'message'		=> 'Show kabupaten',
+                'data' 		    => $data,
+            ];
+
+            // echo(response()->json(data));
+            return response()->json($response, 200);
+    }
+
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
+
+    return response()->json($response, 500);
     }
 
     public function storeKab(Request $request)
@@ -81,6 +111,7 @@ class KabupatenController extends Controller
         echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
+
             'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
@@ -107,7 +138,7 @@ class KabupatenController extends Controller
             ]);
 
             $p->save();
-
+            
             DB::commit();
             
             $response = [
@@ -169,6 +200,7 @@ class KabupatenController extends Controller
         
   /*
         $this->validate($request, [
+
             'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
