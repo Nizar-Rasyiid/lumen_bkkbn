@@ -74,9 +74,6 @@ public function index()
             ];
             return response()->json($response, 500);
         }
-                
-
-
     }
 
 /*    public function createProv()

@@ -21,26 +21,6 @@ class KabupatenController extends Controller
                 ->select('kabupaten.*','provinsi.nama_provinsi')
                 ->get();
 
-                // $data_json = json_decode($data, true);
-                // $array_kabupaten_kota_provinsi_id = array();
-                // foreach ($data_json as $key=>$value) {
-                //     echo($key. ' ');
-                    
-                //     foreach ($value as $key2=>$value2) {
-                //             $valueProvinsi = $value;
-                //         if ($key=='kabupaten_kota_provinsi_i_d') {
-                //             if ($key2 =='nama_provinsi') {
-                //                 $valueProvinsi = $value2;
-                //             }
-                //         }
-                //     }
-                //     $value = $valueProvinsi;
-                //     $array_kabupaten_kota_provinsi_id[$key]=$value;    
-                // }
-                
-                // var_dump($array_kabupaten_kota_provinsi_id);
-                // die();
-
         if($data){
             $response = [
                 'message'		=> 'Show kabupaten',
@@ -163,8 +143,10 @@ class KabupatenController extends Controller
         $kab = Kabupaten::where('id_kabupaten', $id)->first();
         if ($kab->delete()) {
             print("berhasil delete");
+            return response()->json($response, 200);
         }else{
             print("gagal delete");
+            return response()->json($response, 500);
         }
 //        return redirect()->route('prov');
     }

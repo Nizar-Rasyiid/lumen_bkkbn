@@ -16,9 +16,15 @@ class KecamatanController extends Controller
 
     public function getKec()
     {
+        // $data2 = DB::table('kabupaten')
+        //         ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+        //         ->select('kabupaten.*','provinsi.nama_provinsi')
+        //         ->get();
+
         $data = DB::table('kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
-                ->select('kecamatan.*','kabupaten.nama_kabupaten')
+                ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+                ->select('kecamatan.*','kabupaten.nama_kabupaten','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten')
                 ->get();
 
         if($data){
@@ -37,34 +43,41 @@ class KecamatanController extends Controller
         return response()->json($response, 500);
     }
 
-    public function showKec($id)
+    public function showKec(Request $request)
     {
-        $data = new Kecamatan();
-        $data =  $data->select('id_kecamatan','nama_kecamatan','KodeDepdagri','id_kabupaten',
-        'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
-        'CreatedBy','LastModifiedBy','id_kabupaten_old','nama_kecamatan_old')
-                ->find($id);
-        
-        try {
-           if($data){
-                $response = [
-                    'message'		=> 'Update Kecamatan Sukses',
-                    'data' 		    => $data,
-                ];
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kabupaten = $arrDataReq["id_kabupaten"];
+        }else{
+            $id_kabupaten = $request->input["id_kabupaten"];
+        }
 
-                return response()->json($response, 200);
+        $data = DB::table('kecamatan')
+        ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+        ->select('kecamatan.*','kabupaten.nama_kabupaten')
+        ->where('kecamatan.id_kabupaten', $id_kabupaten)
+        ->get();
+
+        
+        if($data){
+            $response = [
+                'message'		=> 'Show kabupaten',
+                'data' 		    => $data,
+            ];
+
+            // echo(response()->json(data));
+            return response()->json($response, 200);
             }
 
-
-
-        } catch (\Exception $e) {
-            DB::rollback();
             $response = [
-                'message'        => 'Transaction DB Error',
-                'data'      => $e->getMessage()
+                'message'		=> 'An Error Occured'
             ];
+
             return response()->json($response, 500);
-        }
     }
 
     public function storeKec(Request $request)

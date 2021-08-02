@@ -22,7 +22,7 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
 
 
 //Provinsi
-// $router->delete('/provinsi/delete/{id}',  'ProvinsiController@deleteProv');
+$router->delete('/provinsi/delete/{id}',  'ProvinsiController@deleteProv');
 $router->get('/provinsi/getProvinsi', 'ProvinsiController@getProv');
 $router->post('/provinsi/storeProv',   'ProvinsiController@storeProv');
 $router->post('/provinsi/updateProv',   'ProvinsiController@updateProv');
@@ -32,9 +32,17 @@ $router->post('/kabupaten/showKabupaten','KabupatenController@showKab');
 $router->get('/kabupaten/getKabupaten','KabupatenController@getKab');
 $router->post('/kabupaten/storeKab',   'KabupatenController@storeKab');
 $router->post('/kabupaten/updateKab',   'KabupatenController@updateKab');
+$router->delete('/kabupaten/delete/{id}',   'KabupatenController@deleteKab');
 
-//Kecamatann
+//Kecamatan
 $router->get('/kecamatan/getKecamatan','KecamatanController@getKec');
 $router->post('/kecamatan/storeKec',   'KecamatanController@storeKec');
+$router->post('/kecamatan/showKec',   'KecamatanController@showKec');
 $router->post('/kecamatan/updateKec',   'KecamatanController@updateKec');
+
+//Kelurahan
+$router->get('/kelurahan/getKelurahan','KelurahanController@getKel');
+$router->post('/kelurahan/storeKel',   'KelurahanController@storeKel');
+$router->post('/kelurahan/updateKel',   'KelurahanController@updateKel');
+$router->delete('/kelurahan/deleteKel/{id}',   'KelurahanController@deleteKel');
 

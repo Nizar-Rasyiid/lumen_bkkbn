@@ -16,4 +16,9 @@ class Provinsi extends Model
     {
         $this->belongsTo('App\Models\Kabupaten');
     }
+
+    public function Kecamatan()
+    {
+        $this->belongsTo('App\Models\Kecamatan');
+    }
 }
