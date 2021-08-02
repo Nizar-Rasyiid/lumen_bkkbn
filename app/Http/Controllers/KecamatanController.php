@@ -18,16 +18,27 @@ class KecamatanController extends Controller
     {
         $data = DB::table('kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
-                ->select('kecamatan.*','kabupaten.nama_kabupaten')
+                ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+                ->select('kecamatan.*','kabupaten.nama_kabupaten','provinsi.nama_provinsi',)
                 ->get();
+                // var_dump($data);
+        // $data = new Kecamatan();
+        // $data =  $data->select('id_kecamatan','nama_kecamatan','KodeDepdagri',
+        // 'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
+        // 'CreatedBy','LastModifiedBy','id_kecamatan_old','nama_kecamatan_old')
+        //         ->with('KabupatenKotaKecamatanId')
+        //         ->get();
+
 
         if($data){
             $response = [
                 'message'		=> 'Show Kecamatan',
                 'data' 		    => $data,
-            ];
 
+            ];
+            // var_dump($response);
             return response()->json($response, 200);
+
         }
 
         $response = [
@@ -111,11 +122,11 @@ class KecamatanController extends Controller
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'IsActive' => $Arryrequest['IsActive'],
                 /*'RegionalID' => $request->input('RegionalID'),
+                'CreatedBy' => $request->input('CreatedBy'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
                 'OriginalKode' => $request->input('OriginalKode'),
                 'Created' => $request->input('Created'),
-                'CreatedBy' => $request->input('CreatedBy'),
                 'LastModified' => $request->input('LastModified'),
                 'LastModifiedBy' => $request->input('LastModifiedBy'),
                 'id_kabupaten_old' => $request->input('id_kabupaten_old'),
@@ -186,7 +197,7 @@ class KecamatanController extends Controller
   /*
         $this->validate($request, [
 
-            'nama_provinsi'   => 'required',
+            'nama_kecamatan'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
         ]);

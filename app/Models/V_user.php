@@ -49,6 +49,10 @@ class V_user extends Model
     {
         return $this->belongsTo('App\Models\Kabupaten', 'id_kabupaten', 'KabupatenKotaID');
     }
+    public function UserKelurahan()
+    {
+        return $this->belongsTo('App\Models\Kelurahan', 'id_kelurahan', 'KelurahanId');
+    }
 
     //
 }

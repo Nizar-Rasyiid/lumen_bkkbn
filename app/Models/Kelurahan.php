@@ -11,15 +11,15 @@ class Kelurahan extends Model
     public $primaryKey = 'id_kecamatan';
     public $timestamps = false;
 
-    public function KabupatenKotaID()
-    {
-        return $this->belongsTo('App\Models\Kabupaten', 'id_kabupaten', 'id_kabupaten');
-    }
+    // public function KabupatenKotaID()
+    // {
+    //     return $this->belongsTo('App\Models\Kabupaten', 'id_kabupaten', 'id_kabupaten');
+    // }
 
-    public function ProvinsiKotaID()
-    {
-        return $this->belongsTo('App\Models\Provinsi', 'id_provinsi', 'id_provinsi');
-    }
+    // public function ProvinsiKotaID()
+    // {
+    //     return $this->belongsTo('App\Models\Provinsi', 'id_provinsi', 'id_provinsi');
+    // }
 
     public function KecamatanId()
     {

@@ -18,10 +18,13 @@ class KelurahanController extends Controller
     {
         $data = DB::table('kelurahan')
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
-                ->select('kelurahan.*','kecamatan.nama_kecamatan')
+                ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+                ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+                ->join('v_user','v_user.ID','=','v_user.ID')
+                ->select('kelurahan.*','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi','kecamatan.id_kecamatan','kabupaten.id_kabupaten','provinsi.id_provinsi','v_user.UserName')
                 ->get();
 
-        if($data){
+        if($data){  
             $response = [
                 'message'		=> 'Show Kelurahan',
                 'data' 		    => $data,
@@ -37,14 +40,30 @@ class KelurahanController extends Controller
         return response()->json($response, 500);
     }
 
-    public function showKel($id)
+    public function showKel(Request $request)
     {
-        $data = new Kelurahan();
-        $data =  $data->select('id_kelurahan','nama_kelurahan','KodeDepdagri','id_kecamatan',
-        'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
-        'CreatedBy','LastModifiedBy','id_kabupaten_old','nama_kelurahan_old')
-                ->find($id);
-        
+        // $data = new Kelurahan();
+        // $data =  $data->select('id_kelurahan','nama_kelurahan','KodeDepdagri','id_kecamatan',
+        // 'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
+        // 'CreatedBy','LastModifiedBy','id_kabupaten_old','nama_kelurahan_old')
+        //         ->find($id);
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $id_kecamatan = $arrDataReq["id_kecamatan"];
+    }else{
+        $id_kecamatan = $request->input["id_kecamatan"];
+    }
+
+    $data = DB::table('kelurahan')
+    ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
+    ->select('kelurahan.*','kecamatan.nama_kecamatan')
+    ->where('kelurahan.id_kecamatan', $id_kecamatan)
+    ->get();
+
         try {
            if($data){
                 $response = [
@@ -173,7 +192,6 @@ public function updateKel(Request $request)
     
 /*
     $this->validate($request, [
-
         'nama_provinsi'   => 'required',
         'KodeDepdagri'   => 'required',
         'IsActive'   => 'required',

@@ -26,22 +26,25 @@
   $router->get('/provinsi/getProvinsi', 'ProvinsiController@getProv');
   $router->post('/provinsi/storeProv',   'ProvinsiController@storeProv');
   $router->post('/provinsi/updateProv',   'ProvinsiController@updateProv');
-  $router->delete('/provinsi/deleteProv/{id}', 'ProvinsiController@deleteProv');
+  $router->delete('/provinsi/deleteProv/', 'ProvinsiController@deleteProv');
 
 //  Kabupaten
   $router->post('/kabupaten/showKabupaten','KabupatenController@showKab');
   $router->get('/kabupaten/getKabupaten','KabupatenController@getKab');
   $router->post('/kabupaten/storeKab',   'KabupatenController@storeKab');
+  $router->delete('/provinsi/deleteKab/{id}', 'ProvinsiController@deleteKab');
   $router->post('/kabupaten/updateKab',   'KabupatenController@updateKab');
 
 //  Kecamatann
   $router->post('/kecamatan/showKecamatan','KecamatanController@showKec');
   $router->get('/kecamatan/getKecamatan','KecamatanController@getKec');
   $router->post('/kecamatan/storeKec',   'KecamatanController@storeKec');
+  $router->delete('/provinsi/deleteKec/{id}', 'ProvinsiController@deleteKec');
   $router->post('/kecamatan/updateKec',   'KecamatanController@updateKec');
 
 //  Kelurahan
   $router->get('/kelurahan/getKelurahan','KelurahanController@getKel');
   $router->post('/kelurahan/storeKel',   'KelurahanController@storeKel');
   $router->post('/kelurahan/updateKel',   'KelurahanController@updateKel');
-  $router->delete('/kelurahan/deleteKel/{id}',   'KelurahanController@deleteKel');
+  $router->post('/kelurahan/showKel',   'KelurahanController@showKel');
+  $router->delete('/kelurahan/deleteKel/{id}','KelurahanController@deleteKel');
