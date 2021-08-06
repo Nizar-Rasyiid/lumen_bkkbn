@@ -21,7 +21,7 @@ class KelurahanController extends Controller
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
                 ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('kelurahan.*','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi','kecamatan.id_kecamatan','kabupaten.id_kabupaten','provinsi.id_provinsi','v_user.UserName')
+                ->select('kelurahan.*','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi','kecamatan.id_kecamatan','kabupaten.id_kabupaten','provinsi.id_provinsi','v_user.NamaLengkap')
                 ->get();
 
         if($data){  
@@ -100,7 +100,7 @@ class KelurahanController extends Controller
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        echo json_encode($Arryrequest);
+        // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
 
@@ -138,7 +138,7 @@ class KelurahanController extends Controller
                 'data'         => $p
             ];
 
-            return response()->json($response, 201);
+            return response()->json($response, 200);
         } catch (\Exception $e) {
             DB::rollback();
             $response = [
@@ -224,7 +224,7 @@ public function updateKel(Request $request)
         DB::commit();
 
         $response = [
-            'message'        => 'Update Master Kecamatan Suskses',
+            'message'        => 'Update Master Kelurahan Suskses',
             'data'         => $p
         ];
 

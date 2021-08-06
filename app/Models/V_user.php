@@ -26,7 +26,7 @@ class V_user extends Model
       'NIP',
       'IsTemporary',
       'RoleID',
-      'TingkatWilayahID',
+    //   'TingkatWilayahID',
       'IsActive',
       'CreatedDate',
       'CreatedBy',
@@ -41,10 +41,10 @@ class V_user extends Model
     {
         return $this->belongsTo('App\Models\V_role', 'id', 'RoleID');
     }
-    public function UserTingkatWilayahID()
-    {
-        return $this->belongsTo('App\Models\TingkatWilayah', 'id', 'TingkatWilayahID');
-    }
+    // public function UserTingkatWilayahID()
+    // {
+    //     return $this->belongsTo('App\Models\TingkatWilayah', 'id', 'TingkatWilayahID');
+    // }
     public function UserKabupatenKotaID()
     {
         return $this->belongsTo('App\Models\Kabupaten', 'id_kabupaten', 'KabupatenKotaID');

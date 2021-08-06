@@ -97,7 +97,7 @@ public function index()
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        echo json_encode($Arryrequest);
+        // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
 
@@ -130,11 +130,11 @@ public function index()
             DB::commit();
             
             $response = [
-                'message'        => 'Success',
+                'message'        => 'Input Data Sukses',
                 'data'         => $p
             ];
 
-            return response()->json($response, 201);
+            return response()->json($response, 200);
         } catch (\Exception $e) {
             DB::rollback();
             $response = [

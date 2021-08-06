@@ -14,6 +14,40 @@ class KecamatanController extends Controller
         return csrf_token(); 
     }
 
+    public function laporanKec()
+    {
+    $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+    COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+    COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+    COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+    FROM Kecamatan Kec 
+    LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+    LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+    LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+    GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`"
+        )
+    );
+
+
+
+    if($data){
+        $response = [
+            'message'		=> 'Show kabupaten',
+            'data' 		    => $data,
+        ];
+
+        // echo(response()->json(data));
+        return response()->json($response, 200);
+    }
+
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
+
+    return response()->json($response, 500);
+
+    }
+
     public function getKec()
     {
         $data = DB::table('kecamatan')
