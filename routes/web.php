@@ -1,8 +1,24 @@
 <?php
 
+/** @var \Laravel\Lumen\Routing\Router $router */
 
+/*
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for an application.
+| It is a breeze. Simply tell Lumen the URIs it should respond to
+| and give it the Closure to call when that URI is requested.
+|
+*/
+ 
+$router->get('/', function () use ($router) {
+    return $router->app->version();
+});
 
- /** @var \Laravel\Lumen\Routing\Router $router */
+$router->post('/vuser/showUser',   'VuserController@showUser');
+$router->get('/vuser/getUser',  'VuserController@getUser');
 
  /*
  |--------------------------------------------------------------------------
@@ -63,4 +79,8 @@ $router->post('/rw/showRw','RwController@showRw');
 $router->get('/rw/getRw', 'RwController@getRw');
 $router->post('/rw/storeRw',   'RwController@storeRw');
 $router->post('/rw/updateRw',   'RwController@updateRw');
+<<<<<<< HEAD
 //$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
+=======
+//$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
+>>>>>>> b81825e0d43d5af4f9d4dbd9efddf215e69fe48b
