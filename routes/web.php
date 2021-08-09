@@ -79,8 +79,4 @@ $router->post('/rw/showRw','RwController@showRw');
 $router->get('/rw/getRw', 'RwController@getRw');
 $router->post('/rw/storeRw',   'RwController@storeRw');
 $router->post('/rw/updateRw',   'RwController@updateRw');
-<<<<<<< HEAD
 //$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
-=======
-//$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
->>>>>>> b81825e0d43d5af4f9d4dbd9efddf215e69fe48b

@@ -95,11 +95,21 @@ class KecamatanController extends Controller
             $id_kabupaten = $request->input["id_kabupaten"];
         }
 
-        $data = DB::table('kecamatan')
-        ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
-        ->select('kecamatan.*','kabupaten.nama_kabupaten')
-        ->where('kecamatan.id_kabupaten', $id_kabupaten)
-        ->get();
+        // echo($id_kabupaten);
+        // die();
+        $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Kecamatan Kec 
+        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`,kec.`id_kabupaten`
+        HAVING Kec.`id_kabupaten` = $id_kabupaten"
+            )
+        );
+
 
         
         try {
