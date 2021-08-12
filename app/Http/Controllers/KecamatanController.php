@@ -81,6 +81,121 @@ class KecamatanController extends Controller
 
         return response()->json($response, 500);
     }
+    
+    public function showPerKec(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kecamatan = $arrDataReq["id_kecamatan"];
+        }else{
+            $id_kecamatan = $request->input["id_kecamatan"];
+        }
+
+        $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Kecamatan Kec 
+        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`
+        HAVING Kec.`id_kecamatan` = $id_kecamatan"
+            )
+        );
+
+
+        // $data = DB::table('kecamatan')
+        // ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+        // ->select('kecamatan.*','kabupaten.nama_kabupaten')
+        // ->where('kecamatan.id_kabupaten', $id_kabupaten)
+        // ->get();
+
+        
+        if($data){
+            $response = [
+                'message'		=> 'Show kabupaten',
+                'data' 		    => $data,
+            ];
+
+            // echo(response()->json(data));
+            return response()->json($response, 200);
+            }
+
+            $response = [
+                'message'		=> 'An Error Occured'
+            ];
+
+            return response()->json($response, 500);
+    }
+
+
+
+    // Untuk Kecamatan Saja
+    public function showKecs(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kabupaten = $arrDataReq["id_kabupaten"];
+        }else{
+            $id_kabupaten = $request->input["id_kabupaten"];
+        }
+
+        // echo($id_kabupaten);
+        // die();
+        
+        // $data = DB::table('kecamatan')
+        // ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+        // ->select('kecamatan.*','kabupaten.nama_kabupaten')
+        // ->where('kecamatan.id_kabupaten', $id_kabupaten)
+        // ->get();
+        $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Kecamatan Kec 
+        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`,kec.`id_kabupaten`
+        HAVING Kec.`id_kabupaten` = $id_kabupaten"
+            )
+        );
+
+
+        
+        try {
+           if($data){
+                $response = [
+                    'message'		=> 'Update Kecamatan Sukses',
+                    'data' 		    => $data,
+                ];
+
+                return response()->json($response, 200);
+            }
+
+
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response = [
+                'message'        => 'Transaction DB Error',
+                'data'      => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+    }
+
+
+
 
     public function showKec(Request $request)
     {
@@ -97,18 +212,24 @@ class KecamatanController extends Controller
 
         // echo($id_kabupaten);
         // die();
-        $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
-        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
-        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
-        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
-        FROM Kecamatan Kec 
-        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
-        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
-        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
-        GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`,kec.`id_kabupaten`
-        HAVING Kec.`id_kabupaten` = $id_kabupaten"
-            )
-        );
+        
+        $data = DB::table('kecamatan')
+        ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+        ->select('kecamatan.*','kabupaten.nama_kabupaten')
+        ->where('kecamatan.id_kabupaten', $id_kabupaten)
+        ->get();
+        // $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+        // COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        // COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        // COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        // FROM Kecamatan Kec 
+        // LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        // LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        // LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        // GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`,kec.`id_kabupaten`
+        // HAVING Kec.`id_kabupaten` = $id_kabupaten"
+        //     )
+        // );
 
 
         
@@ -148,7 +269,6 @@ class KecamatanController extends Controller
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
 

@@ -51,14 +51,17 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->delete('/provinsi/deleteKab/{id}', 'ProvinsiController@deleteKab');
   $router->post('/kabupaten/updateKab',   'KabupatenController@updateKab');
   $router->get('/kabupaten/laporanKab', 'KabupatenController@laporanKab'); 
+  $router->post('/kabupaten/show-per-kab', 'KabupatenController@showPerKab'); 
 
 //  Kecamatann
   $router->post('/kecamatan/showKecamatan','KecamatanController@showKec');
+  $router->post('/kecamatan/showKecamatans','KecamatanController@showKecs');
   $router->get('/kecamatan/getKecamatan','KecamatanController@getKec');
   $router->post('/kecamatan/storeKec',   'KecamatanController@storeKec');
   $router->delete('/provinsi/deleteKec/{id}', 'ProvinsiController@deleteKec');
   $router->post('/kecamatan/updateKec',   'KecamatanController@updateKec');
   $router->get('/kecamatan/laporanKec', 'KecamatanController@laporanKec'); 
+  $router->post('/kecamatan/show-per-kec', 'KecamatanController@ShowPerKec'); 
 
 // Kelurahan
   $router->get('/kelurahan/getKelurahan','KelurahanController@getKel');
