@@ -43,9 +43,12 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/provinsi/storeProv',   'ProvinsiController@storeProv');
   $router->post('/provinsi/updateProv',   'ProvinsiController@updateProv');
   $router->delete('/provinsi/deleteProv/', 'ProvinsiController@deleteProv');
+  $router->get('/provinsi/laporanProv',   'ProvinsiController@laporanProv');
+  $router->post('/provinsi/laporanPerProv',   'ProvinsiController@laporanPerProv');
 
 //  Kabupaten
   $router->post('/kabupaten/showKabupaten','KabupatenController@showKab');
+  $router->post('/kabupaten/showsKabupaten','KabupatenController@showKabs');
   $router->get('/kabupaten/getKabupaten','KabupatenController@getKab');
   $router->post('/kabupaten/storeKab',   'KabupatenController@storeKab');
   $router->delete('/provinsi/deleteKab/{id}', 'ProvinsiController@deleteKab');
