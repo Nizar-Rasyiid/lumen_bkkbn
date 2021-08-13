@@ -49,6 +49,10 @@ class V_user extends Model
     {
         return $this->belongsTo('App\Models\Kabupaten', 'id_kabupaten', 'KabupatenKotaID');
     }
+    public function UserProvinsiKotaID()
+    {
+        return $this->belongsTo('App\Models\Provinsi', 'id_provinsi', 'ProvinsiKotaID');
+    }
 
     //
 }

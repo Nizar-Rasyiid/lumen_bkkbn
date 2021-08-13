@@ -17,7 +17,6 @@ class VuserController extends Controller
     public function viewuser()
     {
         V_user = V_user::all();
-
         return view('datamaster.user', compact('V_user'));
     }
 */

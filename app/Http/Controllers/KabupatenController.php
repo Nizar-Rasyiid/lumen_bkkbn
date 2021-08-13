@@ -18,7 +18,8 @@ class KabupatenController extends Controller
     {
         $data = DB::table('kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->select('kabupaten.*','provinsi.nama_provinsi')
+                ->join('v_user','v_user.ID','=','v_user.ID')
+                ->select('kabupaten.*','provinsi.nama_provinsi','v_user.NamaLengkap')
                 ->get();
 
         if($data){
@@ -36,6 +37,52 @@ class KabupatenController extends Controller
         ];
 
         return response()->json($response, 500);
+    }
+
+    public function showKab2(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_provinsi=$arrDataReq["id_provinsi"];
+        }else{
+            $id_provinsi=$request->input["id_provinsi"];
+        }
+
+        $data = DB::select(DB::raw("SELECT Nama_Kabupaten,
+        COUNT(DISTINCT(kab.`id_kabupaten`)) AS Jumlah_Kabupaten_Kota, 
+        COUNT(DISTINCT(kec.`id_kecamatan`)) AS Jumlah_Kecamatan,
+        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Provinsi Prov 
+        LEFT JOIN Kabupaten Kab ON kab.`id_provinsi`= Prov.`id_provinsi`
+        LEFT JOIN  Kecamatan kec ON kec.`id_kabupaten`=kab.`id_kabupaten`
+        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        GROUP BY Prov.`id_provinsi`,Kab.`nama_kabupaten`
+        HAVING Prov.`id_provinsi`=$id_provinsi"								
+        )
+        );
+
+        if($data){
+            $response = [
+                'message'		=> 'Show Provinsi',
+                'data' 		    => $data,
+            ];
+
+            return response()->json($response, 200);
+        }
+
+        $response = [
+            'message'		=> 'An Error Occured'
+        ];
+
+        return response()->json($response, 500);    
     }
 
     public function showKab(Request $request)
@@ -88,7 +135,6 @@ class KabupatenController extends Controller
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
 

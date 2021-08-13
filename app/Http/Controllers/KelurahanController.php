@@ -20,7 +20,9 @@ class KelurahanController extends Controller
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->select('kelurahan.*','kecamatan.nama_kecamatan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten')
+                ->join('v_user','v_user.ID','=','v_user.ID')
+                ->select('kelurahan.*','kecamatan.nama_kecamatan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan',
+                'kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten','v_user.NamaLengkap')
                 ->get();
 
         if($data){
@@ -39,34 +41,45 @@ class KelurahanController extends Controller
         return response()->json($response, 500);
     }
 
-    public function showKel($id)
+    public function showKel(Request $request)
     {
-        // $data = new Kelurahan();
-        // $data =  $data->select('id_kelurahan','nama_kelurahan','KodeDepdagri','id_kecamatan',
-        // 'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
-        // 'CreatedBy','LastModifiedBy','id_kabupaten_old','nama_kelurahan_old')
-        //         ->find($id);
-        
-        // try {
-        //    if($data){
-        //         $response = [
-        //             'message'		=> 'Update Kelurahan Sukses',
-        //             'data' 		    => $data,
-        //         ];
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $id_kecamatan = $arrDataReq["id_kecamatan"];
+    }else{
+        $id_kecamatan = $request->input["id_kecamatan"];
+    }
 
-        //         return response()->json($response, 200);
-        //     }
+    $data = DB::table('kelurahan')
+    ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
+    ->select('kelurahan.*','kecamatan.nama_kecamatan')
+    ->where('kelurahan.id_kecamatan', $id_kecamatan)
+    ->get();
+
+        try {
+           if($data){
+                $response = [
+                    'message'		=> 'Update Kelurahan Sukses',
+                    'data' 		    => $data,
+                ];
+
+                return response()->json($response, 200);
+            }
 
 
 
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     $response = [
-        //         'message'        => 'Transaction DB Error',
-        //         'data'      => $e->getMessage()
-        //     ];
-        //     return response()->json($response, 500);
-        // }
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response = [
+                'message'        => 'Transaction DB Error',
+                'data'      => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
     }
 
     public function storeKel(Request $request)
@@ -83,7 +96,7 @@ class KelurahanController extends Controller
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        echo json_encode($Arryrequest);
+
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
             'nama_provinsi'   => 'required',
@@ -132,15 +145,22 @@ class KelurahanController extends Controller
 
     }
 
-    public function deleteKec($id)
+    public function deleteKel($id)
     {
         $kab = Kelurahan::where('id_kelurahan', $id)->first();
-        if ($kab->delete()) {
-            print("berhasil delete");
+        if ($kab->delete()) {  
+                $response = [
+                    'message'        => 'Deleted Succesfully',
+                    'data'      => $e->getMessage()
+                ];
+                return response()->json($response, 200);
         }else{
-            print("gagal delete");
+            $response = [
+                'message'        => 'Delete DB Error',
+                'data'      => $e->getMessage()
+            ];
+            return response()->json($response, 500);
         }
-//        return redirect()->route('prov');
     }
 /*
     public function editProv($id)

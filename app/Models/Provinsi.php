@@ -12,13 +12,8 @@ class Provinsi extends Model
     public $primaryKey = 'id_provinsi';
     public $timestamps = false;
 
-    public function Kabupaten()
+    public function vuser()
     {
-        $this->belongsTo('App\Models\Kabupaten');
-    }
-
-    public function Kecamatan()
-    {
-        $this->belongsTo('App\Models\Kecamatan');
+        $this->belongsTo('App\Models\V_user');
     }
 }

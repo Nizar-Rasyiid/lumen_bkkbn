@@ -4,36 +4,57 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Kecamatan;
+//Model
+use App\Models\WebSetting;
+use App\Models\Rw;
+
+use Exception;
+
 use Illuminate\Support\Facades\DB;
 
-class KecamatanController extends Controller
+class RwController extends Controller
 {
     public function index()
     {
         return csrf_token(); 
     }
-
-    public function getKec()
+    public function getRw()
     {
-        // $data2 = DB::table('kabupaten')
-        //         ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-        //         ->select('kabupaten.*','provinsi.nama_provinsi')
-        //         ->get();
-
-        $data = DB::table('kecamatan')
+        $data = DB::table('rw')
+                ->join('kelurahan','rw.id_kelurahan','=','kelurahan.id_kelurahan')
+                ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('kecamatan.*','kabupaten.nama_kabupaten','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten','v_user.NamaLengkap')
+                ->select('rw.*','kelurahan.nama_kelurahan','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten')
                 ->get();
+
+                // $data_json = json_decode($data, true);
+                // $array_rw_kota_provinsi_id = array();
+                // foreach ($data_json as $key=>$value) {
+                //     echo($key. ' ');
+                    
+                //     foreach ($value as $key2=>$value2) {
+                //             $valueProvinsi = $value;
+                //         if ($key=='rw_kota_provinsi_i_d') {
+                //             if ($key2 =='nama_provinsi') {
+                //                 $valueProvinsi = $value2;
+                //             }
+                //         }
+                //     }
+                //     $value = $valueProvinsi;
+                //     $array_rw_kota_provinsi_id[$key]=$value;    
+                // }
+                
+                // var_dump($array_rw_kota_provinsi_id);
+                // die();
 
         if($data){
             $response = [
-                'message'		=> 'Show Kecamatan',
+                'message'		=> 'Show RW ',
                 'data' 		    => $data,
             ];
 
+            // echo(response()->json(data));
             return response()->json($response, 200);
         }
 
@@ -44,7 +65,7 @@ class KecamatanController extends Controller
         return response()->json($response, 500);
     }
 
-    public function showKec(Request $request)
+    public function showRw(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
@@ -52,36 +73,35 @@ class KecamatanController extends Controller
             $dataReq = $request->json()->all();
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
-            $id_kabupaten = $arrDataReq["id_kabupaten"];
+            $id_kelurahan=$arrDataReq["id_kelurahan"];
         }else{
-            $id_kabupaten = $request->input["id_kabupaten"];
+            $id_kelurahan=$request->input["id_kelurahan"];
         }
 
-        $data = DB::table('kecamatan')
-        ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
-        ->select('kecamatan.*','kabupaten.nama_kabupaten')
-        ->where('kecamatan.id_kabupaten', $id_kabupaten)
-        ->get();
+        $data = DB::table('rw')
+                ->join('kelurahan','rw.id_kelurahan','=','kelurahan.id_kelurahan')
+                ->select('rw.*','kelurahan.nama_kelurahan')
+                ->where('rw.id_kelurahan', $id_kelurahan)
+                ->get();
 
-        
         if($data){
             $response = [
-                'message'		=> 'Show kabupaten',
+                'message'		=> 'Show rw',
                 'data' 		    => $data,
             ];
 
             // echo(response()->json(data));
             return response()->json($response, 200);
-            }
-
-            $response = [
-                'message'		=> 'An Error Occured'
-            ];
-
-            return response()->json($response, 500);
     }
 
-    public function storeKec(Request $request)
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
+
+    return response()->json($response, 500);
+    }
+
+    public function storeRw(Request $request)
     {
          if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
@@ -89,27 +109,26 @@ class KecamatanController extends Controller
             $dataReq = $request->json()->all();
             $Arryrequest = json_decode(json_encode($dataReq), true);
 
-        }else{
-            $Arryrequest["nama_kecamatan"] =$request->$request->input("nama_kecamatan");
-            $Arryrequest["id_kabupaten"] =$request->$request->input("id_kabupaten");
+        }else {
+            $Arryrequest["nama_rw"] =$request->$request->input("nama_rw");
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
+            $Arryrequest["id_kelurahan"] =$request->$request->input("id_kelurahan");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        //console.log($Arryrequest)
-/*        $this->validate($Arryrequest, [
+        // $this->validate($request, [
 
-            'nama_provinsi'   => 'required',
-            'KodeDepdagri'   => 'required',
-            'IsActive'   => 'required',
-        ]);*/
+        //     'nama_provinsi'   => 'required',
+        //     'KodeDepdagri'   => 'required',
+        //     'IsActive'   => 'required',
+        // ]);
 
         try {
             DB::beginTransaction();
             
-            $p = new Kecamatan([
-                'nama_kecamatan' => $Arryrequest['nama_kecamatan'],
-                'id_kabupaten' => $Arryrequest['id_kabupaten'],
+            $p = new Rw([
+                'nama_rw' => $Arryrequest['nama_rw'],
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
+                'id_kelurahan' => $Arryrequest['id_kelurahan'],
                 'IsActive' => $Arryrequest['IsActive'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
@@ -119,7 +138,7 @@ class KecamatanController extends Controller
                 'CreatedBy' => $request->input('CreatedBy'),
                 'LastModified' => $request->input('LastModified'),
                 'LastModifiedBy' => $request->input('LastModifiedBy'),
-                'id_kabupaten_old' => $request->input('id_kabupaten_old'),
+                'id_provinsi_old' => $request->input('id_provinsi_old'),
                 'nama_provinsi_old' => $request->input('nama_provinsi_old')*/
             ]);
 
@@ -128,11 +147,11 @@ class KecamatanController extends Controller
             DB::commit();
             
             $response = [
-                'message'        => 'Success',
+                'message'        => 'Success simpan Data Rw',
                 'data'         => $p
             ];
 
-            return response()->json($response, 201);
+            return response()->json($response, 200);
         } catch (\Exception $e) {
             DB::rollback();
             $response = [
@@ -141,26 +160,11 @@ class KecamatanController extends Controller
             ];
             return response()->json($response, 500);
         }
+        
 
     }
 
-    public function deleteKec($id)
-    {
-        $kab = Kecamatan::where('id_kecamatan', $id)->first();
-        if ($kab->delete()) {
-            print("berhasil delete");
-        }else{
-            print("gagal delete");
-        }
-//        return redirect()->route('prov');
-    }
-/*
-    public function editProv($id)
-    {
-        return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
-    }
-*/
-    public function updateKec(Request $request)
+    public function updateRw(Request $request)
     {
 
         //
@@ -170,37 +174,30 @@ class KecamatanController extends Controller
             $dataReq = $request->json()->all();
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
-            $nama_kecamatan=$arrDataReq["nama_kecamatan"];
-            $id_kecamatan=$arrDataReq["id_kecamatan"];
             $KodeDepdagri=$arrDataReq["KodeDepdagri"];
+            $id_kelurahan=$arrDataReq["id_kelurahan"];
+            $nama_rw=$arrDataReq["nama_rw"];
             $IsActive=$arrDataReq["IsActive"];
-            $id_kabupaten=$arrDataReq["id_kabupaten"];
+            $id_rw=$arrDataReq["id_rw"];
         }else{
 
-            $nama_kecamatan=$request->input["nama_kecamatan"];
-            $id_kabupaten=$request->input["id_kabupaten"];
             $KodeDepdagri=$request->input["KodeDepdagri"];
+            $id_kelurahan=$request->input["id_kelurahan"];
+            $nama_rw=$request->input["nama_rw"];
             $IsActive=$request->input["IsActive"];
-            $id_kecamatan=$request->input["id_kecamatan"];
+            $id_rw=$request->input["id_rw"];
         }
         
-  /*
-        $this->validate($request, [
-
-            'nama_provinsi'   => 'required',
-            'KodeDepdagri'   => 'required',
-            'IsActive'   => 'required',
-        ]);
-  */
+  
         
         try {
             DB::beginTransaction();
       
-            $p = Kecamatan::find($id_kecamatan);
+            $p = Rw::find($id_rw);
 
-                $p->nama_kecamatan = $nama_kecamatan;
-                $p->id_kabupaten = $id_kabupaten;
+                $p->nama_rw = $nama_rw;
                 $p->KodeDepdagri = $KodeDepdagri;
+                $p->id_kelurahan = $id_kelurahan;
                 $p->IsActive = $IsActive;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
@@ -210,7 +207,7 @@ class KecamatanController extends Controller
                 $p->CreatedBy = $request->input('CreatedBy');
                 $p->LastModified = $request->input('LastModified');
                 $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_kabupaten_old = $request->input('id_kabupaten_old');
+                $p->id_provinsi_old = $request->input('id_provinsi_old');
                 $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
 
 
@@ -219,7 +216,7 @@ class KecamatanController extends Controller
             DB::commit();
 
             $response = [
-                'message'        => 'Update Master Kabupaten Suskses',
+                'message'        => 'Update Master Rw Sukses',
                 'data'         => $p
             ];
 
