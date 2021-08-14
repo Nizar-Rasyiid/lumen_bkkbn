@@ -27,7 +27,7 @@ class RtController extends Controller
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
                 ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('rt.*','rw.nama_rw','rw.id_kelurahan','nama_kelurahan','rw.id_rw','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten','v_user.NamaLengkap')
+                ->select('rt.*','rw.nama_rw','kelurahan.nama_kelurahan','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi')
                 ->get();
 
                 // $data_json = json_decode($data, true);
@@ -117,7 +117,7 @@ class RtController extends Controller
             $Arryrequest["id_rw"] =$request->$request->input("id_rw");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
-        echo json_encode($Arryrequest);
+        // echo json_encode($Arryrequest);
         // $this->validate($request, [
 
         //     'nama_provinsi'   => 'required',
