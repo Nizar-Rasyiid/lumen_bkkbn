@@ -26,7 +26,8 @@ class RtController extends Controller
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->select('rt.*','rw.nama_rw','rw.id_kelurahan','nama_kelurahan','rw.id_rw','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten')
+                ->join('v_user','v_user.ID','=','v_user.ID')
+                ->select('rt.*','rw.nama_rw','rw.id_kelurahan','nama_kelurahan','rw.id_rw','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten','v_user.NamaLengkap')
                 ->get();
 
                 // $data_json = json_decode($data, true);
@@ -114,35 +115,15 @@ class RtController extends Controller
             $Arryrequest["KodeRT"] =$request->$request->input("KodeRT");
             $Arryrequest["nama_rt"] =$request->$request->input("nama_rt");
             $Arryrequest["id_rw"] =$request->$request->input("id_rw");
+            $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
+        echo json_encode($Arryrequest);
         // $this->validate($request, [
 
         //     'nama_provinsi'   => 'required',
         //     'KodeDepdagri'   => 'required',
         //     'IsActive'   => 'required',
         // ]);
-
-                // Bantuan SQL
-//                 SELECT 
-// COUNT(DISTINCT(kec.`id_kecamatan`)) AS Jumlah_Kecamatan,
-// COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
-// COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
-// COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
-// FROM Kabupaten Kab
-// LEFT JOIN Kabupaten Kab ON Kab.`id_provinsi`= Prov.`id_provinsi`
-// LEFT JOIN  Kecamatan kec ON kec.`id_kabupaten`=Kab.`id_kabupaten`
-// LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
-// LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
-// LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
-// GROUP BY Kab.`id_kabupaten`,prov.`nama_kabupaten`
-// HAVING Kab.`id_kabupaten`=2
-
-
-
-
-
-
-
 
         try {
             DB::beginTransaction();
@@ -151,6 +132,7 @@ class RtController extends Controller
                 'nama_rt' => $Arryrequest['nama_rt'],
                 'id_rw' => $Arryrequest['id_rw'],
                 'KodeRT' => $Arryrequest['KodeRT'],
+                'IsActive' => $Arryrequest['IsActive'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
@@ -198,12 +180,14 @@ class RtController extends Controller
             $KodeRT=$arrDataReq["KodeRT"];
             $id_rw=$arrDataReq["id_rw"];
             $id_rt=$arrDataReq["id_rt"];
+            $IsActive=$arrDataReq["IsActive"];
         }else{
 
             $nama_rt=$request->input["nama_rt"];
             $KodeRT=$request->input["KodeRT"];
             $id_rw=$request->input["id_rw"];
             $id_rt=$request->input["id_rt"];
+            $IsActive=$request->input["IsActive"];
         }
         
   
@@ -216,6 +200,7 @@ class RtController extends Controller
                 $p->nama_rt = $nama_rt;
                 $p->KodeRT = $KodeRT;
                 $p->id_rw = $id_rw;
+                $p->IsActive = $IsActive;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
                 $p->OriginalNama = $request->input('OriginalNama');

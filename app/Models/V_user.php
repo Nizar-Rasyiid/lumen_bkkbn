@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 class V_user extends Model
 {
     protected $table = 'v_user';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
     //public $incrementing = false;
     protected $fillable = [
       'id',
@@ -52,6 +54,14 @@ class V_user extends Model
     public function UserKelurahan()
     {
         return $this->belongsTo('App\Models\Kelurahan', 'id_kelurahan', 'KelurahanId');
+    }
+    public function UserRw()
+    {
+        return $this->belongsTo('App\Models\Rw', 'id_rw', 'RwId');
+    }
+    public function UserRt()
+    {
+        return $this->belongsTo('App\Models\Rt', 'id_rt', 'RtId');
     }
 
     //

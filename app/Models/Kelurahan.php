@@ -8,7 +8,7 @@ class Kelurahan extends Model
 {
     protected $table = 'kelurahan';
     protected $fillable = ['nama_kelurahan','KodeDepdagri','id_kecamatan','IsActive'];
-    public $primaryKey = 'id_kecamatan';
+    public $primaryKey = 'id_kelurahan';
     public $timestamps = false;
 
     // public function KabupatenKotaID()

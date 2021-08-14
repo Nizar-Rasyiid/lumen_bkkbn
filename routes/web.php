@@ -37,6 +37,8 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
 
   $router->post('/vuser/showUser',   'VuserController@showUser');
   $router->get('/vuser/getUser',  'VuserController@getUser');
+  $router->post('/vuser/storeUser',  'VuserController@storeUser');
+  $router->post('/vuser/updateUser',  'VuserController@updateUser');
 
 //   Provinsi
   $router->get('/provinsi/getProvinsi', 'ProvinsiController@getProv');
@@ -72,6 +74,8 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/kelurahan/updateKel',   'KelurahanController@updateKel');
   $router->post('/kelurahan/showKel',   'KelurahanController@showKel');
   $router->delete('/kelurahan/deleteKel/{id}','KelurahanController@deleteKel');
+  $router->post('/kelurahan/laporanKel','KelurahanController@laporanKel');
+  $router->post('/kelurahan/laporanPerKel','kelurahanController@laporanPerKel');
 
 //Rt
 $router->post('/rt/showRt','RtController@showRt');

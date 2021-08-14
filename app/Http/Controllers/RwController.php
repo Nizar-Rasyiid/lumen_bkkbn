@@ -25,7 +25,8 @@ class RwController extends Controller
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->select('rw.*','kelurahan.nama_kelurahan','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten')
+                ->join('v_user','v_user.ID','=','v_user.ID')
+                ->select('rw.*','kelurahan.nama_kelurahan','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten','v_user.NamaLengkap')
                 ->get();
 
                 // $data_json = json_decode($data, true);
@@ -92,14 +93,14 @@ class RwController extends Controller
 
             // echo(response()->json(data));
             return response()->json($response, 200);
-    }
-
-    $response = [
-        'message'		=> 'An Error Occured'
-    ];
-
-    return response()->json($response, 500);
-    }
+        }
+    
+        $response = [
+            'message'		=> 'An Error Occured'
+        ];
+    
+        return response()->json($response, 500);
+        }
 
     public function storeRw(Request $request)
     {
@@ -115,6 +116,7 @@ class RwController extends Controller
             $Arryrequest["id_kelurahan"] =$request->$request->input("id_kelurahan");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
+        echo json_encode($Arryrequest);
         // $this->validate($request, [
 
         //     'nama_provinsi'   => 'required',
@@ -237,4 +239,5 @@ class RwController extends Controller
 
         return response()->json($response, 200);
     }
+
 }
