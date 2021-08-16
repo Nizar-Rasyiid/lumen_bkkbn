@@ -39,12 +39,13 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/vuser/storeUser',  'VuserController@storeUser');
   $router->post('/vuser/updateUser',  'VuserController@updateUser');
+  $router->post('/vuser/deleteUser',  'VuserController@deleteUser');
 
 //   Provinsi
   $router->get('/provinsi/getProvinsi', 'ProvinsiController@getProv');
   $router->post('/provinsi/storeProv',   'ProvinsiController@storeProv');
   $router->post('/provinsi/updateProv',   'ProvinsiController@updateProv');
-  $router->delete('/provinsi/deleteProv/', 'ProvinsiController@deleteProv');
+  $router->post('/provinsi/deleteProv', 'ProvinsiController@deleteProv');
   $router->get('/provinsi/laporanProv',   'ProvinsiController@laporanProv');
   $router->post('/provinsi/laporanPerProv',   'ProvinsiController@laporanPerProv');
 
@@ -53,7 +54,7 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/kabupaten/showsKabupaten','KabupatenController@showKabs');
   $router->get('/kabupaten/getKabupaten','KabupatenController@getKab');
   $router->post('/kabupaten/storeKab',   'KabupatenController@storeKab');
-  $router->delete('/provinsi/deleteKab/{id}', 'ProvinsiController@deleteKab');
+  $router->post('/kabupaten/deleteKab', 'KabupatenController@deleteKab');
   $router->post('/kabupaten/updateKab',   'KabupatenController@updateKab');
   $router->get('/kabupaten/laporanKab', 'KabupatenController@laporanKab'); 
   $router->post('/kabupaten/show-per-kab', 'KabupatenController@showPerKab'); 
@@ -63,7 +64,7 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/kecamatan/showKecamatans','KecamatanController@showKecs');
   $router->get('/kecamatan/getKecamatan','KecamatanController@getKec');
   $router->post('/kecamatan/storeKec',   'KecamatanController@storeKec');
-  $router->delete('/provinsi/deleteKec/{id}', 'ProvinsiController@deleteKec');
+  $router->post('/kecamatan/deleteKec', 'KecamatanController@deleteKec');
   $router->post('/kecamatan/updateKec',   'KecamatanController@updateKec');
   $router->get('/kecamatan/laporanKec', 'KecamatanController@laporanKec'); 
   $router->post('/kecamatan/show-per-kec', 'KecamatanController@ShowPerKec'); 
@@ -73,7 +74,7 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/kelurahan/storeKel',   'KelurahanController@storeKel');
   $router->post('/kelurahan/updateKel',   'KelurahanController@updateKel');
   $router->post('/kelurahan/showKel',   'KelurahanController@showKel');
-  $router->delete('/kelurahan/deleteKel/{id}','KelurahanController@deleteKel');
+  $router->post('/kelurahan/deleteKel','KelurahanController@deleteKel');
   $router->post('/kelurahan/laporanKel','KelurahanController@laporanKel');
   $router->post('/kelurahan/laporanPerKel','kelurahanController@laporanPerKel');
 
@@ -82,6 +83,7 @@ $router->post('/rt/showRt','RtController@showRt');
 $router->get('/rt/getRt', 'RtController@getRt');
 $router->post('/rt/storeRt',   'RtController@storeRt');
 $router->post('/rt/updateRt',   'RtController@updateRt');
+$router->post('/rt/deleteRt',   'RtController@deleteRt');
 //$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
 
 //Rw
@@ -89,6 +91,7 @@ $router->post('/rw/showRw','RwController@showRw');
 $router->get('/rw/getRw', 'RwController@getRw');
 $router->post('/rw/storeRw',   'RwController@storeRw');
 $router->post('/rw/updateRw',   'RwController@updateRw');
+$router->post('/rw/deleteRw',   'RwController@deleteRw');
 //$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
 
 //Setting
@@ -102,4 +105,5 @@ $router->post('/kelompok-data/showKelompokData','KelompokDataController@showKelo
 $router->get('/kelompok-data/getKelompokData', 'KelompokDataController@getKelompokData');
 $router->post('/kelompok-data/storeKelompokData',   'KelompokDataController@storeKelompokData');
 $router->post('/kelompok-data/updateKelompokData',   'KelompokDataController@updateKelompokData');
+
 

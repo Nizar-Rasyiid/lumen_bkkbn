@@ -240,4 +240,37 @@ class RwController extends Controller
         return response()->json($response, 200);
     }
 
+    public function deleteRw(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_rw=$arrDataReq["id_rw"];
+        }else{
+            $id_rw=$request->input["id_rw"];
+        }
+
+        $data = Rw::find($id_rw);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Rw Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
+    }
+
 }

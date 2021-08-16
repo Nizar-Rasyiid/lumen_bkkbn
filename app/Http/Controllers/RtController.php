@@ -239,4 +239,37 @@ class RtController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function deleteRt(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_rt=$arrDataReq["id_rt"];
+        }else{
+            $id_rt=$request->input["id_rt"];
+        }
+
+        $data = Rt::find($id_rt);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Rt Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
+    }
 }
