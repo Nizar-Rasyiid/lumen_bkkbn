@@ -101,8 +101,8 @@ class KelurahanController extends Controller
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('kelurahan.*','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi','kecamatan.id_kecamatan','kabupaten.id_kabupaten','provinsi.id_provinsi','v_user.NamaLengkap')
+                // ->join('v_user','v_user.ID','=','v_user.ID')
+                ->select('kelurahan.*','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi','kecamatan.id_kecamatan','kabupaten.id_kabupaten','provinsi.id_provinsi')
                 ->get();
 
         if($data){  
@@ -180,6 +180,8 @@ class KelurahanController extends Controller
             $Arryrequest["id_kecamatan"] =$request->$request->input("id_kecamatan");
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+            $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
         }
         // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
@@ -198,6 +200,8 @@ class KelurahanController extends Controller
                 'id_kecamatan' => $Arryrequest['id_kecamatan'],
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'IsActive' => $Arryrequest['IsActive'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
@@ -262,6 +266,7 @@ class KelurahanController extends Controller
             $KodeDepdagri=$arrDataReq["KodeDepdagri"];
             $IsActive=$arrDataReq["IsActive"];
             $id_kecamatan=$arrDataReq["id_kecamatan"];
+            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
 
             $nama_kelurahan=$request->input["nama_kelurahan"];
@@ -269,6 +274,7 @@ class KelurahanController extends Controller
             $KodeDepdagri=$request->input["KodeDepdagri"];
             $IsActive=$request->input["IsActive"];
             $id_kelurahan=$request->input["id_kelurahan"];
+            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
 
         /*
@@ -288,6 +294,7 @@ class KelurahanController extends Controller
                 $p->id_kecamatan = $id_kecamatan;
                 $p->KodeDepdagri = $KodeDepdagri;
                 $p->IsActive = $IsActive;
+                $p->LastModifiedBy = $LastModifiedBy;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
                 $p->OriginalNama = $request->input('OriginalNama');
