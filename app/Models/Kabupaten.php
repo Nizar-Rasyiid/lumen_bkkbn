@@ -16,4 +16,8 @@ class Kabupaten extends Model
     {
         return $this->belongsTo('App\Models\Provinsi', 'id_provinsi', 'id_provinsi');
     }
+    public function KecamatanChildId()
+    {
+        return $this->belongsTo('App\Models\Kecamatan', 'id_kecamatan');
+    }
 }

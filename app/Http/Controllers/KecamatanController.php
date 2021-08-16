@@ -14,26 +14,29 @@ class KecamatanController extends Controller
         return csrf_token(); 
     }
 
-    public function getKec()
+    public function laporanKec()
     {
-        // $data2 = DB::table('kabupaten')
-        //         ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-        //         ->select('kabupaten.*','provinsi.nama_provinsi')
-        //         ->get();
+        $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Kecamatan Kec 
+        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`"
+            )
+        );
 
-        $data = DB::table('kecamatan')
-                ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
-                ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('kecamatan.*','kabupaten.nama_kabupaten','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten','v_user.NamaLengkap')
-                ->get();
+
 
         if($data){
             $response = [
-                'message'		=> 'Show Kecamatan',
+                'message'		=> 'Show kabupaten',
                 'data' 		    => $data,
             ];
 
+            // echo(response()->json(data));
             return response()->json($response, 200);
         }
 
@@ -42,9 +45,44 @@ class KecamatanController extends Controller
         ];
 
         return response()->json($response, 500);
+
     }
 
-    public function showKec(Request $request)
+    public function getKec()
+    {
+        $data = DB::table('kecamatan')
+                ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+                ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+                ->select('kecamatan.*','kabupaten.nama_kabupaten','provinsi.nama_provinsi',)
+                ->get();
+                // var_dump($data);
+        // $data = new Kecamatan();
+        // $data =  $data->select('id_kecamatan','nama_kecamatan','KodeDepdagri',
+        // 'IsActive','OriginalID','OriginalNama','OriginalKode','Created',
+        // 'CreatedBy','LastModifiedBy','id_kecamatan_old','nama_kecamatan_old')
+        //         ->with('KabupatenKotaKecamatanId')
+        //         ->get();
+
+
+        if($data){
+            $response = [
+                'message'		=> 'Show Kecamatan',
+                'data' 		    => $data,
+
+            ];
+            // var_dump($response);
+            return response()->json($response, 200);
+
+        }
+
+        $response = [
+            'message'		=> 'An Error Occured'
+        ];
+
+        return response()->json($response, 500);
+    }
+    
+    public function showPerKec(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
@@ -52,16 +90,30 @@ class KecamatanController extends Controller
             $dataReq = $request->json()->all();
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
-            $id_kabupaten = $arrDataReq["id_kabupaten"];
+            $id_kecamatan = $arrDataReq["id_kecamatan"];
         }else{
-            $id_kabupaten = $request->input["id_kabupaten"];
+            $id_kecamatan = $request->input["id_kecamatan"];
         }
 
-        $data = DB::table('kecamatan')
-        ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
-        ->select('kecamatan.*','kabupaten.nama_kabupaten')
-        ->where('kecamatan.id_kabupaten', $id_kabupaten)
-        ->get();
+        $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Kecamatan Kec 
+        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`
+        HAVING Kec.`id_kecamatan` = $id_kecamatan"
+            )
+        );
+
+
+        // $data = DB::table('kecamatan')
+        // ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+        // ->select('kecamatan.*','kabupaten.nama_kabupaten')
+        // ->where('kecamatan.id_kabupaten', $id_kabupaten)
+        // ->get();
 
         
         if($data){
@@ -81,6 +133,128 @@ class KecamatanController extends Controller
             return response()->json($response, 500);
     }
 
+
+
+    // Untuk Kecamatan Saja
+    public function showKecs(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kabupaten = $arrDataReq["id_kabupaten"];
+        }else{
+            $id_kabupaten = $request->input["id_kabupaten"];
+        }
+
+        // echo($id_kabupaten);
+        // die();
+        
+        // $data = DB::table('kecamatan')
+        // ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+        // ->select('kecamatan.*','kabupaten.nama_kabupaten')
+        // ->where('kecamatan.id_kabupaten', $id_kabupaten)
+        // ->get();
+        $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Kecamatan Kec 
+        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`,kec.`id_kabupaten`
+        HAVING Kec.`id_kabupaten` = $id_kabupaten"
+            )
+        );
+
+
+        
+        try {
+           if($data){
+                $response = [
+                    'message'		=> 'Update Kecamatan Sukses',
+                    'data' 		    => $data,
+                ];
+
+                return response()->json($response, 200);
+            }
+
+
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response = [
+                'message'        => 'Transaction DB Error',
+                'data'      => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+    }
+
+
+
+
+    public function showKec(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kabupaten = $arrDataReq["id_kabupaten"];
+        }else{
+            $id_kabupaten = $request->input["id_kabupaten"];
+        }
+
+        // echo($id_kabupaten);
+        // die();
+        
+        $data = DB::table('kecamatan')
+        ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
+        ->select('kecamatan.*','kabupaten.nama_kabupaten')
+        ->where('kecamatan.id_kabupaten', $id_kabupaten)
+        ->get();
+        // $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
+        // COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        // COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        // COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        // FROM Kecamatan Kec 
+        // LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        // LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        // LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        // GROUP BY Kec.`id_kecamatan`,kec.`nama_kecamatan`,kec.`id_kabupaten`
+        // HAVING Kec.`id_kabupaten` = $id_kabupaten"
+        //     )
+        // );
+
+
+        
+        try {
+           if($data){
+                $response = [
+                    'message'		=> 'Update Kecamatan Sukses',
+                    'data' 		    => $data,
+                ];
+
+                return response()->json($response, 200);
+            }
+
+
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response = [
+                'message'        => 'Transaction DB Error',
+                'data'      => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+    }
+
     public function storeKec(Request $request)
     {
          if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
@@ -96,9 +270,9 @@ class KecamatanController extends Controller
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
         //console.log($Arryrequest)
-/*        $this->validate($Arryrequest, [
+        /*        $this->validate($Arryrequest, [
 
-            'nama_provinsi'   => 'required',
+            'nama_kabupaten'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
         ]);*/
@@ -112,15 +286,15 @@ class KecamatanController extends Controller
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'IsActive' => $Arryrequest['IsActive'],
                 /*'RegionalID' => $request->input('RegionalID'),
+                'CreatedBy' => $request->input('CreatedBy'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
                 'OriginalKode' => $request->input('OriginalKode'),
                 'Created' => $request->input('Created'),
-                'CreatedBy' => $request->input('CreatedBy'),
                 'LastModified' => $request->input('LastModified'),
                 'LastModifiedBy' => $request->input('LastModifiedBy'),
                 'id_kabupaten_old' => $request->input('id_kabupaten_old'),
-                'nama_provinsi_old' => $request->input('nama_provinsi_old')*/
+                'nama_kabupaten_old' => $request->input('nama_provinsi_old')*/
             ]);
 
             $p->save();
@@ -144,15 +318,37 @@ class KecamatanController extends Controller
 
     }
 
-    public function deleteKec($id)
+    public function deleteKec(Request $request)
     {
-        $kab = Kecamatan::where('id_kecamatan', $id)->first();
-        if ($kab->delete()) {
-            print("berhasil delete");
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kecamatan=$arrDataReq["id_kecamatan"];
         }else{
-            print("gagal delete");
+            $id_kecamatan=$request->input["id_kecamatan"];
         }
-//        return redirect()->route('prov');
+
+        $data = Kecamatan::find($id_kecamatan);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Kecamatan Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 /*
     public function editProv($id)
@@ -187,7 +383,7 @@ class KecamatanController extends Controller
   /*
         $this->validate($request, [
 
-            'nama_provinsi'   => 'required',
+            'nama_kecamatan'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
         ]);

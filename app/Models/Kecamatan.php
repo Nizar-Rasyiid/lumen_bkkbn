@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Kecamatan extends Model
 {
     protected $table = 'kecamatan';
-    protected $fillable = ['nama_kecamatan','KodeDepdagri','id_kabupaten','IsActive'];
+    protected $fillable = ['nama_kecamatan','KodeDepdagri','id_kabupaten','IsActive'];   
     public $primaryKey = 'id_kecamatan';
     public $timestamps = false;
 
-    public function KabupatenKotaID()
+    public function KabupatenKotaKecamatanId()
     {
-        return $this->belongsTo('App\Models\Kabupaten', 'id_kabupaten', 'id_kabupaten');
+        return $this->belongsTo('App\Models\Kabupaten', 'id_kabupaten');
     }
 
-    public function ProvinsiKotaID()
-    {
-        return $this->belongsTo('App\Models\Provinsi', 'id_provinsi', 'id_provinsi');
-    }
+    // public function ProvinsiKotaId()
+    // {
+    //     return $this->belongsTo('App\Models\Provinsi', 'id_provinsi', 'id_provinsi');
+    // }
 }
 

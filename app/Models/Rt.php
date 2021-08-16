@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rt extends Model
 {
-    protected $table    = 'rt';
+    protected $table = 'rt';
     //public $incrementing = false;
     protected $primaryKey = 'id_rt';
     public $timestamps = false;
@@ -34,5 +34,9 @@ class Rt extends Model
     {
         return $this->belongsTo('App\Models\Kecamatan', 'id_kecamatan', 'id_kecamatan');
     }
-
+    
+    public function VuserId()
+    {
+        return $this->belongsTo('App\Models\V_user');
+    }
 }

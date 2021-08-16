@@ -10,7 +10,7 @@ class Rw extends Model
     //public $incrementing = false;
     protected $primaryKey = 'id_rw';
     public $timestamps = false;
-    protected $fillable = ['id_rw', 'nama_rw', 'KodeDepdagri','IsActive','id_kelurahan'];
+    protected $fillable = ['nama_rw', 'KodeDepdagri','IsActive','id_kelurahan'];
     
     public function KelurahanId()
     {
@@ -30,5 +30,9 @@ class Rw extends Model
     {
         return $this->belongsTo('App\Models\Kecamatan', 'id_kecamatan', 'id_kecamatan');
     }
-
+    
+    public function VuserId()
+    {
+        return $this->belongsTo('App\Models\V_user');
+    }
 }

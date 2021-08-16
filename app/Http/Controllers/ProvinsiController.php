@@ -27,91 +27,89 @@ public function index()
     return csrf_token(); 
 }
 
-    public function laporanProv()
-    {
-        $data = DB::select(DB::raw("SELECT Nama_Provinsi,
-        COUNT(DISTINCT(kab.`id_kabupaten`)) AS Jumlah_Kabupaten_Kota, 
-        COUNT(DISTINCT(kec.`id_kecamatan`)) AS Jumlah_Kecamatan,
-        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
-        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
-        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
-        FROM Provinsi Prov 
-        LEFT JOIN Kabupaten Kab ON kab.`id_provinsi`= Prov.`id_provinsi`
-        LEFT JOIN  Kecamatan kec ON kec.`id_kabupaten`=kab.`id_kabupaten`
-        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
-        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
-        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
-        GROUP BY Prov.`id_provinsi`,prov.`nama_provinsi`")								
-        );
+public function laporanProv()
+{
+    $data = DB::select(DB::raw("SELECT Nama_Provinsi,
+    COUNT(DISTINCT(kab.`id_kabupaten`)) AS Jumlah_Kabupaten_Kota, 
+    COUNT(DISTINCT(kec.`id_kecamatan`)) AS Jumlah_Kecamatan,
+    COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+    COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+    COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+    FROM Provinsi Prov 
+    LEFT JOIN Kabupaten Kab ON kab.`id_provinsi`= Prov.`id_provinsi`
+    LEFT JOIN  Kecamatan kec ON kec.`id_kabupaten`=kab.`id_kabupaten`
+    LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+    LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+    LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+    GROUP BY Prov.`id_provinsi`,prov.`nama_provinsi`")								
+    );
 
-        if($data){
-            $response = [
-                'message'		=> 'Show Provinsi',
-                'data' 		    => $data,
-            ];
-
-            return response()->json($response, 200);
-        }
-
+    if($data){
         $response = [
-            'message'		=> 'An Error Occured'
+            'message'		=> 'Show Provinsi',
+            'data' 		    => $data,
         ];
 
-        return response()->json($response, 500);    
+        return response()->json($response, 200);
     }
 
-    public function laporanPerProv(Request $request)
-    {
-        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
-            && $request->isJson()
-        ) {
-            $dataReq = $request->json()->all();
-            //json_decode($dataReq, true);
-            $arrDataReq =json_decode(json_encode($dataReq),true);
-            $id_provinsi=$arrDataReq["id_provinsi"];
-        }else{
-            $id_provinsi=$request->input["id_provinsi"];
-        }
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
 
-        $data = DB::select(DB::raw("SELECT
-        COUNT(DISTINCT(kab.`id_kabupaten`)) AS Jumlah_Kabupaten_Kota, 
-        COUNT(DISTINCT(kec.`id_kecamatan`)) AS Jumlah_Kecamatan,
-        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
-        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
-        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
-        FROM Provinsi Prov 
-        LEFT JOIN Kabupaten Kab ON kab.`id_provinsi`= Prov.`id_provinsi`
-        LEFT JOIN  Kecamatan kec ON kec.`id_kabupaten`=kab.`id_kabupaten`
-        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
-        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
-        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
-        GROUP BY Prov.`id_provinsi`
-        HAVING Prov.`id_provinsi`=$id_provinsi"								
-        )
-        );
+    return response()->json($response, 500);    
+}
 
-        if($data){
-            $response = [
-                'message'		=> 'Show Provinsi',
-                'data' 		    => $data,
-            ];
+public function laporanPerProv(Request $request)
+{
+    if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $id_provinsi=$arrDataReq["id_provinsi"];
+    }else{
+        $id_provinsi=$request->input["id_provinsi"];
+    }
 
-            return response()->json($response, 200);
-        }
+    $data = DB::select(DB::raw("SELECT
+    COUNT(DISTINCT(kab.`id_kabupaten`)) AS Jumlah_Kabupaten_Kota, 
+    COUNT(DISTINCT(kec.`id_kecamatan`)) AS Jumlah_Kecamatan,
+    COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+    COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+    COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+    FROM Provinsi Prov 
+    LEFT JOIN Kabupaten Kab ON kab.`id_provinsi`= Prov.`id_provinsi`
+    LEFT JOIN  Kecamatan kec ON kec.`id_kabupaten`=kab.`id_kabupaten`
+    LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+    LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+    LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+    GROUP BY Prov.`id_provinsi`
+    HAVING Prov.`id_provinsi`=$id_provinsi"								
+    )
+    );
 
+    if($data){
         $response = [
-            'message'		=> 'An Error Occured'
+            'message'		=> 'Show Provinsi',
+            'data' 		    => $data,
         ];
 
-        return response()->json($response, 500);    
+        return response()->json($response, 200);
     }
+
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
+
+    return response()->json($response, 500);    
+}
+
 
     public function getProv()
     {
-        $data = DB::table('provinsi')
-                ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('provinsi.*','v_user.NamaLengkap')
-                ->get();
+        $data = Provinsi::all();
 
         if($data){
             $response = [
@@ -157,6 +155,9 @@ public function index()
             ];
             return response()->json($response, 500);
         }
+                
+
+
     }
 
 /*    public function createProv()
@@ -177,6 +178,7 @@ public function index()
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
+        // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
 
@@ -209,11 +211,11 @@ public function index()
             DB::commit();
             
             $response = [
-                'message'        => 'Success',
+                'message'        => 'Input Data Sukses',
                 'data'         => $p
             ];
 
-            return response()->json($response, 201);
+            return response()->json($response, 200);
         } catch (\Exception $e) {
             DB::rollback();
             $response = [
@@ -225,15 +227,37 @@ public function index()
 
     }
 
-    public function deleteProv($id)
+    public function deleteProv(Request $request)
     {
-        $prov = Provinsi::where('id_provinsi', $id)->first();
-        if ($prov->delete()) {
-            print("berhasil delete");
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_provinsi=$arrDataReq["id_provinsi"];
         }else{
-            print("gagal delete");
+            $id_provinsi=$request->input["id_provinsi"];
         }
-//        return redirect()->route('prov');
+
+        $data = Provinsi::find($id_provinsi);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Provinsi Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 /*
     public function editProv($id)

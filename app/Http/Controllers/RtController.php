@@ -26,7 +26,8 @@ class RtController extends Controller
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->select('rt.*','rw.nama_rw','rw.id_kelurahan','nama_kelurahan','rw.id_rw','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten')
+                ->join('v_user','v_user.ID','=','v_user.ID')
+                ->select('rt.*','rw.nama_rw','rw.id_kelurahan','nama_kelurahan','rw.id_rw','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten','v_user.NamaLengkap')
                 ->get();
 
                 // $data_json = json_decode($data, true);
@@ -236,5 +237,38 @@ class RtController extends Controller
         ];
 
         return response()->json($response, 200);
+    }
+
+    public function deleteRt(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_rt=$arrDataReq["id_rt"];
+        }else{
+            $id_rt=$request->input["id_rt"];
+        }
+
+        $data = Rt::find($id_rt);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Rt Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 }

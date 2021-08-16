@@ -14,12 +14,53 @@ class KabupatenController extends Controller
         return csrf_token(); 
     }
 
+
+    public function laporanKab()
+    {
+        $data = DB::select(DB::raw("SELECT Nama_Kabupaten,
+COUNT(DISTINCT(kec.`id_kecamatan`)) AS Jumlah_Kecamatan,
+COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+FROM Kabupaten Kab 
+LEFT JOIN  Kecamatan kec ON kec.`id_kabupaten`=kab.`id_kabupaten`
+LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
+        )
+    );
+
+
+
+    if($data){
+        $response = [
+            'message'		=> 'Show kabupaten',
+            'data' 		    => $data,
+        ];
+
+        // echo(response()->json(data));
+        return response()->json($response, 200);
+    }
+
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
+
+    return response()->json($response, 500);
+
+    }
+
+
+
+
+
+
     public function getKab()
     {
         $data = DB::table('kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('kabupaten.*','provinsi.nama_provinsi','v_user.NamaLengkap')
+                ->select('kabupaten.*','provinsi.nama_provinsi')
                 ->get();
 
         if($data){
@@ -38,8 +79,7 @@ class KabupatenController extends Controller
 
         return response()->json($response, 500);
     }
-
-    public function showKab2(Request $request)
+    public function showKabs(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
@@ -86,39 +126,92 @@ class KabupatenController extends Controller
     }
 
     public function showKab(Request $request)
-    {
-        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
-            && $request->isJson()
-        ) {
-            $dataReq = $request->json()->all();
-            //json_decode($dataReq, true);
-            $arrDataReq =json_decode(json_encode($dataReq),true);
-            $id_provinsi=$arrDataReq["id_provinsi"];
-        }else{
-            $id_provinsi=$request->input["id_provinsi"];
-        }
+    {if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $id_provinsi = $arrDataReq["id_provinsi"];
+    }else{
+        $id_provinsi = $request->input["id_provinsi"];
+    }
+    $data = DB::table('kabupaten')
+    ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+    ->select('kabupaten.*','provinsi.nama_provinsi')
+    ->where('kabupaten.id_provinsi', $id_provinsi)
+    ->get();
 
-        $data = DB::table('kabupaten')
-                ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->select('kabupaten.*','provinsi.nama_provinsi')
-                ->where('kabupaten.id_provinsi', $id_provinsi)
-                ->get();
-
-        if($data){
+            try {
+    if($data){
             $response = [
-                'message'		=> 'Show kabupaten',
+                'message'		=> 'Update Kabupaten Sukses',
                 'data' 		    => $data,
             ];
-
-            // echo(response()->json(data));
+     
             return response()->json($response, 200);
+        }
+     
+     
+     
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response = [
+                'message'        => 'Transaction DB Error',
+                'data'      => $e->getMessage()
+                ];
+                 return response()->json($response, 500);
+             }
     }
 
-    $response = [
-        'message'		=> 'An Error Occured'
-    ];
+    public function showPerKab(Request $request)
+    {if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $id_kabupaten = $arrDataReq["id_kabupaten"];
+    }else{
+        $id_kabupaten = $request->input["id_kabupaten"];
+    }
 
-    return response()->json($response, 500);
+        $data = DB::select(DB::raw("SELECT Nama_Kabupaten,
+        COUNT(DISTINCT(kec.`id_kecamatan`)) AS Jumlah_Kecamatan,
+        COUNT(DISTINCT(kel.`id_kelurahan`)) AS Jumlah_Kelurahan,
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW, 
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Kabupaten Kab 
+        LEFT JOIN  Kecamatan kec ON kec.`id_kabupaten`=kab.`id_kabupaten`
+        LEFT JOIN Kelurahan kel ON kel.`id_kecamatan`= kec.`id_kecamatan`
+        LEFT JOIN RW rw ON rw.`id_kelurahan`=kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`
+        HAVING Kab.`id_kabupaten` = $id_kabupaten
+        "
+                )
+            );
+
+            try {
+                if($data){
+                     $response = [
+                         'message'		=> 'Update Per Kabupaten Sukses',
+                         'data' 		    => $data,
+                     ];
+     
+                     return response()->json($response, 200);
+                 }
+     
+     
+     
+             } catch (\Exception $e) {
+                 DB::rollback();
+                 $response = [
+                     'message'        => 'Transaction DB Error',
+                     'data'      => $e->getMessage()
+                 ];
+                 return response()->json($response, 500);
+             }
     }
 
     public function storeKab(Request $request)
@@ -135,6 +228,7 @@ class KabupatenController extends Controller
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
         }
+        // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
 
@@ -184,17 +278,37 @@ class KabupatenController extends Controller
 
     }
 
-    public function deleteKab($id)
+    public function deleteKab(Request $request)
     {
-        $kab = Kabupaten::where('id_kabupaten', $id)->first();
-        if ($kab->delete()) {
-            print("berhasil delete");
-            return response()->json($response, 200);
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kabupaten=$arrDataReq["id_kabupaten"];
         }else{
-            print("gagal delete");
-            return response()->json($response, 500);
+            $id_kabupaten=$request->input["id_kabupaten"];
         }
-//        return redirect()->route('prov');
+
+        $data = Kabupaten::find($id_kabupaten);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Kabupaten Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 /*
     public function editProv($id)
