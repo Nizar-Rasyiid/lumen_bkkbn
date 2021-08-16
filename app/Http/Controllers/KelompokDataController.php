@@ -81,32 +81,34 @@ class KelompokDataController extends Controller
 
     public function storeKelompokData(Request $request)
     {
-         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
         ) {
             $dataReq = $request->json()->all();
             $Arryrequest = json_decode(json_encode($dataReq), true);
 
-        }else {
-            $Arryrequest["nama_kelompok_data"] =$request->$request->input("nama");
-            $Arryrequest["Id_kelompok_data"] =$request->$request->input("Id_kelompok_data");
-            $Arrayrequest["CreatedBy"]=$request->$request->input("CreatedBy");
+        }else{
+            $Arryrequest["nama_kelompok_data"] =$request->input("nama_kelompok_data");
+            $Arryrequest["CreatedBy"] =$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->input("LastModifiedBy");
         }
+
         try {
             DB::beginTransaction();
             
-            $p = new Rt([
-                'nama' => $Arryrequest['nama_kelompok_data'],
-                'Id_kelompok_data' => $Arryrequest['Id_kelompok_data'],
-
+            $p = new KelompokData([
+                'nama_kelompok_data' => $Arryrequest['nama_kelompok_data'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
             ]);
+            
 
             $p->save();
 
             DB::commit();
             
             $response = [
-                'message'        => 'Success simpan Data RT',
+                'message'        => 'Success',
                 'data'         => $p
             ];
 
@@ -119,9 +121,9 @@ class KelompokDataController extends Controller
             ];
             return response()->json($response, 500);
         }
-        
 
     }
+        
     public function updateKelompokData(Request $request)
     {
 
@@ -147,7 +149,7 @@ class KelompokDataController extends Controller
         try {
             DB::beginTransaction();
       
-            $p = Rt::find($id_setting);
+            $p = KelompokData::find($Id_kelompok_data);
 
                 $p->nama_kelompok_data = $nama_kelompok_data;
                 $p->Id_kelompok_data = $Id_kelompok_data;
@@ -170,7 +172,7 @@ class KelompokDataController extends Controller
             DB::commit();
 
             $response = [
-                'message'        => 'Update Master Rt Suskses',
+                'message'        => 'Update Master rt Suskses',
                 'data'         => $p
             ];
 
@@ -179,7 +181,7 @@ class KelompokDataController extends Controller
         } catch (\Exception $e) {
            DB::rollback();
             $response = [
-                'message'        => 'Transaction DB Error',
+                'message'        => 'Transaction DB Errors',
                 'data'      => $e->getMessage()
             ];
             return response()->json($response, 200);

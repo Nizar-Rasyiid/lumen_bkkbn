@@ -21,14 +21,13 @@ class SettingController extends Controller
     public function getSetting()
     {
         $data = DB::table('setting')
-                
                 ->get();
 
 
 
         if($data){
             $response = [
-                'message'		=> 'Show RT ',
+                'message'		=> 'Show Setting ',
                 'data' 		    => $data,
             ];
 
@@ -58,17 +57,17 @@ class SettingController extends Controller
             $Id_kelompok_data=$request->input["Id_kelompok_data"];
         }
 
-        $data = new Setting();
-        $data= $data->select('id_setting','nama','Id_kelompok_data','value_setting','Created','CreatedBy','LastModified','LastModifiedBy')
-        ->where(['nama' => $nama])
-        -get();
+        $data = DB::table('setting')
+        ->join('kelompok_data','setting.Id_kelompok_data','=','kelompok_data.Id_kelompok_data')
+        ->select('setting.*','kelompok_data.nama_kelompok_data')
+        ->where('setting.Id_kelompok_data', $Id_kelompok_data)
+        ->get();
 
         if($data){
             $response = [
                 'message'		=> 'Show rt',
                 'data' 		    => $data,
             ];
-
             // echo(response()->json(data));
             return response()->json($response, 200);
         }
@@ -82,33 +81,38 @@ class SettingController extends Controller
 
     public function storeSetting(Request $request)
     {
-         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
         ) {
             $dataReq = $request->json()->all();
             $Arryrequest = json_decode(json_encode($dataReq), true);
 
-        }else {
-            $Arryrequest["value_setting"] =$request->$request->input("value_setting");
-            $Arryrequest["nama"] =$request->$request->input("nama");
-            $Arryrequest["Id_kelompok_data"] =$request->$request->input("Id_kelompok_data");
+        }else{
+            $Arryrequest["nama"] =$request->input("nama");
+            $Arryrequest["value_setting"] =$request->input("value_setting");
+            $Arryrequest["Id_kelompok_data"] =$request->input("Id_kelompok_data");
+            $Arryrequest["CreatedBy"] =$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->input("LastModifiedBy");
         }
+
         try {
             DB::beginTransaction();
             
-            $p = new Rt([
+            $p = new Setting([
                 'nama' => $Arryrequest['nama'],
+                'value_setting'=>$Arryrequest['value_setting'],
                 'Id_kelompok_data' => $Arryrequest['Id_kelompok_data'],
-                'value_setting' => $Arryrequest['value_setting'],
-
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
             ]);
+            
 
             $p->save();
 
             DB::commit();
             
             $response = [
-                'message'        => 'Success simpan Data RT',
+                'message'        => 'Success',
                 'data'         => $p
             ];
 
@@ -121,7 +125,6 @@ class SettingController extends Controller
             ];
             return response()->json($response, 500);
         }
-        
 
     }
     public function updateSetting(Request $request)
@@ -138,12 +141,15 @@ class SettingController extends Controller
             $value_setting=$arrDataReq["value_setting"];
             $id_setting=$arrDataReq["id_setting"];
             $Id_kelompok_data=$arrDataReq["Id_kelompok_data"];
+            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
 
             $nama=$request->input["nama"];
             $value_setting=$request->input["value_setting"];
             $id_setting=$request->input["id_setting"];
             $Id_kelompok_data=$request->input["Id_kelompok_data"];
+            $LastModifiedBy=$request->input["LastModifiedBy"];
+
         }
         
   
@@ -151,11 +157,12 @@ class SettingController extends Controller
         try {
             DB::beginTransaction();
       
-            $p = Rt::find($id_setting);
+            $p = Setting::find($id_setting);
 
                 $p->nama = $nama;
                 $p->value_setting = $value_setting;
                 $p->Id_kelompok_data = $Id_kelompok_data;
+                $p->LastModifiedBy = $LastModifiedBy;
                 // $p->IsActive = $IsActive;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
@@ -174,7 +181,7 @@ class SettingController extends Controller
             DB::commit();
 
             $response = [
-                'message'        => 'Update Master Rt Suskses',
+                'message'        => 'Update Master Setting Suskses',
                 'data'         => $p
             ];
 

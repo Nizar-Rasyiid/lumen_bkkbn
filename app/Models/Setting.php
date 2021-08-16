@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     protected $table     = 'setting';
-    protected $fillable     = ['nama','value_setting','Id_kelompok_data'];
+    protected $fillable     = ['nama','value_setting','Id_kelompok_data','CreatedBy','LastModifiedBy'];
     //public $incrementing = false;
     public $primaryKey = 'id_setting';
     public $timestamps = false;

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class KelompokData extends Model
 {
     protected $table     = 'kelompok_data';
-    protected $fillable     = ['nama_kelompok_data'];
+    protected $fillable     = ['nama_kelompok_data','CreatedBy','LastModifiedBy'];
     //public $incrementing = false;
     public $primaryKey = 'Id_kelompok_data';
     public $timestamps = false;
