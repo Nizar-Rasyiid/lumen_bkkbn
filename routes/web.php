@@ -82,11 +82,9 @@ $router->post('/rt/showRt','RtController@showRt');
 $router->get('/rt/getRt', 'RtController@getRt');
 $router->post('/rt/storeRt',   'RtController@storeRt');
 $router->post('/rt/updateRt',   'RtController@updateRt');
-//$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
 
 //Rw
 $router->post('/rw/showRw','RwController@showRw');
 $router->get('/rw/getRw', 'RwController@getRw');
 $router->post('/rw/storeRw',   'RwController@storeRw');
 $router->post('/rw/updateRw',   'RwController@updateRw');
-//$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
