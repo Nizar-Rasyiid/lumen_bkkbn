@@ -26,7 +26,7 @@ class RtController extends Controller
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->join('v_user','v_user.ID','=','v_user.ID')
+                // ->join('v_user','v_user.ID','=','v_user.ID')
                 ->select('rt.*','rw.nama_rw','kelurahan.nama_kelurahan','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi')
                 ->get();
 

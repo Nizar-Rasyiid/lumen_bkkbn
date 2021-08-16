@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Kecamatan extends Model
 {
     protected $table = 'kecamatan';
-    protected $fillable = ['nama_kecamatan','KodeDepdagri','id_kabupaten','IsActive'];   
+    protected $fillable = ['nama_kecamatan','KodeDepdagri','id_kabupaten','IsActive','CreatedBy','LastModifiedBy'];   
     public $primaryKey = 'id_kecamatan';
     public $timestamps = false;
 

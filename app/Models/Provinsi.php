@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Provinsi extends Model
 {
     protected $table ='provinsi';
-    protected $fillable =['KodeDepdagri','nama_provinsi','IsActive'];
+    protected $fillable =['KodeDepdagri','nama_provinsi','IsActive','CreatedBy','LastModifiedBy'];
     //public $incrementing = false;
     public $primaryKey = 'id_provinsi';
     public $timestamps = false;

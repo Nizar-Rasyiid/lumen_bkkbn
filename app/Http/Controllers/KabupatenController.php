@@ -227,6 +227,8 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
             $Arryrequest["id_provinsi"] =$request->$request->input("id_provinsi");
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+            $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
         }
         // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
@@ -245,6 +247,8 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
                 'id_provinsi' => $Arryrequest['id_provinsi'],
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'IsActive' => $Arryrequest['IsActive'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
@@ -309,6 +313,7 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
             $KodeDepdagri=$arrDataReq["KodeDepdagri"];
             $IsActive=$arrDataReq["IsActive"];
             $id_kabupaten=$arrDataReq["id_kabupaten"];
+            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
 
             $nama_kabupaten=$request->input["nama_kabupaten"];
@@ -316,6 +321,7 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
             $KodeDepdagri=$request->input["KodeDepdagri"];
             $IsActive=$request->input["IsActive"];
             $id_kabupaten=$request->input["id_kabupaten"];
+            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
         
   /*
@@ -336,6 +342,7 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
                 $p->id_provinsi = $id_provinsi;
                 $p->KodeDepdagri = $KodeDepdagri;
                 $p->IsActive = $IsActive;
+                $p->LastModifiedBy = $LastModifiedBy;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
                 $p->OriginalNama = $request->input('OriginalNama');
