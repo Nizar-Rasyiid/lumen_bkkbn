@@ -115,6 +115,8 @@ class RwController extends Controller
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["id_kelurahan"] =$request->$request->input("id_kelurahan");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+            $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
         }
         // echo json_encode($Arryrequest);
         // $this->validate($request, [
@@ -132,6 +134,8 @@ class RwController extends Controller
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'id_kelurahan' => $Arryrequest['id_kelurahan'],
                 'IsActive' => $Arryrequest['IsActive'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
@@ -181,6 +185,7 @@ class RwController extends Controller
             $nama_rw=$arrDataReq["nama_rw"];
             $IsActive=$arrDataReq["IsActive"];
             $id_rw=$arrDataReq["id_rw"];
+            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
 
             $KodeDepdagri=$request->input["KodeDepdagri"];
@@ -188,6 +193,7 @@ class RwController extends Controller
             $nama_rw=$request->input["nama_rw"];
             $IsActive=$request->input["IsActive"];
             $id_rw=$request->input["id_rw"];
+            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
         
   

@@ -116,6 +116,8 @@ class RtController extends Controller
             $Arryrequest["nama_rt"] =$request->$request->input("nama_rt");
             $Arryrequest["id_rw"] =$request->$request->input("id_rw");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+            $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
         }
         // echo json_encode($Arryrequest);
         // $this->validate($request, [
@@ -133,6 +135,8 @@ class RtController extends Controller
                 'id_rw' => $Arryrequest['id_rw'],
                 'KodeRT' => $Arryrequest['KodeRT'],
                 'IsActive' => $Arryrequest['IsActive'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
@@ -181,6 +185,7 @@ class RtController extends Controller
             $id_rw=$arrDataReq["id_rw"];
             $id_rt=$arrDataReq["id_rt"];
             $IsActive=$arrDataReq["IsActive"];
+            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
 
             $nama_rt=$request->input["nama_rt"];
@@ -188,6 +193,7 @@ class RtController extends Controller
             $id_rw=$request->input["id_rw"];
             $id_rt=$request->input["id_rt"];
             $IsActive=$request->input["IsActive"];
+            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
         
   
@@ -201,6 +207,7 @@ class RtController extends Controller
                 $p->KodeRT = $KodeRT;
                 $p->id_rw = $id_rw;
                 $p->IsActive = $IsActive;
+                $p->LastModifiedBy = $LastModifiedBy;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
                 $p->OriginalNama = $request->input('OriginalNama');
