@@ -67,18 +67,34 @@ public function index()
             $password=$request->input('password');
         }
         $data = new V_user();
+
+
+
+
         $data =  $data->select('id','UserName','NamaLengkap',
         'NIP','NIK','KabupatenKotaID','RoleID','Jabatan','Foto')
                 ->where(['UserName'=>$UserName,/*$request->input('UserName'),*/
             'Password'=>md5($password)])->get();
             
+            
+        $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2
+        
+        
+        ")
+
+    );
+
+
         
         try {
            if(count($data)==1){
+               
                 $response = [
                     'message'		=> 'Show User',
                     'code'          => '00',
                     'data' 		    => $data,
+                    'data2'         =>$data2,
+                    
                 ];
 
                 return response()->json($response, 200);

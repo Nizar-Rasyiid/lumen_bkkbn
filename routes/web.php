@@ -103,3 +103,8 @@ $router->get('/kelompok-data/getKelompokData', 'KelompokDataController@getKelomp
 $router->post('/kelompok-data/storeKelompokData',   'KelompokDataController@storeKelompokData');
 $router->post('/kelompok-data/updateKelompokData',   'KelompokDataController@updateKelompokData');
 
+//TargetKk
+$router->post('/target-kk/showTargetKk','TargetKkController@showTargetKk');
+$router->get('/target-kk/getTargetKk', 'TargetKkController@getTargetKk');
+$router->post('/target-kk/storeTargetKk',   'TargetKkController@storeTargetKk');
+$router->post('/target-kk/updateTargetKk',   'TargetKkController@updateTargetKk');
