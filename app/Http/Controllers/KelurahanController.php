@@ -185,7 +185,7 @@ class KelurahanController extends Controller
         }
         // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
-/*        $this->validate($Arryrequest, [
+        /*        $this->validate($Arryrequest, [
 
             'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
@@ -235,22 +235,39 @@ class KelurahanController extends Controller
 
     }
 
-    public function deleteKec($id)
+    public function deleteKel(Request $request)
     {
-        $kab = Kelurahan::where('id_kelurahan', $id)->first();
-        if ($kab->delete()) {
-            print("berhasil delete");
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kelurahan=$arrDataReq["id_kelurahan"];
         }else{
-            print("gagal delete");
+            $id_kelurahan=$request->input["id_kelurahan"];
         }
-//        return redirect()->route('prov');
+
+        $data = Kelurahan::find($id_kelurahan);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Kelurahan Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
-/*
-    public function editProv($id)
-    {
-        return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
-    }
-*/
+    
     public function updateKel(Request $request)
     {
 

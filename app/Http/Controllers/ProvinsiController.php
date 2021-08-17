@@ -231,15 +231,37 @@ public function laporanPerProv(Request $request)
 
     }
 
-    public function deleteProv($id)
+    public function deleteProv(Request $request)
     {
-        $prov = Provinsi::where('id_provinsi', $id)->first();
-        if ($prov->delete()) {
-            print("berhasil delete");
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_provinsi=$arrDataReq["id_provinsi"];
         }else{
-            print("gagal delete");
+            $id_provinsi=$request->input["id_provinsi"];
         }
-//        return redirect()->route('prov');
+
+        $data = Provinsi::find($id_provinsi);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Provinsi Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 /*
     public function editProv($id)

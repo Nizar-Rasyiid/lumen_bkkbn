@@ -268,4 +268,38 @@ public function index()
         return response()->json($response, 200);
     }
 
+    public function deleteUser(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id=$arrDataReq["id"];
+        }else{
+            $id=$request->input["id"];
+        }
+
+        $data = V_user::find($id);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete V_user Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+        }
+    }
+
+
 }

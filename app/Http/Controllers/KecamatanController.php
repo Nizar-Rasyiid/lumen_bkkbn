@@ -268,6 +268,8 @@ class KecamatanController extends Controller
             $Arryrequest["id_kabupaten"] =$request->$request->input("id_kabupaten");
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+            $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
         }
         //console.log($Arryrequest)
         /*        $this->validate($Arryrequest, [
@@ -285,6 +287,8 @@ class KecamatanController extends Controller
                 'id_kabupaten' => $Arryrequest['id_kabupaten'],
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'IsActive' => $Arryrequest['IsActive'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'CreatedBy' => $request->input('CreatedBy'),
                 'OriginalID' => $request->input('OriginalID'),
@@ -318,15 +322,37 @@ class KecamatanController extends Controller
 
     }
 
-    public function deleteKec($id)
+    public function deleteKec(Request $request)
     {
-        $kab = Kecamatan::where('id_kecamatan', $id)->first();
-        if ($kab->delete()) {
-            print("berhasil delete");
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kecamatan=$arrDataReq["id_kecamatan"];
         }else{
-            print("gagal delete");
+            $id_kecamatan=$request->input["id_kecamatan"];
         }
-//        return redirect()->route('prov');
+
+        $data = Kecamatan::find($id_kecamatan);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Kecamatan Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 /*
     public function editProv($id)
@@ -349,6 +375,7 @@ class KecamatanController extends Controller
             $KodeDepdagri=$arrDataReq["KodeDepdagri"];
             $IsActive=$arrDataReq["IsActive"];
             $id_kabupaten=$arrDataReq["id_kabupaten"];
+            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
 
             $nama_kecamatan=$request->input["nama_kecamatan"];
@@ -356,6 +383,7 @@ class KecamatanController extends Controller
             $KodeDepdagri=$request->input["KodeDepdagri"];
             $IsActive=$request->input["IsActive"];
             $id_kecamatan=$request->input["id_kecamatan"];
+            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
         
   /*
@@ -376,6 +404,7 @@ class KecamatanController extends Controller
                 $p->id_kabupaten = $id_kabupaten;
                 $p->KodeDepdagri = $KodeDepdagri;
                 $p->IsActive = $IsActive;
+                $p->LastModifiedBy = $LastModifiedBy;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
                 $p->OriginalNama = $request->input('OriginalNama');

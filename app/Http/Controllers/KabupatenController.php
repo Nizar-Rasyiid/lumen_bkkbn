@@ -282,15 +282,37 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
 
     }
 
-    public function deleteKab($id)
+    public function deleteKab(Request $request)
     {
-        $kab = Kabupaten::where('id_kabupaten', $id)->first();
-        if ($kab->delete()) {
-            print("berhasil delete");
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kabupaten=$arrDataReq["id_kabupaten"];
         }else{
-            print("gagal delete");
+            $id_kabupaten=$request->input["id_kabupaten"];
         }
-//        return redirect()->route('prov');
+
+        $data = Kabupaten::find($id_kabupaten);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Kabupaten Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 /*
     public function editProv($id)
