@@ -132,7 +132,7 @@ class KelompokDataController extends Controller
             && $request->isJson()
         ) {
             $dataReq = $request->json()->all();
-            //json_decode($dataReq, true);
+            //json_decode($dataReq, true);  
             $arrDataReq =json_decode(json_encode($dataReq),true);
             $nama_kelompok_data=$arrDataReq["nama_kelompok_data"];
             $Id_kelompok_data=$arrDataReq["Id_kelompok_data"];
