@@ -181,7 +181,9 @@ class TargetKkController extends Controller
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
             $Periode_Sensus=$arrDataReq["Periode_Sensus"];
+            $Periode_Sensus_old=$arrDataReq["Periode_Sensus_old"];
             $Target_KK=$arrDataReq["Target_KK"];
+            $id_rt_old=$arrDataReq["id_rt_old"];
             $id_provinsi=$arrDataReq["id_provinsi"];
             $id_rt=$arrDataReq["id_rt"];
             $id_kabupaten=$arrDataReq["id_kabupaten"];
@@ -198,6 +200,8 @@ class TargetKkController extends Controller
             $id_kabupaten=$request->input["id_kabupaten"];
             $id_kecamatan=$request->input["id_kecamatan"];
             $id_kelurahan=$request->input["id_kelurahan"];
+            $Periode_Sensus_old=$arrDataReq["Periode_Sensus_old"];
+            $id_rt_old=$arrDataReq["id_rt_old"];
             $id_rw=$request->input["id_rw"];
             $LastModifiedBy=$request->input["LastModifiedBy"];
 
@@ -207,44 +211,33 @@ class TargetKkController extends Controller
         
         try {
             DB::beginTransaction();
-            $num = "3.14"; 
-            $int = (int)$num;
-            $p = DB::table('target_kk')->find('Periode_Sensus',$Periode_Sensus)->where('id_rt',$id_rt)
-            ->update(['Target_KK'=> (int)$Target_KK])
+            DB::table('target_KK')->where('id_rt', $id_rt_old)->where('Periode_Sensus',$Periode_Sensus_old)->update(array('Target_KK'=>$Target_KK,
+            'id_rt' => $id_rt,
+            'Periode_Sensus'=>$Periode_Sensus,
+            'id_provinsi'=>$id_provinsi,
+            'id_kabupaten'=>$id_kabupaten,
+            'id_kecamatan'=>$id_kecamatan,
+            'id_kelurahan'=>$id_kelurahan,
+            'id_rw'=>$id_rw,
+        ));
+            // var_dump("commit");
+            // $num = "3.14"; 
+            // $int = (int)$num;
+            // $p = DB::table('target_kk')->where('id_rt',$id_rt)
+            // ->update(['Target_KK'=> (int)$Target_KK])
+            // ->save();
+            ;
             // ->update(['id_provinsi' => $id_provinsi])
             // ->update(['id_kabupaten' => $id_kabupaten])
             // ->update(['id_kecamatan' => $id_kecamatan])
             // ->update(['id_kelurahan' => $id_kelurahan])
-            // ->update(['id_rw' => $id_rw])
-            ;
-                // $p->Periode_Sensus = $Periode_Sensus;
-                // $p->Target_KK = $Target_KK;
-                // $p->id_provinsi = $id_provinsi;
-                // $p->id_kabupaten = $id_kabupaten;
-                // $p->id_kecamatan = $id_kecamatan;
-                // $p->id_kelurahan = $id_kelurahan;
-                // $p->id_rw = $id_rw;
-                // $p->LastModifiedBy = $LastModifiedBy;
-                // $p->IsActive = $IsActive;
-                /*$p->RegionalID = $request->input('RegionalID');
-                $p->OriginalID = $request->input('OriginalID');
-                $p->OriginalNama = $request->input('OriginalNama');
-                $p->OriginalKode = $request->input('OriginalKode');
-                $p->Created = $request->input('Created');
-                $p->CreatedBy = $request->input('CreatedBy');
-                $p->LastModified = $request->input('LastModified');
-                $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_provinsi_old = $request->input('id_provinsi_old');
-                $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
-
-
-            $p->fill($request->all());
-            $p->save();
+      
+            // $p->save();
             DB::commit();
 
             $response = [
                 'message'        => 'Update Master TargetKk Suskses',
-                'data'         => $p
+                // 'data'         => $p
             ];
 
             return response()->json($response, 200);
