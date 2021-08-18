@@ -21,14 +21,14 @@ class TargetKkController extends Controller
     public function getTargetKk()
     {
         $data = DB::table('target_kk')
-        ->join('provinsi','target_kk.id_provinsi','=','provinsi.id_provinsi')
-        ->join('kabupaten','target_kk.id_kabupaten','=','kabupaten.id_kabupaten')
-        ->join('kecamatan','target_kk.id_kecamatan','=','kecamatan.id_kecamatan')
-        ->join('kelurahan','target_kk.id_kelurahan','=','kelurahan.id_kelurahan')
-        ->join('rw','target_kk.id_rw','=','rw.id_rw')
-        ->join('rt','target_kk.id_rt','=','rt.id_rw')
-        ->select('target_kk.*','provinsi.nama_provinsi','kabupaten.nama_kabupaten','kecamatan.nama_kecamatan','kelurahan.nama_kelurahan','rw.nama_rw','rt.nama_rt')
-        ->get();
+        // ->join('provinsi','target_kk.id_provinsi','=','provinsi.id_provinsi')
+        //  ->join('kabupaten','target_kk.id_kabupaten','=','kabupaten.id_kabupaten')
+        //  ->join('kecamatan','target_kk.id_kecamatan','=','kecamatan.id_kecamatan')
+        //  ->join('kelurahan','target_kk.id_kelurahan','=','kelurahan.id_kelurahan')
+        //  ->join('rw','target_kk.id_rw','=','rw.id_rw')
+        //  ->join('rt','target_kk.id_rt','=','rt.id_rw')
+        //  ->select('target_kk.*','provinsi.nama_provinsi','kabupaten.nama_kabupaten','kecamatan.nama_kecamatan','kelurahan.nama_kelurahan','rw.nama_rw','rt.nama_rt')
+         ->get();
 
         if($data){
             $response = [
@@ -207,17 +207,24 @@ class TargetKkController extends Controller
         
         try {
             DB::beginTransaction();
-      
-            $p = TargetKk::find($id_rt);
-
-                $p->Periode_Sensus = $Periode_Sensus;
-                $p->Target_KK = $Target_KK;
-                $p->id_provinsi = $id_provinsi;
-                $p->id_kabupaten = $id_kabupaten;
-                $p->id_kecamatan = $id_kecamatan;
-                $p->id_kelurahan = $id_kelurahan;
-                $p->id_rw = $id_rw;
-                $p->LastModifiedBy = $LastModifiedBy;
+            $num = "3.14"; 
+            $int = (int)$num;
+            $p = DB::table('target_kk')->find('Periode_Sensus',$Periode_Sensus)->where('id_rt',$id_rt)
+            ->update(['Target_KK'=> (int)$Target_KK])
+            // ->update(['id_provinsi' => $id_provinsi])
+            // ->update(['id_kabupaten' => $id_kabupaten])
+            // ->update(['id_kecamatan' => $id_kecamatan])
+            // ->update(['id_kelurahan' => $id_kelurahan])
+            // ->update(['id_rw' => $id_rw])
+            ;
+                // $p->Periode_Sensus = $Periode_Sensus;
+                // $p->Target_KK = $Target_KK;
+                // $p->id_provinsi = $id_provinsi;
+                // $p->id_kabupaten = $id_kabupaten;
+                // $p->id_kecamatan = $id_kecamatan;
+                // $p->id_kelurahan = $id_kelurahan;
+                // $p->id_rw = $id_rw;
+                // $p->LastModifiedBy = $LastModifiedBy;
                 // $p->IsActive = $IsActive;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
@@ -231,7 +238,7 @@ class TargetKkController extends Controller
                 $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
 
 
-            
+            $p->fill($request->all());
             $p->save();
             DB::commit();
 

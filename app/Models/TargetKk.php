@@ -19,7 +19,7 @@ class TargetKk extends Model
     'CreatedBy',
     'LastModifiedBy'];
     //public $incrementing = false;
-    public $primaryKey = 'id_rt';
+    public $primaryKey = 'Periode_Sensus';
     public $timestamps = false;
 
     // public function KabupatenKotaProvinsiID()
