@@ -67,7 +67,8 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/kecamatan/deleteKec', 'KecamatanController@deleteKec');
   $router->post('/kecamatan/updateKec',   'KecamatanController@updateKec');
   $router->get('/kecamatan/laporanKec', 'KecamatanController@laporanKec'); 
-  $router->post('/kecamatan/show-per-kec', 'KecamatanController@ShowPerKec'); 
+  $router->post('/kecamatan/show-per-kec', 'KecamatanController@ShowPerKec');
+  $router->post('/kecamatan/SensusKec', 'KecamatanController@laporanSensusKec'); 
 
 // Kelurahan
   $router->get('/kelurahan/getKelurahan','KelurahanController@getKel');
