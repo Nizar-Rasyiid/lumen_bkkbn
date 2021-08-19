@@ -273,7 +273,6 @@ class KecamatanController extends Controller
         }
         //console.log($Arryrequest)
         /*        $this->validate($Arryrequest, [
-
             'nama_kabupaten'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
@@ -360,7 +359,7 @@ class KecamatanController extends Controller
         return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
     }
 */
-    public function updateKec(Request $request)
+public function updateKec(Request $request)
     {
 
         //
@@ -388,7 +387,6 @@ class KecamatanController extends Controller
         
   /*
         $this->validate($request, [
-
             'nama_kecamatan'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',

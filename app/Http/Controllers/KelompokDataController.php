@@ -132,7 +132,7 @@ class KelompokDataController extends Controller
             && $request->isJson()
         ) {
             $dataReq = $request->json()->all();
-            //json_decode($dataReq, true);  
+            //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
             $nama_kelompok_data=$arrDataReq["nama_kelompok_data"];
             $Id_kelompok_data=$arrDataReq["Id_kelompok_data"];
@@ -192,5 +192,38 @@ class KelompokDataController extends Controller
         ];
 
         return response()->json($response, 200);
+    }
+
+    public function deleteKelompokData(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $Id_kelompok_data=$arrDataReq["Id_kelompok_data"];
+        }else{
+            $Id_kelompok_data=$request->input["Id_kelompok_data"];
+        }
+
+        $data = KelompokData::find($Id_kelompok_data);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Kelompok Data Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 }

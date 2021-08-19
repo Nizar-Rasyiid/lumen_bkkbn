@@ -10,7 +10,7 @@ class Rw extends Model
     //public $incrementing = false;
     protected $primaryKey = 'id_rw';
     public $timestamps = false;
-    protected $fillable = ['id_rw', 'nama_rw', 'KodeDepdagri','IsActive','id_kelurahan','CreatedBy','LastModifiedBy'];
+    protected $fillable = ['nama_rw', 'KodeDepdagri','IsActive','id_kelurahan','CreatedBy','LastModifiedBy'];
     
     public function KelurahanId()
     {

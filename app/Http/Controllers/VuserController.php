@@ -51,78 +51,73 @@ public function index()
 {
     return csrf_token(); 
 }
-    public function showUser(Request $request)
-    {
-        
-        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
-            && $request->isJson()
-        ) {
-            $dataReq = $request->json()->all();
-            //json_decode($dataReq, true);
-            $arrDataReq =json_decode(json_encode($dataReq),true);
-            $UserName=$arrDataReq["UserName"];
-            $password=$arrDataReq["password"];
-        }else{
-            $UserName=$request->input('UserName');
-            $password=$request->input('password');
-        }
-        $data = new V_user();
-
-
-
-
-        $data =  $data->select('id','UserName','NamaLengkap',
-        'NIP','NIK','KabupatenKotaID','RoleID','Jabatan','Foto')
-                ->where(['UserName'=>$UserName,/*$request->input('UserName'),*/
-            'Password'=>md5($password)])->get();
-            
-            
-        $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2
-        
-        
-        ")
-
-    );
-
-
-        
-        try {
-           if(count($data)==1){
-               
-                $response = [
-                    'message'		=> 'Show User',
-                    'code'          => '00',
-                    'data' 		    => $data,
-                    'data2'         =>$data2,
-                    
-                ];
-
-                return response()->json($response, 200);
-            }else{
-                $response = [
-                    'message'		=> 'Login tidak sesuai',
-                    'code'          => '01',
-                    'data' 		    => $data,
-                ];
-
-            }
-
-                return response()->json($response, 200);
-
-
-        } catch (\Exception $e) {
-            DB::rollback();
-            $response = [
-                'message'        => 'Transaction DB Error',
-                'code'          => '02',
-                'data'      => $e->getMessage()
-            ];
-            return response()->json($response, 500);
-        }
-                
-
-
+public function showUser(Request $request)
+{
+    
+    if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $UserName=$arrDataReq["UserName"];
+        $password=$arrDataReq["password"];
+    }else{
+        $UserName=$request->input('UserName');
+        $password=$request->input('password');
     }
+    $data = new V_user();
+
+
+
+
+    $data =  $data->select('id','UserName','NamaLengkap',
+    'NIP','NIK','KabupatenKotaID','RoleID','Jabatan','Foto')
+            ->where(['UserName'=>$UserName,/*$request->input('UserName'),*/
+        'Password'=>md5($password)])->get();
+        
+        
+    $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2"));
+
+
+    
+    try {
+       if(count($data)==1){
+           
+            $response = [
+                'message'		=> 'Show User',
+                'code'          => '00',
+                'data' 		    => $data,
+                'data2'         =>$data2,
+                
+            ];
+
+            return response()->json($response, 200);
+        }else{
+            $response = [
+                'message'		=> 'Login tidak sesuai',
+                'code'          => '01',
+                'data' 		    => $data,
+            ];
+
+        }
+
+            return response()->json($response, 200);
+
+
+    } catch (\Exception $e) {
+        DB::rollback();
+        $response = [
+            'message'        => 'Transaction DB Error',
+            'code'          => '02',
+            'data'      => $e->getMessage()
+        ];
+        return response()->json($response, 500);
+    }
+            
+
+
+}
 
     public function storeUser(Request $request)
     {
@@ -298,8 +293,7 @@ public function index()
                  'data'      => $e->getMessage()
              ];
              return response()->json($response, 500);
-        }
+         }
     }
-
 
 }

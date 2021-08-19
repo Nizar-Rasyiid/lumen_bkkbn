@@ -101,8 +101,7 @@ class KelurahanController extends Controller
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                // ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('kelurahan.*','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi','kecamatan.id_kecamatan','kabupaten.id_kabupaten','provinsi.id_provinsi')
+                ->select('kelurahan.*','kecamatan.nama_kecamatan','kabupaten.nama_kabupaten','provinsi.nama_provinsi')
                 ->get();
 
         if($data){  
@@ -185,8 +184,7 @@ class KelurahanController extends Controller
         }
         // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
-        /*        $this->validate($Arryrequest, [
-
+/*        $this->validate($Arryrequest, [
             'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
@@ -267,89 +265,94 @@ class KelurahanController extends Controller
              return response()->json($response, 500);
          }
     }
-    
-    public function updateKel(Request $request)
+/*
+    public function editProv($id)
     {
+        return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
+    }
+*/
+public function updateKel(Request $request)
+{
 
-        //
-        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
-            && $request->isJson()
-        ) {
-            $dataReq = $request->json()->all();
-            //json_decode($dataReq, true);
-            $arrDataReq =json_decode(json_encode($dataReq),true);
-            $nama_kelurahan=$arrDataReq["nama_kelurahan"];
-            $id_kelurahan=$arrDataReq["id_kelurahan"];
-            $KodeDepdagri=$arrDataReq["KodeDepdagri"];
-            $IsActive=$arrDataReq["IsActive"];
-            $id_kecamatan=$arrDataReq["id_kecamatan"];
-            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
-        }else{
+    //
+    if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $nama_kelurahan=$arrDataReq["nama_kelurahan"];
+        $id_kelurahan=$arrDataReq["id_kelurahan"];
+        $KodeDepdagri=$arrDataReq["KodeDepdagri"];
+        $IsActive=$arrDataReq["IsActive"];
+        $id_kecamatan=$arrDataReq["id_kecamatan"];
+        $LastModifiedBy=$arrDataReq["LastModifiedBy"];
+    }else{
 
-            $nama_kelurahan=$request->input["nama_kelurahan"];
-            $id_kecamatan=$request->input["id_kecamatan"];
-            $KodeDepdagri=$request->input["KodeDepdagri"];
-            $IsActive=$request->input["IsActive"];
-            $id_kelurahan=$request->input["id_kelurahan"];
-            $LastModifiedBy=$request->input["LastModifiedBy"];
-        }
+        $nama_kelurahan=$request->input["nama_kelurahan"];
+        $id_kecamatan=$request->input["id_kecamatan"];
+        $KodeDepdagri=$request->input["KodeDepdagri"];
+        $IsActive=$request->input["IsActive"];
+        $id_kelurahan=$request->input["id_kelurahan"];
+        $LastModifiedBy=$request->input["LastModifiedBy"];
+    }
 
-        /*
-        $this->validate($request, [
-            'nama_provinsi'   => 'required',
-            'KodeDepdagri'   => 'required',
-            'IsActive'   => 'required',
-        ]);
-        */
+    /*
+    $this->validate($request, [
+        'nama_provinsi'   => 'required',
+        'KodeDepdagri'   => 'required',
+        'IsActive'   => 'required',
+    ]);
+    */
 
-        try {
-            DB::beginTransaction();
+    try {
+        DB::beginTransaction();
 
-            $p = Kelurahan::find($id_kelurahan);
+        $p = Kelurahan::find($id_kelurahan);
 
-                $p->nama_kelurahan = $nama_kelurahan;
-                $p->id_kecamatan = $id_kecamatan;
-                $p->KodeDepdagri = $KodeDepdagri;
-                $p->IsActive = $IsActive;
-                $p->LastModifiedBy = $LastModifiedBy;
-                /*$p->RegionalID = $request->input('RegionalID');
-                $p->OriginalID = $request->input('OriginalID');
-                $p->OriginalNama = $request->input('OriginalNama');
-                $p->OriginalKode = $request->input('OriginalKode');
-                $p->Created = $request->input('Created');
-                $p->CreatedBy = $request->input('CreatedBy');
-                 $p->LastModified = $request->input('LastModified');
-                $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_kabupaten_old = $request->input('id_kabupaten_old');
-               $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
+            $p->nama_kelurahan = $nama_kelurahan;
+            $p->id_kecamatan = $id_kecamatan;
+            $p->KodeDepdagri = $KodeDepdagri;
+            $p->IsActive = $IsActive;
+            $p->LastModifiedBy = $LastModifiedBy;
+            /*$p->RegionalID = $request->input('RegionalID');
+            $p->OriginalID = $request->input('OriginalID');
+            $p->OriginalNama = $request->input('OriginalNama');
+            $p->OriginalKode = $request->input('OriginalKode');
+            $p->Created = $request->input('Created');
+            $p->CreatedBy = $request->input('CreatedBy');
+             $p->LastModified = $request->input('LastModified');
+            $p->LastModifiedBy = $request->input('LastModifiedBy');
+            $p->id_kabupaten_old = $request->input('id_kabupaten_old');
+           $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
 
 
 
-            $p->save();
-            DB::commit();
-
-            $response = [
-                'message'        => 'Update Master Kelurahan Suskses',
-                'data'         => $p
-            ];
-
-            return response()->json($response, 200);
-
-        } catch (\Exception $e) {
-           DB::rollback();
-            $response = [
-                'message'        => 'Transaction DB Error',
-                'data'      => $e->getMessage()
-            ];
-            return response()->json($response, 200);
-        }
+        $p->save();
+        DB::commit();
 
         $response = [
-            'message'        => 'An Error Occured'
+            'message'        => 'Update Master Kelurahan Suskses',
+            'data'         => $p
         ];
 
         return response()->json($response, 200);
+
+    } catch (\Exception $e) {
+       DB::rollback();
+        $response = [
+            'message'        => 'Transaction DB Error',
+            'data'      => $e->getMessage()
+        ];
+        return response()->json($response, 200);
     }
+
+    $response = [
+        'message'        => 'An Error Occured'
+    ];
+
+    return response()->json($response, 200);
+}
     
     
 }

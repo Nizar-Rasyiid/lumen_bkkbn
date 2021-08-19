@@ -21,13 +21,13 @@ class SettingController extends Controller
     public function getSetting()
     {
         $data = DB::table('setting')
-                ->join('kelompok_data','setting.Id_kelompok_data','=','kelompok_data.Id_kelompok_data')
-                ->select('setting.*','kelompok_data.nama_kelompok_data')
                 ->get();
+
+
 
         if($data){
             $response = [
-                'message'		=> 'Show Setting ',
+                'message'		=> 'Get Setting ',
                 'data' 		    => $data,
             ];
 
@@ -50,10 +50,8 @@ class SettingController extends Controller
             $dataReq = $request->json()->all();
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
-            $nama=$arrDataReq["nama"];
             $Id_kelompok_data=$arrDataReq["Id_kelompok_data"];
         }else{
-            $nama=$request->input["nama"];
             $Id_kelompok_data=$request->input["Id_kelompok_data"];
         }
 
@@ -65,7 +63,7 @@ class SettingController extends Controller
 
         if($data){
             $response = [
-                'message'		=> 'Show rt',
+                'message'		=> 'Show Setting',
                 'data' 		    => $data,
             ];
             // echo(response()->json(data));
@@ -201,5 +199,37 @@ class SettingController extends Controller
         ];
 
         return response()->json($response, 200);
+    }
+    public function deleteSetting(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_setting=$arrDataReq["id_setting"];
+        }else{
+            $id_setting=$request->input["id_setting"];
+        }
+
+        $data = Setting::find($id_setting);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete Setting Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
     }
 }
