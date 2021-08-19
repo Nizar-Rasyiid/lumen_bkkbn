@@ -149,13 +149,13 @@ class KecamatanController extends Controller
         $data = DB::select(DB::raw("SELECT kelurahan.Nama_Kelurahan,
         target_sensus_indo.KK,
         FROM (SELECT 
-        -- id_kecamatan,
-        -- id_kelurahan,
+        id_kecamatan,
+        id_kelurahan,
         Periode_Sensus,   
         sum(target_kk) as KK,
         FROM Target_KK GROUP BY id_kecamatan,id_kelurahan,Periode_Sensus) target_sensus_indo
-        -- INNER JOIN kecamatan ON  target_sensus_indo.id_kecamatan = kecamatan.id_kecamatan
-        -- INNER JOIN kelurahan ON  target_sensus_indo.id_kelurahan = kelurahan.id_kelurahan
+        INNER JOIN kecamatan ON  target_sensus_indo.id_kecamatan = kecamatan.id_kecamatan
+        INNER JOIN kelurahan ON  target_sensus_indo.id_kelurahan = kelurahan.id_kelurahan
         INNER JOIN target_kk ON target_sensus_indo.Periode_Sensus = target_kk.Periode_Sensus
         WHERE target_kk.Periode_Sensus = $Periode_Sensus"
             )
