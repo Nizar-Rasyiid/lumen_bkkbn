@@ -165,67 +165,70 @@ public function laporanPerProv(Request $request)
         return view('datamaster.provCreate', ['id' => '','action' => 'add']);
     }
 */
-    public function storeProv(Request $request)
-    {
-         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
-            && $request->isJson()
-        ) {
-            $dataReq = $request->json()->all();
-            $Arryrequest = json_decode(json_encode($dataReq), true);
+public function storeProv(Request $request)
+{
+     if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        $Arryrequest = json_decode(json_encode($dataReq), true);
 
-        }else{
-            $Arryrequest["nama_provinsi"] =$request->$request->input("nama_provinsi");
-            $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
-            $Arryrequest["IsActive"] =$request->$request->input("IsActive");
-        }
-        // echo json_encode($Arryrequest);
-        //console.log($Arryrequest)
-/*        $this->validate($Arryrequest, [
-
-            'nama_provinsi'   => 'required',
-            'KodeDepdagri'   => 'required',
-            'IsActive'   => 'required',
-        ]);*/
-
-        try {
-            DB::beginTransaction();
-            
-            $p = new Provinsi([
-                'nama_provinsi' => $Arryrequest['nama_provinsi'],
-                'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
-                'IsActive' => $Arryrequest['IsActive'],
-                /*'RegionalID' => $request->input('RegionalID'),
-                'OriginalID' => $request->input('OriginalID'),
-                'OriginalNama' => $request->input('OriginalNama'),
-                'OriginalKode' => $request->input('OriginalKode'),
-                'Created' => $request->input('Created'),
-                'CreatedBy' => $request->input('CreatedBy'),
-                'LastModified' => $request->input('LastModified'),
-                'LastModifiedBy' => $request->input('LastModifiedBy'),
-                'id_provinsi_old' => $request->input('id_provinsi_old'),
-                'nama_provinsi_old' => $request->input('nama_provinsi_old')*/
-            ]);
-
-            $p->save();
-
-            DB::commit();
-            
-            $response = [
-                'message'        => 'Input Data Sukses',
-                'data'         => $p
-            ];
-
-            return response()->json($response, 200);
-        } catch (\Exception $e) {
-            DB::rollback();
-            $response = [
-                'message'        => 'Transaction DB Error',
-                'data'      => $e->getMessage()
-            ];
-            return response()->json($response, 500);
-        }
-
+    }else{
+        $Arryrequest["nama_provinsi"] =$request->$request->input("nama_provinsi");
+        $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
+        $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+        $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+        $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
     }
+    // echo json_encode($Arryrequest);
+    //console.log($Arryrequest)
+/*        $this->validate($Arryrequest, [
+        'nama_provinsi'   => 'required',
+        'KodeDepdagri'   => 'required',
+        'IsActive'   => 'required',
+    ]);*/
+
+    try {
+        DB::beginTransaction();
+        
+        $p = new Provinsi([
+            'nama_provinsi' => $Arryrequest['nama_provinsi'],
+            'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
+            'IsActive' => $Arryrequest['IsActive'],
+            'CreatedBy' => $Arryrequest['CreatedBy'],
+            'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
+            /*'RegionalID' => $request->input('RegionalID'),
+            'OriginalID' => $request->input('OriginalID'),
+            'OriginalNama' => $request->input('OriginalNama'),
+            'OriginalKode' => $request->input('OriginalKode'),
+            'Created' => $request->input('Created'),
+            'CreatedBy' => $request->input('CreatedBy'),
+            'LastModified' => $request->input('LastModified'),
+            'LastModifiedBy' => $request->input('LastModifiedBy'),
+            'id_provinsi_old' => $request->input('id_provinsi_old'),
+            'nama_provinsi_old' => $request->input('nama_provinsi_old')*/
+        ]);
+
+        $p->save();
+
+        DB::commit();
+        
+        $response = [
+            'message'        => 'Input Data Sukses',
+            'data'         => $p
+        ];
+
+        return response()->json($response, 200);
+    } catch (\Exception $e) {
+        DB::rollback();
+        $response = [
+            'message'        => 'Transaction DB Error',
+            'data'      => $e->getMessage()
+        ];
+        return response()->json($response, 500);
+    }
+
+}
 
     public function deleteProv(Request $request)
     {
@@ -265,83 +268,85 @@ public function laporanPerProv(Request $request)
         return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
     }
 */
-    public function updateProv(Request $request)
-    {
+public function updateProv(Request $request)
+{
 
-        //
-        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
-            && $request->isJson()
-        ) {
-            $dataReq = $request->json()->all();
-            //json_decode($dataReq, true);
-            $arrDataReq =json_decode(json_encode($dataReq),true);
-            $nama_provinsi=$arrDataReq["nama_provinsi"];
-            $KodeDepdagri=$arrDataReq["KodeDepdagri"];
-            $IsActive=$arrDataReq["IsActive"];
-            $id_provinsi=$arrDataReq["id_provinsi"];
-        }else{
+    //
+    if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $nama_provinsi=$arrDataReq["nama_provinsi"];
+        $KodeDepdagri=$arrDataReq["KodeDepdagri"];
+        $IsActive=$arrDataReq["IsActive"];
+        $id_provinsi=$arrDataReq["id_provinsi"];
+        $LastModifiedBy=$arrDataReq["LastModifiedBy"];
+    }else{
 
-            $nama_provinsi=$request->input["nama_provinsi"];
-            $KodeDepdagri=$request->input["KodeDepdagri"];
-            $IsActive=$request->input["IsActive"];
-            $id_provinsi=$request->input["id_provinsi"];
-        }
+        $nama_provinsi=$request->input["nama_provinsi"];
+        $KodeDepdagri=$request->input["KodeDepdagri"];
+        $IsActive=$request->input["IsActive"];
+        $id_provinsi=$request->input["id_provinsi"];
+        $LastModifiedBy=$request->input["LastModifiedBy"];
+    }
+    
+/*
+    $this->validate($request, [
+        'nama_provinsi'   => 'required',
+        'KodeDepdagri'   => 'required',
+        'IsActive'   => 'required',
+    ]);
+*/
+    
+    try {
+        DB::beginTransaction();
+  
+        $p = Provinsi::find($id_provinsi);
+
+            $p->nama_provinsi = $nama_provinsi;
+            $p->KodeDepdagri = $KodeDepdagri;
+            $p->IsActive = $IsActive;
+            $p->LastModifiedBy = $LastModifiedBy;
+            /*$p->RegionalID = $request->input('RegionalID');
+            $p->OriginalID = $request->input('OriginalID');
+            $p->OriginalNama = $request->input('OriginalNama');
+            $p->OriginalKode = $request->input('OriginalKode');
+            $p->Created = $request->input('Created');
+            $p->CreatedBy = $request->input('CreatedBy');
+            $p->LastModified = $request->input('LastModified');
+            $p->LastModifiedBy = $request->input('LastModifiedBy');
+            $p->id_provinsi_old = $request->input('id_provinsi_old');
+            $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
+
+
         
-  /*
-        $this->validate($request, [
-
-            'nama_provinsi'   => 'required',
-            'KodeDepdagri'   => 'required',
-            'IsActive'   => 'required',
-        ]);
-  */
-        
-        try {
-            DB::beginTransaction();
-      
-            $p = Provinsi::find($id_provinsi);
-
-                $p->nama_provinsi = $nama_provinsi;
-                $p->KodeDepdagri = $KodeDepdagri;
-                $p->IsActive = $IsActive;
-                /*$p->RegionalID = $request->input('RegionalID');
-                $p->OriginalID = $request->input('OriginalID');
-                $p->OriginalNama = $request->input('OriginalNama');
-                $p->OriginalKode = $request->input('OriginalKode');
-                $p->Created = $request->input('Created');
-                $p->CreatedBy = $request->input('CreatedBy');
-                $p->LastModified = $request->input('LastModified');
-                $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_provinsi_old = $request->input('id_provinsi_old');
-                $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
-
-
-            
-            $p->save();
-            DB::commit();
-
-            $response = [
-                'message'        => 'Update Master Provinsi Suskses',
-                'data'         => $p
-            ];
-
-            return response()->json($response, 200);
-
-        } catch (\Exception $e) {
-           DB::rollback();
-            $response = [
-                'message'        => 'Transaction DB Error',
-                'data'      => $e->getMessage()
-            ];
-            return response()->json($response, 200);
-        }
+        $p->save();
+        DB::commit();
 
         $response = [
-            'message'        => 'An Error Occured'
+            'message'        => 'Update Master Provinsi Suskses',
+            'data'         => $p
         ];
 
         return response()->json($response, 200);
-    }         
+
+    } catch (\Exception $e) {
+       DB::rollback();
+        $response = [
+            'message'        => 'Transaction DB Error',
+            'data'      => $e->getMessage()
+        ];
+        return response()->json($response, 200);
+    }
+
+    $response = [
+        'message'        => 'An Error Occured'
+    ];
+
+    return response()->json($response, 200);
+}                  
     //end prov ################################
 
 

@@ -10,7 +10,7 @@ class Rt extends Model
     //public $incrementing = false;
     protected $primaryKey = 'id_rt';
     public $timestamps = false;
-    protected $fillable = ['KodeRT', 'nama_rt','id_rw','IsActive'];
+    protected $fillable = ['KodeRT', 'nama_rt','id_rw','IsActive','CreatedBy','LastModifiedBy'];
     
     public function RwID()
     {

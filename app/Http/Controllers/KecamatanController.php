@@ -268,10 +268,11 @@ class KecamatanController extends Controller
             $Arryrequest["id_kabupaten"] =$request->$request->input("id_kabupaten");
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+            $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
         }
         //console.log($Arryrequest)
         /*        $this->validate($Arryrequest, [
-
             'nama_kabupaten'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
@@ -285,6 +286,8 @@ class KecamatanController extends Controller
                 'id_kabupaten' => $Arryrequest['id_kabupaten'],
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'IsActive' => $Arryrequest['IsActive'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'CreatedBy' => $request->input('CreatedBy'),
                 'OriginalID' => $request->input('OriginalID'),
@@ -356,7 +359,7 @@ class KecamatanController extends Controller
         return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
     }
 */
-    public function updateKec(Request $request)
+public function updateKec(Request $request)
     {
 
         //
@@ -371,6 +374,7 @@ class KecamatanController extends Controller
             $KodeDepdagri=$arrDataReq["KodeDepdagri"];
             $IsActive=$arrDataReq["IsActive"];
             $id_kabupaten=$arrDataReq["id_kabupaten"];
+            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
 
             $nama_kecamatan=$request->input["nama_kecamatan"];
@@ -378,11 +382,11 @@ class KecamatanController extends Controller
             $KodeDepdagri=$request->input["KodeDepdagri"];
             $IsActive=$request->input["IsActive"];
             $id_kecamatan=$request->input["id_kecamatan"];
+            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
         
   /*
         $this->validate($request, [
-
             'nama_kecamatan'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
@@ -398,6 +402,7 @@ class KecamatanController extends Controller
                 $p->id_kabupaten = $id_kabupaten;
                 $p->KodeDepdagri = $KodeDepdagri;
                 $p->IsActive = $IsActive;
+                $p->LastModifiedBy = $LastModifiedBy;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
                 $p->OriginalNama = $request->input('OriginalNama');

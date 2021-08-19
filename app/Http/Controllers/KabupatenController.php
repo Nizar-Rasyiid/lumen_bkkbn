@@ -227,11 +227,12 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
             $Arryrequest["id_provinsi"] =$request->$request->input("id_provinsi");
             $Arryrequest["KodeDepdagri"] =$request->$request->input("KodeDepdagri");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+            $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
         }
         // echo json_encode($Arryrequest);
         //console.log($Arryrequest)
 /*        $this->validate($Arryrequest, [
-
             'nama_provinsi'   => 'required',
             'KodeDepdagri'   => 'required',
             'IsActive'   => 'required',
@@ -245,6 +246,8 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
                 'id_provinsi' => $Arryrequest['id_provinsi'],
                 'KodeDepdagri' => $Arryrequest['KodeDepdagri'],
                 'IsActive' => $Arryrequest['IsActive'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
@@ -277,7 +280,7 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
         }
 
     }
-
+    
     public function deleteKab(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
@@ -316,84 +319,87 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
         return view('datamaster.provCreate', ['id' => $id, 'action' => 'edit']);
     }
 */
-    public function updateKab(Request $request)
-    {
+public function updateKab(Request $request)
+{
 
-        //
-        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
-            && $request->isJson()
-        ) {
-            $dataReq = $request->json()->all();
-            //json_decode($dataReq, true);
-            $arrDataReq =json_decode(json_encode($dataReq),true);
-            $nama_kabupaten=$arrDataReq["nama_kabupaten"];
-            $id_provinsi=$arrDataReq["id_provinsi"];
-            $KodeDepdagri=$arrDataReq["KodeDepdagri"];
-            $IsActive=$arrDataReq["IsActive"];
-            $id_kabupaten=$arrDataReq["id_kabupaten"];
-        }else{
+    //
+    if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $nama_kabupaten=$arrDataReq["nama_kabupaten"];
+        $id_provinsi=$arrDataReq["id_provinsi"];
+        $KodeDepdagri=$arrDataReq["KodeDepdagri"];
+        $IsActive=$arrDataReq["IsActive"];
+        $id_kabupaten=$arrDataReq["id_kabupaten"];
+        $LastModifiedBy=$arrDataReq["LastModifiedBy"];
+    }else{
 
-            $nama_kabupaten=$request->input["nama_kabupaten"];
-            $id_provinsi=$request->input["id_provinsi"];
-            $KodeDepdagri=$request->input["KodeDepdagri"];
-            $IsActive=$request->input["IsActive"];
-            $id_kabupaten=$request->input["id_kabupaten"];
-        }
+        $nama_kabupaten=$request->input["nama_kabupaten"];
+        $id_provinsi=$request->input["id_provinsi"];
+        $KodeDepdagri=$request->input["KodeDepdagri"];
+        $IsActive=$request->input["IsActive"];
+        $id_kabupaten=$request->input["id_kabupaten"];
+        $LastModifiedBy=$request->input["LastModifiedBy"];
+    }
+    
+/*
+    $this->validate($request, [
+        'nama_provinsi'   => 'required',
+        'KodeDepdagri'   => 'required',
+        'IsActive'   => 'required',
+    ]);
+*/
+    
+    try {
+        DB::beginTransaction();
+  
+        $p = Kabupaten::find($id_kabupaten);
+
+            $p->nama_kabupaten = $nama_kabupaten;
+            $p->id_provinsi = $id_provinsi;
+            $p->KodeDepdagri = $KodeDepdagri;
+            $p->IsActive = $IsActive;
+            $p->LastModifiedBy = $LastModifiedBy;
+            /*$p->RegionalID = $request->input('RegionalID');
+            $p->OriginalID = $request->input('OriginalID');
+            $p->OriginalNama = $request->input('OriginalNama');
+            $p->OriginalKode = $request->input('OriginalKode');
+            $p->Created = $request->input('Created');
+            $p->CreatedBy = $request->input('CreatedBy');
+            $p->LastModified = $request->input('LastModified');
+            $p->LastModifiedBy = $request->input('LastModifiedBy');
+            $p->id_provinsi_old = $request->input('id_provinsi_old');
+            $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
+
+
         
-  /*
-        $this->validate($request, [
-
-            'nama_provinsi'   => 'required',
-            'KodeDepdagri'   => 'required',
-            'IsActive'   => 'required',
-        ]);
-  */
-        
-        try {
-            DB::beginTransaction();
-      
-            $p = Kabupaten::find($id_kabupaten);
-
-                $p->nama_kabupaten = $nama_kabupaten;
-                $p->id_provinsi = $id_provinsi;
-                $p->KodeDepdagri = $KodeDepdagri;
-                $p->IsActive = $IsActive;
-                /*$p->RegionalID = $request->input('RegionalID');
-                $p->OriginalID = $request->input('OriginalID');
-                $p->OriginalNama = $request->input('OriginalNama');
-                $p->OriginalKode = $request->input('OriginalKode');
-                $p->Created = $request->input('Created');
-                $p->CreatedBy = $request->input('CreatedBy');
-                $p->LastModified = $request->input('LastModified');
-                $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_provinsi_old = $request->input('id_provinsi_old');
-                $p->nama_provinsi_old = $request->input('nama_provinsi_old');*/
-
-
-            
-            $p->save();
-            DB::commit();
-
-            $response = [
-                'message'        => 'Update Master Kabupaten Suskses',
-                'data'         => $p
-            ];
-
-            return response()->json($response, 200);
-
-        } catch (\Exception $e) {
-           DB::rollback();
-            $response = [
-                'message'        => 'Transaction DB Error',
-                'data'      => $e->getMessage()
-            ];
-            return response()->json($response, 200);
-        }
+        $p->save();
+        DB::commit();
 
         $response = [
-            'message'        => 'An Error Occured'
+            'message'        => 'Update Master Kabupaten Suskses',
+            'data'         => $p
         ];
 
         return response()->json($response, 200);
+
+    } catch (\Exception $e) {
+       DB::rollback();
+        $response = [
+            'message'        => 'Transaction DB Error',
+            'data'      => $e->getMessage()
+        ];
+        return response()->json($response, 200);
     }
+
+    $response = [
+        'message'        => 'An Error Occured'
+    ];
+
+    return response()->json($response, 200);
+    }
+
 }

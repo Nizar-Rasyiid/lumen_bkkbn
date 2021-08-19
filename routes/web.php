@@ -93,3 +93,24 @@ $router->post('/rw/storeRw',   'RwController@storeRw');
 $router->post('/rw/updateRw',   'RwController@updateRw');
 $router->post('/rw/deleteRw',   'RwController@deleteRw');
 //$router->delete('/rt/deleteRt/{id}',   'rtController@deleteRt');
+//Setting
+$router->post('/setting/showSetting','SettingController@showSetting');
+$router->get('/setting/getSetting', 'SettingController@getSetting');
+$router->post('/setting/storeSetting',   'SettingController@storeSetting');
+$router->post('/setting/updateSetting',   'SettingController@updateSetting');
+$router->post('/setting/deleteSetting',   'SettingController@deleteSetting');
+
+//Kelompok Data
+$router->post('/kelompok-data/showKelompokData','KelompokDataController@showKelompokData');
+$router->get('/kelompok-data/getKelompokData', 'KelompokDataController@getKelompokData');
+$router->post('/kelompok-data/storeKelompokData',   'KelompokDataController@storeKelompokData');
+$router->post('/kelompok-data/deleteKelompokData',   'KelompokDataController@deleteKelompokData');
+
+//TargetKk
+$router->post('/target-kk/showTargetKk','TargetKkController@showTargetKk');
+$router->get('/target-kk/getTargetKk', 'TargetKkController@getTargetKk');
+$router->post('/target-kk/storeTargetKk',   'TargetKkController@storeTargetKk');
+$router->post('/target-kk/updateTargetKk',   'TargetKkController@updateTargetKk');
+
+//LaporanSensus
+$router->post('/laporan-sensus/indonesia','LaporanSensusController@showLaporanSensusID');

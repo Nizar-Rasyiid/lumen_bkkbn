@@ -26,8 +26,7 @@ class RtController extends Controller
                 ->join('kecamatan','kelurahan.id_kecamatan','=','kecamatan.id_kecamatan')
                 ->join('kabupaten','kecamatan.id_kabupaten','=','kabupaten.id_kabupaten')
                 ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-                ->join('v_user','v_user.ID','=','v_user.ID')
-                ->select('rt.*','rw.nama_rw','rw.id_kelurahan','nama_kelurahan','rw.id_rw','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten','v_user.NamaLengkap')
+                ->select('rt.*','rw.nama_rw','rw.id_kelurahan','nama_kelurahan','rw.id_rw','kelurahan.id_kecamatan','nama_kecamatan','kelurahan.id_kelurahan','kecamatan.id_kabupaten','nama_kabupaten','kecamatan.id_kecamatan','kabupaten.id_provinsi','nama_provinsi','kabupaten.id_kabupaten')
                 ->get();
 
                 // $data_json = json_decode($data, true);
@@ -116,6 +115,8 @@ class RtController extends Controller
             $Arryrequest["nama_rt"] =$request->$request->input("nama_rt");
             $Arryrequest["id_rw"] =$request->$request->input("id_rw");
             $Arryrequest["IsActive"] =$request->$request->input("IsActive");
+            $Arryrequest["CreatedBy"] =$request->$request->input("CreatedBy");
+            $Arryrequest["LastModifiedBy"] =$request->$request->input("LastModifiedBy");
         }
         // $this->validate($request, [
 
@@ -132,6 +133,8 @@ class RtController extends Controller
                 'id_rw' => $Arryrequest['id_rw'],
                 'KodeRT' => $Arryrequest['KodeRT'],
                 'IsActive' => $Arryrequest['IsActive'],
+                'CreatedBy' => $Arryrequest['CreatedBy'],
+                'LastModifiedBy' => $Arryrequest['LastModifiedBy'],
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
                 'OriginalNama' => $request->input('OriginalNama'),
@@ -180,6 +183,7 @@ class RtController extends Controller
             $id_rw=$arrDataReq["id_rw"];
             $id_rt=$arrDataReq["id_rt"];
             $IsActive=$arrDataReq["IsActive"];
+            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
 
             $nama_rt=$request->input["nama_rt"];
@@ -187,6 +191,7 @@ class RtController extends Controller
             $id_rw=$request->input["id_rw"];
             $id_rt=$request->input["id_rt"];
             $IsActive=$request->input["IsActive"];
+            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
         
   
@@ -200,6 +205,7 @@ class RtController extends Controller
                 $p->KodeRT = $KodeRT;
                 $p->id_rw = $id_rw;
                 $p->IsActive = $IsActive;
+                $p->LastModifiedBy = $LastModifiedBy;
                 /*$p->RegionalID = $request->input('RegionalID');
                 $p->OriginalID = $request->input('OriginalID');
                 $p->OriginalNama = $request->input('OriginalNama');
