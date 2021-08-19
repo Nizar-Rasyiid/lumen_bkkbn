@@ -133,7 +133,50 @@ class KecamatanController extends Controller
             return response()->json($response, 500);
     }
 
+    public function laporanSensusKec(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $Periode_Sensus = $arrDataReq["Periode_Sensus"];
+        }else{
+            $Periode_Sensus = $request->input["Periode_Sensus"];
+        }
 
+        $data = DB::select(DB::raw("SELECT kelurahan.Nama_Kelurahan,
+        target_sensus_indo.KK,
+        FROM (SELECT 
+        -- id_kecamatan,
+        -- id_kelurahan,
+        Periode_Sensus,   
+        sum(target_kk) as KK,
+        FROM Target_KK GROUP BY id_kecamatan,id_kelurahan,Periode_Sensus) target_sensus_indo
+        -- INNER JOIN kecamatan ON  target_sensus_indo.id_kecamatan = kecamatan.id_kecamatan
+        -- INNER JOIN kelurahan ON  target_sensus_indo.id_kelurahan = kelurahan.id_kelurahan
+        INNER JOIN target_kk ON target_sensus_indo.Periode_Sensus = target_kk.Periode_Sensus
+        WHERE target_kk.Periode_Sensus = $Periode_Sensus"
+            )
+        );
+        
+        if($data){
+            $response = [
+                'message'		=> 'Show Kecamatan',
+                'data' 		    => $data,
+            ];
+
+            // echo(response()->json(data));
+            return response()->json($response, 200);
+            }
+
+            $response = [
+                'message'		=> 'An Error Occured'
+            ];
+
+            return response()->json($response, 500);
+    }
 
     // Untuk Kecamatan Saja
     public function showKecs(Request $request)

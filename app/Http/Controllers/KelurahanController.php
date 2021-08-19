@@ -95,6 +95,46 @@ class KelurahanController extends Controller
         return response()->json($response, 500);
     }
 
+    public function laporanSensusKel(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_kecamatan = $arrDataReq["id_kecamatan"];
+        }else{
+            $id_kecamatan = $request->input["id_kecamatan"];
+        }
+
+        $data = DB::select(DB::raw("SELECT
+        COUNT(DISTINCT(rw.`id_rw`)) AS Jumlah_RW,
+        COUNT(DISTINCT(rt.`id_rt`)) AS Jumlah_RT
+        FROM Kelurahan Kel
+        LEFT JOIN RW rw ON rw.`id_kelurahan` = kel.`id_kelurahan`
+        LEFT JOIN RT rt ON rt.`id_rw`=rw.`id_rw` 
+        ")
+        );
+
+        if($data){
+            $response = [
+                'message'		=> 'Laporan PerKelurahan',
+                'data' 		    => $data,
+
+            ];
+            // var_dump($response);
+            return response()->json($response, 200);
+
+        }
+
+        $response = [
+            'message'		=> 'An Error Occured'
+        ];
+
+        return response()->json($response, 500);
+    }
+
     public function getKel()
     {
         $data = DB::table('kelurahan')
