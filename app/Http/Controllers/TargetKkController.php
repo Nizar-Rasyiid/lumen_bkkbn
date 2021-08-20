@@ -257,4 +257,88 @@ class TargetKkController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function deleteTargetKk(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_rt=$arrDataReq["id_rt"];
+        }else{
+            $id_rt=$request->input["id_rt"];
+        }
+
+        $data = TargetKk::find($id_rt);
+        try {
+            if($data->delete()){
+                 $response = [
+                     'message'		=> 'Delete target_kk Sukses',
+                     'data' 		    => $data,
+                 ];
+ 
+                 return response()->json($response, 200);
+             }
+         } catch (\Exception $e) {
+             DB::rollback();
+             $response = [
+                 'message'        => 'Transaction DB Error',
+                 'data'      => $e->getMessage()
+             ];
+             return response()->json($response, 500);
+         }
+    }
+
+    public function showTargetKkPerProv(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $Periode_Sensus = $arrDataReq["Periode_Sensus"];
+        }else{
+            $Periode_Sensus = $request->input["Periode_Sensus"];
+        }
+
+        $data = DB::select(DB::raw("SELECT 
+        provinsi.id_provinsi,   
+        provinsi.nama_provinsi,   
+        target_sensus_indo.Periode_Sensus
+        FROM (SELECT 
+        id_provinsi, 
+        Periode_Sensus
+        FROM Target_KK 
+        GROUP BY id_provinsi, Periode_Sensus ) target_sensus_indo 
+        INNER JOIN provinsi ON target_sensus_indo.id_provinsi = provinsi.id_provinsi
+        WHERE target_sensus_indo.Periode_Sensus = $Periode_Sensus"
+        )
+        );
+
+
+        
+        try {
+           if($data){
+                $response = [
+                    'message'		=> 'Show TargetKk per provinsi Sukses',
+                    'data' 		    => $data,
+                ];
+
+                return response()->json($response, 200);
+            }
+
+
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response = [
+                'message'        => 'Transaction DB Error',
+                'data'      => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+    }
 }

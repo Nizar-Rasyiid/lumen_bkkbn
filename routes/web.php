@@ -108,9 +108,13 @@ $router->post('/kelompok-data/deleteKelompokData',   'KelompokDataController@del
 
 //TargetKk
 $router->post('/target-kk/showTargetKk','TargetKkController@showTargetKk');
+$router->post('/target-kk/showTargetKkPerProv','TargetKkController@showTargetKkPerProv');
 $router->get('/target-kk/getTargetKk', 'TargetKkController@getTargetKk');
 $router->post('/target-kk/storeTargetKk',   'TargetKkController@storeTargetKk');
 $router->post('/target-kk/updateTargetKk',   'TargetKkController@updateTargetKk');
+$router->post('/target-kk/deleteTargetKk',   'TargetKkController@deleteTargetKk');
 
 //LaporanSensus
 $router->post('/laporan-sensus/indonesia','LaporanSensusController@showLaporanSensusID');
+$router->post('/laporan-sensus/perprov','LaporanSensusController@showLaporanSensusPerProv');
+$router->post('/laporan-sensus/perkab','LaporanSensusController@showLaporanSensusPerKab');
