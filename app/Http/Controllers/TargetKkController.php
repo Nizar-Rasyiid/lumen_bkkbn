@@ -312,9 +312,9 @@ class TargetKkController extends Controller
         id_provinsi, 
         Periode_Sensus
         FROM Target_KK 
-        GROUP BY id_provinsi, Periode_Sensus ) target_sensus_indo 
+        GROUP BY id_provinsi, Periode_Sensus HAVING Periode_Sensus = $Periode_Sensus ) target_sensus_indo 
         INNER JOIN provinsi ON target_sensus_indo.id_provinsi = provinsi.id_provinsi
-        WHERE target_sensus_indo.Periode_Sensus = $Periode_Sensus"
+        "
         )
         );
 
