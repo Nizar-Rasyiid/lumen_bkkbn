@@ -142,22 +142,25 @@ class KecamatanController extends Controller
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
             $Periode_Sensus = $arrDataReq["Periode_Sensus"];
+            $id_kecamatan = $arrDataReq["id_kecamatan"];
         }else{
             $Periode_Sensus = $request->input["Periode_Sensus"];
+            $id_kecamatan = $request->input["id_kecamatan"];
         }
 
-        $data = DB::select(DB::raw("SELECT kelurahan.Nama_Kelurahan,
-        target_sensus_indo.KK,
+        $data = DB::select(DB::raw("SELECT kelurahan.nama_kelurahan,
+        target_sensus_indo.KK
         FROM (SELECT 
         id_kecamatan,
         id_kelurahan,
         Periode_Sensus,   
-        sum(target_kk) as KK,
-        FROM Target_KK GROUP BY id_kecamatan,id_kelurahan,Periode_Sensus) target_sensus_indo
-        INNER JOIN kecamatan ON  target_sensus_indo.id_kecamatan = kecamatan.id_kecamatan
-        INNER JOIN kelurahan ON  target_sensus_indo.id_kelurahan = kelurahan.id_kelurahan
-        INNER JOIN target_kk ON target_sensus_indo.Periode_Sensus = target_kk.Periode_Sensus
-        WHERE target_kk.Periode_Sensus = $Periode_Sensus"
+        sum(target_kk) as KK
+        FROM Target_KK GROUP BY id_kecamatan,id_kelurahan,Periode_Sensus
+        HAVING Periode_Sensus = $Periode_Sensus
+        ) target_sensus_indo
+        INNER JOIN kecamatan ON target_sensus_indo.id_kecamatan = kecamatan.id_kecamatan
+        INNER JOIN kelurahan ON target_sensus_indo.id_kelurahan = kelurahan.id_kelurahan
+        WHERE kecamatan.id_kecamatan = $id_kecamatan"
             )
         );
         

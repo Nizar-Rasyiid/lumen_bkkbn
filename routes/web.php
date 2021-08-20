@@ -77,6 +77,7 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/kelurahan/showKel',   'KelurahanController@showKel');
   $router->post('/kelurahan/deleteKel','KelurahanController@deleteKel');
   $router->post('/kelurahan/laporanKel','KelurahanController@laporanKel');
+  $router->post('/kelurahan/SensusKel', 'kelurahanController@laporanSensusKel'); 
   $router->post('/kelurahan/laporanPerKel','kelurahanController@laporanPerKel');
 
 //Rt
