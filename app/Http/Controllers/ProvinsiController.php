@@ -239,10 +239,8 @@ public function storeProv(Request $request)
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
             $id_provinsi=$arrDataReq["id_provinsi"];
-            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
             $id_provinsi=$request->input["id_provinsi"];
-            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
 
         $data = Provinsi::find($id_provinsi);
