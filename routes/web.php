@@ -67,8 +67,7 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/kecamatan/deleteKec', 'KecamatanController@deleteKec');
   $router->post('/kecamatan/updateKec',   'KecamatanController@updateKec');
   $router->get('/kecamatan/laporanKec', 'KecamatanController@laporanKec'); 
-  $router->post('/kecamatan/show-per-kec', 'KecamatanController@ShowPerKec');
-  $router->post('/kecamatan/SensusKec', 'KecamatanController@laporanSensusKec'); 
+  $router->post('/kecamatan/show-per-kec', 'KecamatanController@ShowPerKec'); 
 
 // Kelurahan
   $router->get('/kelurahan/getKelurahan','KelurahanController@getKel');
@@ -77,7 +76,6 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/kelurahan/showKel',   'KelurahanController@showKel');
   $router->post('/kelurahan/deleteKel','KelurahanController@deleteKel');
   $router->post('/kelurahan/laporanKel','KelurahanController@laporanKel');
-  $router->post('/kelurahan/SensusKel', 'kelurahanController@laporanSensusKel'); 
   $router->post('/kelurahan/laporanPerKel','kelurahanController@laporanPerKel');
 
 //Rt
@@ -110,9 +108,15 @@ $router->post('/kelompok-data/deleteKelompokData',   'KelompokDataController@del
 
 //TargetKk
 $router->post('/target-kk/showTargetKk','TargetKkController@showTargetKk');
+$router->post('/target-kk/showTargetKkPerProv','TargetKkController@showTargetKkPerProv');
 $router->get('/target-kk/getTargetKk', 'TargetKkController@getTargetKk');
 $router->post('/target-kk/storeTargetKk',   'TargetKkController@storeTargetKk');
 $router->post('/target-kk/updateTargetKk',   'TargetKkController@updateTargetKk');
+$router->post('/target-kk/deleteTargetKk',   'TargetKkController@deleteTargetKk');
 
 //LaporanSensus
 $router->post('/laporan-sensus/indonesia','LaporanSensusController@showLaporanSensusID');
+$router->post('/laporan-sensus/perprov','LaporanSensusController@showLaporanSensusPerProv');
+$router->post('/laporan-sensus/perkab','LaporanSensusController@showLaporanSensusPerKab');
+$router->post('/laporan-sensus/perkec','LaporanSensusController@showLaporanSensusPerKec');
+$router->post('/laporan-sensus/perkel','LaporanSensusController@showLaporanSensusPerKel');
