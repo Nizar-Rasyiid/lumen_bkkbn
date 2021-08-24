@@ -39,6 +39,7 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/vuser/storeUser',  'VuserController@storeUser');
   $router->post('/vuser/updateUser',  'VuserController@updateUser');
+  $router->post('/vuser/ubahPassword',  'VuserController@ubahPassword');
   $router->post('/vuser/deleteUser',  'VuserController@deleteUser');
 
 //   Provinsi

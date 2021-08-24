@@ -72,7 +72,7 @@ public function showUser(Request $request)
 
 
     $data =  $data->select('id','UserName','NamaLengkap',
-    'NIP','NIK','KabupatenKotaID','RoleID','Jabatan','Foto')
+    'Alamat','NIP','NIK','KabupatenKotaID','RoleID','Jabatan','Foto')
             ->where(['UserName'=>$UserName,/*$request->input('UserName'),*/
         'Password'=>md5($password)])->get();
         
@@ -133,6 +133,8 @@ public function showUser(Request $request)
             $Arryrequest["UserName"] =$request->$request->input("UserName");
             $Arryrequest["NamaLengkap"] =$request->$request->input("NamaLengkap");
             $Arryrequest["Jabatan"] =$request->$request->input("Jabatan");
+            $Arryrequest["NIK"] =$request->$request->input("NIK");
+            $Arryrequest["Alamat"] =$request->$request->input("Alamat");
             $Arryrequest["Password"] =$request->$request->input("Password");
         }
         // echo json_encode($Arryrequest);
@@ -151,6 +153,8 @@ public function showUser(Request $request)
                 'UserName' => $Arryrequest['UserName'],
                 'NamaLengkap' => $Arryrequest['NamaLengkap'],
                 'Jabatan' => $Arryrequest['Jabatan'],
+                'NIK' => $Arryrequest['NIK'],
+                'Alamat' => $Arryrequest['Alamat'],
                 'Password' => md5($Arryrequest['Password']),
                 /*'RegionalID' => $request->input('RegionalID'),
                 'OriginalID' => $request->input('OriginalID'),
@@ -184,6 +188,68 @@ public function showUser(Request $request)
         }
     }
 
+    public function ubahPassword(Request $request)
+    {
+         //
+         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+         && $request->isJson()
+     ) {
+         $dataReq = $request->json()->all();
+         //json_decode($dataReq, true);
+         $arrDataReq =json_decode(json_encode($dataReq),true);
+         $Password=$arrDataReq["Password"];
+         $id=$arrDataReq["id"];
+     }else{
+
+         $Password=$request->input["Password"];
+         $id=$request->input["id"];
+     }
+     
+     /*
+           $this->validate($request, [
+         
+               'UserName'   => 'required',
+               'NamaLengkap'   => 'required',
+               'Jabatan'   => 'required',
+           ]);
+     */
+     
+     try {
+         DB::beginTransaction();
+   
+         $p = V_user::find($id);
+
+             $p->Password = md5($Password);
+   
+
+
+         
+         $p->save();
+         DB::commit();
+
+         $response = [
+             'message'        => 'Update Master User Suskses',
+             'data'         => $p
+         ];
+
+         return response()->json($response, 200);
+
+     } catch (\Exception $e) {
+        DB::rollback();
+         $response = [
+             'message'        => 'Transaction DB Error',
+             'data'      => $e->getMessage()
+         ];
+         return response()->json($response, 500);
+     }
+
+     $response = [
+         'message'        => 'An Error Occured'
+     ];
+
+     return response()->json($response, 200);
+    }
+
     public function updateUser(Request $request)
     {
 
@@ -197,6 +263,8 @@ public function showUser(Request $request)
             $UserName=$arrDataReq["UserName"];
             $NamaLengkap=$arrDataReq["NamaLengkap"];
             $Jabatan=$arrDataReq["Jabatan"];
+            $NIK=$arrDataReq["NIK"];
+            $Alamat=$arrDataReq["Alamat"];
             $Password=$arrDataReq["Password"];
             $id=$arrDataReq["id"];
         }else{
@@ -204,6 +272,8 @@ public function showUser(Request $request)
             $UserName=$request->input["UserName"];
             $NamaLengkap=$request->input["NamaLengkap"];
             $Jabatan=$request->input["Jabatan"];
+            $NIK=$request->input["NIK"];
+            $Alamat=$request->input["Alamat"];
             $Password=$request->input["Password"];
             $id=$request->input["id"];
         }
@@ -223,6 +293,8 @@ public function showUser(Request $request)
             $p = V_user::find($id);
 
                 $p->UserName = $UserName;
+                $p->NIK = $NIK;
+                $p->Alamat = $Alamat;
                 $p->NamaLengkap = $NamaLengkap;
                 $p->Jabatan = $Jabatan;
                 $p->Password = md5($Password);

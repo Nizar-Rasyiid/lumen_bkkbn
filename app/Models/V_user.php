@@ -22,6 +22,7 @@ class V_user extends Model
       'NIK',
       'Jabatan',
       'Foto',
+      'Alamat',
       'KabupatenKotaID',
       'NoTelepon',
       'Email',
