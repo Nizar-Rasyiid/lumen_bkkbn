@@ -104,6 +104,7 @@ $router->post('/setting/deleteSetting',   'SettingController@deleteSetting');
 $router->post('/kelompok-data/showKelompokData','KelompokDataController@showKelompokData');
 $router->get('/kelompok-data/getKelompokData', 'KelompokDataController@getKelompokData');
 $router->post('/kelompok-data/storeKelompokData',   'KelompokDataController@storeKelompokData');
+$router->post('/kelompok-data/updateKelompokData','KelompokDataController@updateKelompokData');
 $router->post('/kelompok-data/deleteKelompokData',   'KelompokDataController@deleteKelompokData');
 
 //TargetKk
