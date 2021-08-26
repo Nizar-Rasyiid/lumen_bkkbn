@@ -39,6 +39,7 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/vuser/storeUser',  'VuserController@storeUser');
   $router->post('/vuser/updateUser',  'VuserController@updateUser');
+  $router->post('/vuser/ubahPassword',  'VuserController@ubahPassword');
   $router->post('/vuser/deleteUser',  'VuserController@deleteUser');
 
 //   Provinsi
@@ -104,6 +105,7 @@ $router->post('/setting/deleteSetting',   'SettingController@deleteSetting');
 $router->post('/kelompok-data/showKelompokData','KelompokDataController@showKelompokData');
 $router->get('/kelompok-data/getKelompokData', 'KelompokDataController@getKelompokData');
 $router->post('/kelompok-data/storeKelompokData',   'KelompokDataController@storeKelompokData');
+$router->post('/kelompok-data/updateKelompokData','KelompokDataController@updateKelompokData');
 $router->post('/kelompok-data/deleteKelompokData',   'KelompokDataController@deleteKelompokData');
 
 //TargetKk
