@@ -122,3 +122,9 @@ $router->post('/laporan-sensus/perprov','LaporanSensusController@showLaporanSens
 $router->post('/laporan-sensus/perkab','LaporanSensusController@showLaporanSensusPerKab');
 $router->post('/laporan-sensus/perkec','LaporanSensusController@showLaporanSensusPerKec');
 $router->post('/laporan-sensus/perkel','LaporanSensusController@showLaporanSensusPerKel');
+
+//User Access Survey
+$router->get('/user-access-survey/get','UserAccessSurveyController@getUAS');
+$router->post('/user-access-survey/store','UserAccessSurveyController@storeUAS');
+$router->post('/user-access-survey/update','UserAccessSurveyController@updateUAS');
+$router->post('/user-access-survey/delete','UserAccessSurveyController@deleteUAS');
