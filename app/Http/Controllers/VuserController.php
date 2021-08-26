@@ -198,10 +198,14 @@ public function showUser(Request $request)
          //json_decode($dataReq, true);
          $arrDataReq =json_decode(json_encode($dataReq),true);
          $Password=$arrDataReq["Password"];
+         $NamaLengkap = $arrDataReq["NamaLengkap"];
+         $Alamat=$arrDataReq["Alamat"];
          $id=$arrDataReq["id"];
      }else{
 
          $Password=$request->input["Password"];
+         $NamaLengkap=$request->input["NamaLengkap"];
+         $Alamat=$request->input["Alamat"];
          $id=$request->input["id"];
      }
      
@@ -219,6 +223,8 @@ public function showUser(Request $request)
    
          $p = V_user::find($id);
 
+            $p->NamaLengkap=$NamaLengkap;
+            $p->Alamat=$Alamat;
              $p->Password = md5($Password);
    
 
