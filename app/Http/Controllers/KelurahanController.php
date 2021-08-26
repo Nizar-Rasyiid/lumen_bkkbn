@@ -233,7 +233,6 @@ class KelurahanController extends Controller
 
     }
 
-
     public function deleteKel(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])

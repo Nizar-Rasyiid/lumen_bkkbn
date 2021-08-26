@@ -118,3 +118,5 @@ $router->post('/target-kk/deleteTargetKk',   'TargetKkController@deleteTargetKk'
 $router->post('/laporan-sensus/indonesia','LaporanSensusController@showLaporanSensusID');
 $router->post('/laporan-sensus/perprov','LaporanSensusController@showLaporanSensusPerProv');
 $router->post('/laporan-sensus/perkab','LaporanSensusController@showLaporanSensusPerKab');
+$router->post('/laporan-sensus/perkec','LaporanSensusController@showLaporanSensusPerKec');
+$router->post('/laporan-sensus/perkel','LaporanSensusController@showLaporanSensusPerKel');

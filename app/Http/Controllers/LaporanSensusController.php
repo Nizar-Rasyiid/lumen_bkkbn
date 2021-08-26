@@ -178,4 +178,103 @@ class LaporanSensusController extends Controller
 
         return response()->json($response, 500);
     }
+
+    public function showLaporanSensusPerKec(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $Periode_Sensus = $arrDataReq["Periode_Sensus"];
+            $id_kecamatan = $arrDataReq["id_kecamatan"];
+        }else{
+            $Periode_Sensus = $request->input["Periode_Sensus"];
+            $id_kecamatan = $request->input["id_kecamatan"];
+        }
+
+        $data = DB::select(DB::raw("SELECT kelurahan.nama_kelurahan,
+        target_sensus_indo.KK
+        FROM (SELECT 
+        id_kecamatan,
+        id_kelurahan,
+        Periode_Sensus,   
+        sum(target_kk) as KK
+        FROM Target_KK GROUP BY id_kecamatan,id_kelurahan,Periode_Sensus
+        HAVING Periode_Sensus = $Periode_Sensus
+        ) target_sensus_indo
+        INNER JOIN kecamatan ON target_sensus_indo.id_kecamatan = kecamatan.id_kecamatan
+        INNER JOIN kelurahan ON target_sensus_indo.id_kelurahan = kelurahan.id_kelurahan
+        WHERE kecamatan.id_kecamatan = $id_kecamatan"
+            )
+        );
+        
+        if($data){
+            $response = [
+                'message'		=> 'Show Kecamatan',
+                'data' 		    => $data,
+            ];
+
+            // echo(response()->json(data));
+            return response()->json($response, 200);
+            }
+
+            $response = [
+                'message'		=> 'An Error Occured'
+            ];
+
+            return response()->json($response, 500);
+    }
+
+    public function showLaporanSensusPerKel(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $Periode_Sensus = $arrDataReq["Periode_Sensus"];
+            $id_kelurahan = $arrDataReq["id_kelurahan"];
+        }else{
+            $Periode_Sensus = $request->input["Periode_Sensus"];
+            $id_kelurahan = $request->input["id_kelurahan"];
+        }
+
+        $data = DB::select(DB::raw("SELECT 
+        target_sensus_indo.KK,
+        target_sensus_indo.jumRW, 
+        target_sensus_indo.jumRT
+        FROM (SELECT 
+        id_kelurahan,
+        Periode_Sensus,   
+        sum(target_kk) as KK,
+        count(DISTINCT(id_rw)) as jumRW, 
+        count(DISTINCT(id_rt)) as jumRT 
+        FROM Target_KK GROUP BY id_kelurahan,Periode_Sensus
+        HAVING Periode_Sensus = $Periode_Sensus
+        ) target_sensus_indo
+        INNER JOIN kelurahan ON target_sensus_indo.id_kelurahan = kelurahan.id_kelurahan
+        WHERE kelurahan.id_kelurahan = $id_kelurahan"
+        )
+        );
+
+        if($data){
+            $response = [
+                'message'		=> 'Laporan PerKelurahan',
+                'data' 		    => $data,
+
+            ];
+            // var_dump($response);
+            return response()->json($response, 200);
+
+        }
+
+        $response = [
+            'message'		=> 'An Error Occured'
+        ];
+
+        return response()->json($response, 500);
+    }
 }

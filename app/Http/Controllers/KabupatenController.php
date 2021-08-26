@@ -126,42 +126,43 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
     }
 
     public function showKab(Request $request)
-    {if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
-        && $request->isJson()
-    ) {
-        $dataReq = $request->json()->all();
-        //json_decode($dataReq, true);
-        $arrDataReq =json_decode(json_encode($dataReq),true);
-        $id_provinsi = $arrDataReq["id_provinsi"];
-    }else{
-        $id_provinsi = $request->input["id_provinsi"];
-    }
-    $data = DB::table('kabupaten')
-    ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
-    ->select('kabupaten.*','provinsi.nama_provinsi')
-    ->where('kabupaten.id_provinsi', $id_provinsi)
-    ->get();
-
-            try {
-    if($data){
-            $response = [
-                'message'		=> 'Update Kabupaten Sukses',
-                'data' 		    => $data,
-            ];
-     
-            return response()->json($response, 200);
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $id_provinsi = $arrDataReq["id_provinsi"];
+        }else{
+            $id_provinsi = $request->input["id_provinsi"];
         }
-     
-     
-     
-        } catch (\Exception $e) {
-            DB::rollback();
-            $response = [
-                'message'        => 'Transaction DB Error',
-                'data'      => $e->getMessage()
+        $data = DB::table('kabupaten')
+        ->join('provinsi','kabupaten.id_provinsi','=','provinsi.id_provinsi')
+        ->select('kabupaten.*','provinsi.nama_provinsi')
+        ->where('kabupaten.id_provinsi', $id_provinsi)
+        ->get();
+    
+                try {
+        if($data){
+                $response = [
+                    'message'		=> 'Update Kabupaten Sukses',
+                    'data' 		    => $data,
                 ];
-                 return response()->json($response, 500);
-             }
+            
+                return response()->json($response, 200);
+            }
+        
+        
+        
+            } catch (\Exception $e) {
+                DB::rollback();
+                $response = [
+                    'message'        => 'Transaction DB Error',
+                    'data'      => $e->getMessage()
+                    ];
+                     return response()->json($response, 500);
+                 }
     }
 
     public function showPerKab(Request $request)

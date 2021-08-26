@@ -134,7 +134,6 @@ class KecamatanController extends Controller
     }
 
 
-
     // Untuk Kecamatan Saja
     public function showKecs(Request $request)
     {
