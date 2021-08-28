@@ -72,7 +72,7 @@ public function showUser(Request $request)
 
 
     $data =  $data->select('id','UserName','NamaLengkap',
-    'Alamat','NIP','NIK','KabupatenKotaID','RoleID','Jabatan','Foto')
+    'Alamat','NIP','NIK','KabupatenKotaID','RoleID','Jabatan','Email')
             ->where(['UserName'=>$UserName,/*$request->input('UserName'),*/
         'Password'=>md5($password)])->get();
         
@@ -133,6 +133,8 @@ public function showUser(Request $request)
             $Arryrequest["UserName"] =$request->$request->input("UserName");
             $Arryrequest["NamaLengkap"] =$request->$request->input("NamaLengkap");
             $Arryrequest["Jabatan"] =$request->$request->input("Jabatan");
+            $Arryrequest["Email"] =$request->$request->input("Email");
+            // $Arryrequest["Foto"] =$request->$request->input("Foto");
             $Arryrequest["NIK"] =$request->$request->input("NIK");
             $Arryrequest["Alamat"] =$request->$request->input("Alamat");
             $Arryrequest["Password"] =$request->$request->input("Password");
@@ -153,6 +155,8 @@ public function showUser(Request $request)
                 'UserName' => $Arryrequest['UserName'],
                 'NamaLengkap' => $Arryrequest['NamaLengkap'],
                 'Jabatan' => $Arryrequest['Jabatan'],
+                'Email' => $Arryrequest['Email'],
+                // 'Foto' => $Arryrequest['Foto'],
                 'NIK' => $Arryrequest['NIK'],
                 'Alamat' => $Arryrequest['Alamat'],
                 'Password' => md5($Arryrequest['Password']),
@@ -269,6 +273,7 @@ public function showUser(Request $request)
             $UserName=$arrDataReq["UserName"];
             $NamaLengkap=$arrDataReq["NamaLengkap"];
             $Jabatan=$arrDataReq["Jabatan"];
+            $Email=$arrDataReq["Email"];
             $NIK=$arrDataReq["NIK"];
             $Alamat=$arrDataReq["Alamat"];
             $Password=$arrDataReq["Password"];
@@ -278,6 +283,7 @@ public function showUser(Request $request)
             $UserName=$request->input["UserName"];
             $NamaLengkap=$request->input["NamaLengkap"];
             $Jabatan=$request->input["Jabatan"];
+            $Email=$request->input["Email"];
             $NIK=$request->input["NIK"];
             $Alamat=$request->input["Alamat"];
             $Password=$request->input["Password"];
@@ -302,19 +308,9 @@ public function showUser(Request $request)
                 $p->NIK = $NIK;
                 $p->Alamat = $Alamat;
                 $p->NamaLengkap = $NamaLengkap;
+                $p->Email = $Email;
                 $p->Jabatan = $Jabatan;
                 $p->Password = md5($Password);
-                /*$p->RegionalID = $request->input('RegionalID');
-                $p->OriginalID = $request->input('OriginalID');
-                $p->OriginalNama = $request->input('OriginalNama');
-                $p->OriginalKode = $request->input('OriginalKode');
-                $p->Created = $request->input('Created');
-                $p->CreatedBy = $request->input('CreatedBy');
-                $p->LastModified = $request->input('LastModified');
-                $p->LastModifiedBy = $request->input('LastModifiedBy');
-                $p->id_old = $request->input('id_old');
-                $p->UserName_old = $request->input('UserName_old');*/
-
 
             
             $p->save();
