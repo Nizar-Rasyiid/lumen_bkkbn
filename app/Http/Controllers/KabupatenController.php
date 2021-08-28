@@ -291,10 +291,8 @@ GROUP BY Kab.`id_kabupaten`,kab.`nama_kabupaten`"
             //json_decode($dataReq, true);
             $arrDataReq =json_decode(json_encode($dataReq),true);
             $id_kabupaten=$arrDataReq["id_kabupaten"];
-            $LastModifiedBy=$arrDataReq["LastModifiedBy"];
         }else{
             $id_kabupaten=$request->input["id_kabupaten"];
-            $LastModifiedBy=$request->input["LastModifiedBy"];
         }
 
         $data = Kabupaten::find($id_kabupaten);
