@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Mail;
+// use Mail;
 use App\Mail\IuranTetapMail;
 use App\Mail\EvaluatorMail;
-
+use Illuminate\Support\Facades\Mail;
 use App\User;
 
 class MailController extends Controller
@@ -31,5 +31,15 @@ class MailController extends Controller
     //     $message->to('andhika.ragilkesuma@gmail.com');
     //     $message->subject('Test Email dari Laravel EPNBP');
     // });
+    }
+
+    public function mail() {
+        $data = array('name'=>'Arunkumar');
+        Mail::send('mail', $data, function($message) {
+            $message->to('santriquarta@gmail.com', 'Arunkumar')->subject('Test Mail from Selva');
+            $message->from('selva@snamservices.com','Admin');
+        });
+        echo 'Email Sent. Check your inbox.';
+        
     }
 }
