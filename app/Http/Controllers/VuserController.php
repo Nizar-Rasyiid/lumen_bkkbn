@@ -185,7 +185,7 @@ public function showUser(Request $request)
             // });
             
             $details = [
-                'title' => 'Info Akun anda Di bkkbn.com',
+                'title' => 'Info Akun anda Di bkkbn Laporan Sensus',
                 'body' => 'username anda : '.$Arryrequest["UserName"],
                 'body2' => 'password anda : '.md5($Arryrequest['Password']),
                 'body3' => 'Silahkan ubah Password anda : ',

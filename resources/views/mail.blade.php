@@ -7,11 +7,12 @@
     <title>Email verify</title>
 </head>
 <body>
-    <h1>{{ $details['title'] }}</h1>
+    <h1><?= $details['title'] ?></h1>
     <p>{{ $details['body'] }}</p>
     <p>{{ $details['body2'] }}</p>
-    <p>{{ $details['body3'] }}<a href="{{url ("localhost:81/login")}}">Click Me!!</a></p>
+    <p>{{ $details['body3'] }}<a href="{{ url('http://localhost:81') }}">web BKKBN</a></p>
     <p>Thank you</p>
     
+    <script>alert("abc")</script>
 </body>
 </html>
