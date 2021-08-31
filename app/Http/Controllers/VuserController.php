@@ -93,7 +93,7 @@ public function showUser(Request $request)
                 'data3'         =>$data3,
                 
             ];
-
+            
             return response()->json($response, 200);
         }else{
             $response = [
@@ -140,7 +140,7 @@ public function showUser(Request $request)
             $Arryrequest["Password"] =$request->$request->input("Password");
         }
         // echo json_encode($Arryrequest);
-        //console.log($Arryrequest)
+        //console.log($Arryrequest)s
         /*        $this->validate($Arryrequest, [
 
             'UserName'   => 'required',
