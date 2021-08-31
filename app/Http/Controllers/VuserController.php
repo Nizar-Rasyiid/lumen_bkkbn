@@ -80,6 +80,7 @@ public function showUser(Request $request)
         
     $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2"));
     $data3 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 8"));
+    $data4 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 9"));
 
 
     
@@ -92,6 +93,7 @@ public function showUser(Request $request)
                 'data' 		    => $data,
                 'data2'         =>$data2,
                 'data3'         =>$data3,
+                'data4'         =>$data4,
                 
             ];
             
@@ -139,6 +141,9 @@ public function showUser(Request $request)
             $Arryrequest["NIK"] =$request->$request->input("NIK");
             $Arryrequest["Alamat"] =$request->$request->input("Alamat");
             $Arryrequest["Password"] =$request->$request->input("Password");
+            $Arryrequest["Title Email"] =$request->$request->input("Title Email");
+            $Arryrequest["body"] =$request->$request->input("body");
+            $Arryrequest["url"] =$request->$request->input("url");
         }
         // echo json_encode($Arryrequest);
         //console.log($Arryrequest)s
@@ -183,12 +188,12 @@ public function showUser(Request $request)
             //     $message->to('santriquarta@gmail.com', 'Dzul')->subject('Test Mail from lumen');
             //     $message->from('dzulkurrr@gmail.com','Admin');
             // });
-            
+            $body = str_replace('[UserName]',$Arryrequest['UserName'],$Arryrequest['body']);
+            $body = str_replace('[Password]',$Arryrequest['Password'],$body);
+            $body = str_replace('[url]',$Arryrequest['url'],$body);
             $details = [
-                'title' => 'Info Akun anda Di bkkbn Laporan Sensus',
-                'body' => 'username anda : '.$Arryrequest["UserName"],
-                'body2' => 'password anda : '.md5($Arryrequest['Password']),
-                'body3' => 'Silahkan ubah Password anda : ',
+                'title' => $Arryrequest['Title Email'],
+                'body' => $body,
                 ];
                
                 Mail::to($Arryrequest['Email'])->send(new \App\Mail\MyTestMail($details));
@@ -329,7 +334,7 @@ public function showUser(Request $request)
                 $p->NamaLengkap = $NamaLengkap;
                 $p->Email = $Email;
                 $p->Jabatan = $Jabatan;
-                $p->Password = md5($Password);
+                $p->Password = $Password;
 
             
             $p->save();
