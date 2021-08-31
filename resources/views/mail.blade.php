@@ -10,7 +10,7 @@
     <h1>{{ $details['title'] }}</h1>
     <p>{{ $details['body'] }}</p>
     <p>{{ $details['body2'] }}</p>
-    <p>{{ $details['body3'] }}<a href="localhost:81">web Bkkbn</a></p>
+    <p>{{ $details['body3'] }}<a href="{{url ("localhost:81/login")}}">Click Me!!</a></p>
     <p>Thank you</p>
     
 </body>

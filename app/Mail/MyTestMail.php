@@ -28,7 +28,7 @@ class MyTestMail extends Mailable
      * @return $this
      */    public function build()
     {
-        return $this->subject('Mail from websitepercobaan.com')
+        return $this->subject('Mail from Bkkbn.com')
                     ->view('mail');
     }
 }
