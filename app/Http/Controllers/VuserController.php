@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Mail\MyTestMail;
+use Illuminate\Support\Facades\Mail;
 //Model
 use App\Models\WebSetting;
 //use App\Models\Provinsi;
@@ -176,10 +177,28 @@ public function showUser(Request $request)
 
             DB::commit();
             
+            // $data = [$p];
+            // Mail::send('mail', $data, function($message) {
+            //     var_dump($message);
+            //     $message->to('santriquarta@gmail.com', 'Dzul')->subject('Test Mail from lumen');
+            //     $message->from('dzulkurrr@gmail.com','Admin');
+            // });
+            
+            $details = [
+                'title' => 'Info Akun anda Di bkkbn.com',
+                'body' => 'username anda : '.$Arryrequest["UserName"],
+                'body2' => 'password anda : '.$Arryrequest["Password"],
+                'body3' => 'Silahkan ubah Password anda : ',
+                ];
+               
+                Mail::to('santriquarta@gmail.com')->send(new \App\Mail\MyTestMail($details));
+
             $response = [
-                'message'        => 'Success',
+                'message'        => 'Success. Email Sent, Check your inbox',
                 'data'         => $p
             ];
+            
+            // echo 'Email Sent. Check your inbox.';
 
             return response()->json($response, 200);
         } catch (\Exception $e) {

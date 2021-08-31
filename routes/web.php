@@ -128,3 +128,5 @@ $router->get('/user-access-survey/get','UserAccessSurveyController@getUAS');
 $router->post('/user-access-survey/store','UserAccessSurveyController@storeUAS');
 $router->post('/user-access-survey/update','UserAccessSurveyController@updateUAS');
 $router->post('/user-access-survey/delete','UserAccessSurveyController@deleteUAS');
+
+$router->get('/mail','MailController@mail');
