@@ -187,11 +187,11 @@ public function showUser(Request $request)
             $details = [
                 'title' => 'Info Akun anda Di bkkbn.com',
                 'body' => 'username anda : '.$Arryrequest["UserName"],
-                'body2' => 'password anda : '.$Arryrequest["Password"],
+                'body2' => 'password anda : '.md5($Arryrequest['Password']),
                 'body3' => 'Silahkan ubah Password anda : ',
                 ];
                
-                Mail::to('santriquarta@gmail.com')->send(new \App\Mail\MyTestMail($details));
+                Mail::to($Arryrequest['Email'])->send(new \App\Mail\MyTestMail($details));
 
             $response = [
                 'message'        => 'Success. Email Sent, Check your inbox',
