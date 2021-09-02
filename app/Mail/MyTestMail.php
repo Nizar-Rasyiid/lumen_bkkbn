@@ -28,7 +28,7 @@ class MyTestMail extends Mailable
      * @return $this
      */    public function build()
     {
-        return $this->subject('Mail from BKKBN Laporan Sensus')
+        return $this->subject('Account Credentials Verification')
                     ->view('mail');
     }
 }
