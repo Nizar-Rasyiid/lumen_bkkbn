@@ -22,7 +22,7 @@ class UserAccessSurveyController extends Controller
     {
         $data = DB::table('user_access_survey')
         ->join('v_user','user_access_survey.id_user','=','v_user.id')
-        ->select('user_access_survey.*','v_user.NamaLengkap')
+        ->select('user_access_survey.*','v_user.NamaLengkap','v_user.Password')
         ->get();
 
         if($data){
@@ -96,6 +96,78 @@ class UserAccessSurveyController extends Controller
         ];
         return response()->json($response, 500);
     }
+    }
+
+    public function showUAS(Request $request)
+    {
+        
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            //json_decode($dataReq, true);
+            $arrDataReq =json_decode(json_encode($dataReq),true);
+            $UserName=$arrDataReq["UserName"];
+            $password=$arrDataReq["password"];
+        }else{
+            $UserName=$request->input('UserName');
+            $password=$request->input('password');
+        }
+        $data = new UserAccessSurvey();
+    
+
+    
+        $data =  $data->select('id','id_user')
+        ->join('v_user','user_access_survey.id_user','=','v_user.id')
+        ->select('v_user.Password','v_user.UserName')
+                ->where(['UserName'=>$UserName,/*$request->input('id_user'),*/
+            'Password'=>md5($password)])->get();
+            
+            
+        $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2"));
+        $data3 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 8"));
+        $data4 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 9"));
+    
+    
+        
+        try {
+           if(count($data)==1){
+               
+                $response = [
+                    'message'		=> 'Show User',
+                    'code'          => '00',
+                    'data' 		    => $data,
+                    'data2'         =>$data2,
+                    'data3'         =>$data3,
+                    'data4'         =>$data4,
+                    
+                ];
+                
+                return response()->json($response, 200);
+            }else{
+                $response = [
+                    'message'		=> 'Login tidak sesuai',
+                    'code'          => '01',
+                    'data' 		    => $data,
+                ];
+    
+            }
+    
+                return response()->json($response, 200);
+    
+    
+        } catch (\Exception $e) {
+            DB::rollback();
+            $response = [
+                'message'        => 'Transaction DB Error',
+                'code'          => '02',
+                'data'      => $e->getMessage()
+            ];
+            return response()->json($response, 500);
+        }
+                
+    
+    
     }
 
     public function updateUAS(Request $request)

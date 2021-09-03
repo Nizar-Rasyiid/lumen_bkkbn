@@ -35,6 +35,15 @@ $router->get('/vuser/getUser',  'VuserController@getUser');
       return $router->app->version();
   });
 
+
+//User Access Survey
+$router->get('/user-access-survey/get','UserAccessSurveyController@getUAS');
+$router->post('/user-access-survey/showUAS','UserAccessSurveyController@showUAS');
+$router->post('/user-access-survey/store','UserAccessSurveyController@storeUAS');
+$router->post('/user-access-survey/update','UserAccessSurveyController@updateUAS');
+$router->post('/user-access-survey/delete','UserAccessSurveyController@deleteUAS');
+
+// V user
   $router->post('/vuser/showUser',   'VuserController@showUser');
   $router->get('/vuser/getUser',  'VuserController@getUser');
   $router->post('/vuser/storeUser',  'VuserController@storeUser');
@@ -123,10 +132,5 @@ $router->post('/laporan-sensus/perkab','LaporanSensusController@showLaporanSensu
 $router->post('/laporan-sensus/perkec','LaporanSensusController@showLaporanSensusPerKec');
 $router->post('/laporan-sensus/perkel','LaporanSensusController@showLaporanSensusPerKel');
 
-//User Access Survey
-$router->get('/user-access-survey/get','UserAccessSurveyController@getUAS');
-$router->post('/user-access-survey/store','UserAccessSurveyController@storeUAS');
-$router->post('/user-access-survey/update','UserAccessSurveyController@updateUAS');
-$router->post('/user-access-survey/delete','UserAccessSurveyController@deleteUAS');
 
 $router->get('/mail','MailController@mail');
