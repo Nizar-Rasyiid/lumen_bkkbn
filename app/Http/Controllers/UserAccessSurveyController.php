@@ -22,7 +22,7 @@ class UserAccessSurveyController extends Controller
     {
         $data = DB::table('user_access_survey')
         ->join('v_user','user_access_survey.id_user','=','v_user.id')
-        ->select('user_access_survey.*','v_user.NamaLengkap','v_user.Password')
+        ->select('user_access_survey.*','v_user.NamaLengkap','v_user.Password',"user_access_survey.id_provinsi")
         ->get();
 
         if($data){
@@ -117,16 +117,33 @@ class UserAccessSurveyController extends Controller
     
 
     
-        $data =  $data->select('id','id_user')
+        $data =  $data->select('id','id_user','id_provinsi','id_kabupaten','id_kecamatan','id_kelurahan','id_rw','id_rt')
         ->join('v_user','user_access_survey.id_user','=','v_user.id')
-        ->select('v_user.Password','v_user.UserName')
-                ->where(['UserName'=>$UserName,/*$request->input('id_user'),*/
+        ->join('provinsi','user_access_survey.id_provinsi','=','provinsi.id_provinsi')
+        ->join('kabupaten','user_access_survey.id_kabupaten','=','kabupaten.id_kabupaten')
+        ->join('kecamatan','user_access_survey.id_kecamatan','=','kecamatan.id_kecamatan')
+        ->join('kelurahan','user_access_survey.id_kelurahan','=','kelurahan.id_kelurahan')
+        ->join('rw','user_access_survey.id_rw','=','rw.id_rw')
+        ->join('rt','user_access_survey.id_rt','=','rt.id_rt')
+        ->select('user_access_survey.*','v_user.Password','v_user.UserName','v_user.NamaLengkap','v_user.Jabatan','v_user.NIK','v_user.Email','v_user.Alamat',
+        'provinsi.nama_provinsi',
+        'kabupaten.nama_kabupaten',
+        'kecamatan.nama_kecamatan',
+        'kelurahan.nama_kelurahan',
+        'rw.nama_rw',
+        'rt.nama_rt',
+
+        
+        
+        )
+                ->where(['UserName'=>$UserName,
             'Password'=>md5($password)])->get();
             
-            
+        
         $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2"));
         $data3 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 8"));
         $data4 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 9"));
+        $data5 = DB::select(DB::raw("SELECT * FROM user_access_survey WHERE Id_provinsi = 146"));
     
     
         
