@@ -27,15 +27,15 @@ class UserAccessSurveyController extends Controller
 
         if($data){
             $response = [
-                'message'		=> 'Show UAS',
-                'data' 		    => $data,
+                'message'       => 'Show UAS',
+                'data'          => $data,
             ];
 
             return response()->json($response, 200);
         }
 
         $response = [
-            'message'		=> 'An Error Occured'
+            'message'       => 'An Error Occured'
         ];
 
         return response()->json($response, 500);
@@ -113,41 +113,42 @@ class UserAccessSurveyController extends Controller
             $UserName=$request->input('UserName');
             $password=$request->input('password');
         }
+        
         $data = new UserAccessSurvey();
     
-
-    
-        $data =  $data->select('id','id_user','id_provinsi','id_kabupaten','id_kecamatan','id_kelurahan','id_rw','id_rt','Periode_Sensus')
-        ->join('v_user','user_access_survey.id_user','=','v_user.id')
-        ->join('provinsi','user_access_survey.id_provinsi','=','provinsi.id_provinsi')
-        ->join('kabupaten','user_access_survey.id_kabupaten','=','kabupaten.id_kabupaten')
-        ->join('kecamatan','user_access_survey.id_kecamatan','=','kecamatan.id_kecamatan')
-        ->join('kelurahan','user_access_survey.id_kelurahan','=','kelurahan.id_kelurahan')
-        ->join('rw','user_access_survey.id_rw','=','rw.id_rw')
-        ->join('rt','user_access_survey.id_rt','=','rt.id_rt')
-        ->select('user_access_survey.*',
-        'v_user.Password',
-        'v_user.UserName',
-        'v_user.NamaLengkap',
-        'v_user.Jabatan',
-        'v_user.NIK',
-        'v_user.Email',
-        'v_user.Alamat',
-        'provinsi.nama_provinsi',
-        'kabupaten.nama_kabupaten',
-        'kecamatan.nama_kecamatan',
-        'kelurahan.nama_kelurahan',
-        'rw.nama_rw',
-        'rt.nama_rt',
-        )
+        $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2"));
+        $data =  $data->select('Password','UserName','NamaLengkap','Jabatan','NIK','Email','Alamat','id')
+        ->from('v_user')
+        // ->join('v_user','user_access_survey.id_user','=','v_user.id')
+        // ->join('provinsi','user_access_survey.id_provinsi','=','provinsi.id_provinsi')
+        // ->join('kabupaten','user_access_survey.id_kabupaten','=','kabupaten.id_kabupaten')
+        // ->join('kecamatan','user_access_survey.id_kecamatan','=','kecamatan.id_kecamatan')
+        // ->join('kelurahan','user_access_survey.id_kelurahan','=','kelurahan.id_kelurahan')
+        // ->join('rw','user_access_survey.id_rw','=','rw.id_rw')
+        // ->join('rt','user_access_survey.id_rt','=','rt.id_rt')
+        // ->select('user_access_survey.*',
+        // 'v_user.Password',
+        // 'v_user.UserName',
+        // 'v_user.NamaLengkap',
+        // 'v_user.Jabatan',
+        // 'v_user.NIK',
+        // 'v_user.Email',
+        // 'v_user.Alamat',
+        // 'provinsi.nama_provinsi',
+        // 'kabupaten.nama_kabupaten',
+        // 'kecamatan.nama_kecamatan',
+        // 'kelurahan.nama_kelurahan',
+        // 'rw.nama_rw',
+        // 'rt.nama_rt',
+        // )
         ->where(['UserName'=>$UserName,
         'Password'=>md5($password)])->get();
-        $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2"));
+        
         $data3 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 8"));
         $data4 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 9"));
         $data5 = DB::select(DB::raw("SELECT nama_provinsi,nama_kabupaten,nama_kecamatan,nama_kelurahan,nama_rw,nama_rt
         FROM (SELECT id_provinsi,id_kabupaten,id_kecamatan,id_kelurahan,id_rw,id_rt FROM user_access_survey  
-        WHERE Periode_Sensus = ".$data[0]["Periode_Sensus"]." AND id_user = ".$data[0]["id_user"].") acc_wilayah  
+        WHERE Periode_Sensus = ".$data2[0]->value_setting." AND id_user = ".$data[0]["id"].") acc_wilayah  
         inner join provinsi on acc_wilayah.id_provinsi=provinsi.id_provinsi
         inner join kabupaten on acc_wilayah.id_kabupaten=kabupaten.id_kabupaten
         inner join kecamatan on acc_wilayah.id_kecamatan=kecamatan.id_kecamatan
@@ -159,12 +160,17 @@ class UserAccessSurveyController extends Controller
          from 
         (SELECT id_provinsi,id_kabupaten,id_kecamatan,id_kelurahan,id_rw,id_rt FROM 
         user_access_survey WHERE
-         id_user = ".$data[0]["id_user"].") 
+         id_user = ".$data[0]["id"]." AND
+         Periode_Sensus = ".$data2[0]->value_setting.") 
         acc_rt INNER JOIN
          rt on 
          acc_rt.id_rt=rt.id_rt 
          GROUP BY acc_rt.id_provinsi,acc_rt.id_kabupaten,acc_rt.id_kecamatan,acc_rt.id_kelurahan,acc_rt.id_rw "));
-        
+         $rt = DB::select(DB::raw("SELECT nama_rt
+         FROM (SELECT id_rt FROM user_access_survey  
+         WHERE Periode_Sensus = ".$data2[0]->value_setting.") acc_rt  
+         inner join rt on acc_rt.id_rt=rt.id_rt"
+         ));
          
          $rt = DB::select(DB::raw("SELECT nama_rt
          FROM (SELECT id_rt FROM user_access_survey  
@@ -177,9 +183,9 @@ class UserAccessSurveyController extends Controller
            if(count($data)==1){
                
                 $response = [
-                    'message'		=> 'Show User Success',
+                    'message'       => 'Show User Success',
                     'code'          => '00',
-                    'data' 		    => $data,
+                    'data'          => $data,
                     'data2'         =>$data2,
                     'data3'         =>$data3,
                     'data4'         =>$data4,   
@@ -192,9 +198,9 @@ class UserAccessSurveyController extends Controller
                 return response()->json($response, 200);
             }else{
                 $response = [
-                    'message'		=> 'Login tidak sesuai',
+                    'message'       => 'Login tidak sesuai',
                     'code'          => '01',
-                    'data' 		    => $data,
+                    'data'          => $data,
                 ];
     
             }
@@ -319,8 +325,8 @@ class UserAccessSurveyController extends Controller
         try {
             if($data->delete()){
                  $response = [
-                     'message'		=> 'Delete UAS Sukses',
-                     'data' 		    => $data,
+                     'message'      => 'Delete UAS Sukses',
+                     'data'             => $data,
                  ];
  
                  return response()->json($response, 200);
