@@ -168,7 +168,7 @@ class UserAccessSurveyController extends Controller
          
          $rt = DB::select(DB::raw("SELECT nama_rt
          FROM (SELECT id_rt FROM user_access_survey  
-         WHERE Periode_Sensus = ".$data[0]["Periode_Sensus"].") acc_rt  
+         WHERE Periode_Sensus = ".$data[0]["Periode_Sensus"]." AND id_rw = ".$data[0]["id_rw"].") acc_rt  
          inner join rt on acc_rt.id_rt=rt.id_rt"
          ));
     
@@ -234,7 +234,7 @@ class UserAccessSurveyController extends Controller
             $id_rt=$arrDataReq["id_rt"];
             $Periode_Sensus=$arrDataReq["Periode_Sensus"];
             $LastModifiedBy=$arrDataReq["LastModifiedBy"];
-        }else{
+         }else{
             $id=$request->input["id"];
             $id_user=$request->input["id_user"];
             $id_provinsi=$request->input["id_provinsi"];
