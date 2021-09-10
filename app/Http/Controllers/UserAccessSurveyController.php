@@ -166,7 +166,11 @@ class UserAccessSurveyController extends Controller
          GROUP BY acc_rt.id_provinsi,acc_rt.id_kabupaten,acc_rt.id_kecamatan,acc_rt.id_kelurahan,acc_rt.id_rw "));
         
          
-    
+         $rt = DB::select(DB::raw("SELECT nama_rt
+         FROM (SELECT id_rt FROM user_access_survey  
+         WHERE Periode_Sensus = ".$data[0]["Periode_Sensus"].") acc_rt  
+         inner join rt on acc_rt.id_rt=rt.id_rt"
+         ));
     
         
         try {
@@ -181,6 +185,7 @@ class UserAccessSurveyController extends Controller
                     'data4'         =>$data4,   
                     'wilayah'        =>$wilayah,
                     'data5'       =>$data5, 
+                    'rt'       =>$rt, 
                     
                 ];
                 
