@@ -132,5 +132,10 @@ $router->post('/laporan-sensus/perkab','LaporanSensusController@showLaporanSensu
 $router->post('/laporan-sensus/perkec','LaporanSensusController@showLaporanSensusPerKec');
 $router->post('/laporan-sensus/perkel','LaporanSensusController@showLaporanSensusPerKel');
 
+//Form KK
+$router->post('/form-kk/showFormKK','FormKKController@showFormKK');
+$router->get('/form-kk/getFormKK', 'FormKKController@getFormKK');
+$router->post('/form-kk/storeFormKK','FormKKController@storeFormKK');
+
 
 $router->get('/mail','MailController@mail');
