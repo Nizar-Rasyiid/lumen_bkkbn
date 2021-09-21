@@ -169,7 +169,7 @@ class UserAccessSurveyController extends Controller
          var_dump($wilayah);
          $rt = DB::select(DB::raw("SELECT nama_rt
          FROM (SELECT id_rt FROM user_access_survey  
-         WHERE Periode_Sensus = ".$data2[0]->value_setting." AND ".$wilayah[0]->id_rw.") acc_rt  
+         WHERE Periode_Sensus = ".$data2[0]->value_setting." AND id_rw = ".$wilayah[0]->id_rw.") acc_rt  
          inner join rt on acc_rt.id_rt=rt.id_rt"
          ));
          
