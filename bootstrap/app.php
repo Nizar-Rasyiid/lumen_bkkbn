@@ -81,6 +81,7 @@ $app->configure('app');
 |--------------------------------------------------------------------------
 */
 $app->register(App\Providers\CatchAllOptionsRequestsProvider::class);
+$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 
 
 

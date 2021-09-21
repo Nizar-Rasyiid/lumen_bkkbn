@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": "^7.3|^8.0",
+        "flipbox/lumen-generator": "^8.2",
         "illuminate/mail": "^8.58",
         "laravel/lumen-framework": "^8.0"
     },
