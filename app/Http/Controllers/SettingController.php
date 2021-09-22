@@ -54,11 +54,11 @@ class SettingController extends Controller
         }else{
             $Id_kelompok_data=$request->input["Id_kelompok_data"];
         }
-
+        
         $data = DB::table('setting')
         ->join('kelompok_data','setting.Id_kelompok_data','=','kelompok_data.Id_kelompok_data')
         ->select('setting.*','kelompok_data.nama_kelompok_data')
-        ->where('setting.Id_kelompok_data', $Id_kelompok_data)
+        ->where('setting.Id_kelompok_data', $Id_kelompok_data )
         ->get();
 
         if($data){

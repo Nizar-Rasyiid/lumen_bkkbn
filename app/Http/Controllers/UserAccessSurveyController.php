@@ -172,7 +172,13 @@ class UserAccessSurveyController extends Controller
          inner join rt on acc_rt.id_rt=rt.id_rt"
          ));
          
-    
+         $agama = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 4"));
+         $status_nikah = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 3"));
+         $jenis_kelamin = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 1"));
+         $kewarganegaraan = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 10"));
+         $pendidikan = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 11"));
+         $status_dalam_keluarga = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 12"));
+         $pekerjaan = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 13"));
     
         
         try {
@@ -186,8 +192,15 @@ class UserAccessSurveyController extends Controller
                     'data3'         =>$data3,
                     'data4'         =>$data4,   
                     'wilayah'        =>$wilayah,
-                    'data5'       =>$data5, 
-                    'rt'       =>$rt, 
+                    'data5'         =>$data5, 
+                    'agama'             =>$agama,
+                    'status_nikah'      =>$status_nikah,
+                    'jenis_kelamin'     =>$jenis_kelamin,
+                    'kewarganegaraan'   =>$kewarganegaraan,
+                    'pendidikan'           =>$pendidikan,
+                    'status_dalam_keluarga' =>$status_dalam_keluarga,
+                    'pekerjaan'             =>$pekerjaan,
+                    'rt'                     =>$rt, 
                     
                 ];
                 

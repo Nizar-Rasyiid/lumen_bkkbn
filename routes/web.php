@@ -137,5 +137,12 @@ $router->post('/form-kk/showFormKK','FormKKController@showFormKK');
 $router->get('/form-kk/getFormKK', 'FormKKController@getFormKK');
 $router->post('/form-kk/storeFormKK','FormKKController@storeFormKK');
 
+//Anggota KK
+$router->get('/anggota-kk/getAnggotaKK','AnggotaKKController@getAnggotaKK');
+$router->post('/anggota-kk/updateAnggotaKK','AnggotaKKController@updateAnggotaKK');
+$router->post('/anggota-kk/showAnggotaKK','AnggotaKKController@showAnggotaKK');
+$router->post('/anggota-kk/storeAnggotaKK',   'AnggotaKKController@storeAnggotaKK');
 
+
+//Email
 $router->get('/mail','MailController@mail');
