@@ -11,8 +11,8 @@ class FormKK extends Model
     protected $primaryKey = 'KK_id';
     public $timestamps = false;
     protected $fillable = [
-    'periode_sensus',
-     'NOKK',
+     'periode_sensus',
+     'NoKK',
      'NIK_KK',
      'nama_kk',
      'alamat_kk',

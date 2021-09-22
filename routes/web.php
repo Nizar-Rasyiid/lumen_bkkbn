@@ -146,3 +146,10 @@ $router->post('/anggota-kk/storeAnggotaKK',   'AnggotaKKController@storeAnggotaK
 
 //Email
 $router->get('/mail','MailController@mail');
+
+//FormKK
+$router->post('/form-kk/showFormKK', 'FormKKController@showFormKK');
+$router->get('/form-kk/getFormKK', 'FormKKController@getFormKK');
+$router->post('/form-kk/storeFormKK', 'FormKKController@storeFormKK');
+$router->post('/form-kk/updateFormKK', 'FormKKController@updateFormKK');
+$router->post('/form-kk/deleteFormKK', 'FormKKController@deleteFormKK');
