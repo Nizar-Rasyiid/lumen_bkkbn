@@ -44,6 +44,28 @@ class FormKKController extends Controller {
         return response()->json($response, 500);
 
     }
+    public function getIdKK()
+    {
+        $data = DB::select(DB::raw("SELECT KK_id FROM table_kk_periode_sensus ORDER BY KK_id DESC LIMIT 1"
+    )
+        );
+       if($data){
+        $response = [
+            'message'		=> 'Get Id KK',
+            'data' 		    => $data,
+        ];
+
+        // echo(response()->json(data));
+        return response()->json($response, 200);
+    }
+
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
+
+    return response()->json($response, 500);
+
+    }
 
     public function showFormKK(Request $request)
     {

@@ -150,6 +150,7 @@ $router->get('/mail','MailController@mail');
 //FormKK
 $router->post('/form-kk/showFormKK', 'FormKKController@showFormKK');
 $router->get('/form-kk/getFormKK', 'FormKKController@getFormKK');
+$router->get('/form-kk/getIdKK','FormKKController@getIdKK');
 $router->post('/form-kk/storeFormKK', 'FormKKController@storeFormKK');
 $router->post('/form-kk/updateFormKK', 'FormKKController@updateFormKK');
 $router->post('/form-kk/deleteFormKK', 'FormKKController@deleteFormKK');

@@ -166,10 +166,11 @@ class UserAccessSurveyController extends Controller
          rt on 
          acc_rt.id_rt=rt.id_rt 
          GROUP BY acc_rt.id_provinsi,acc_rt.id_kabupaten,acc_rt.id_kecamatan,acc_rt.id_kelurahan,acc_rt.id_rw "));
-         $rt = DB::select(DB::raw("SELECT nama_rt
+         $rt = DB::select(DB::raw("SELECT nama_rt,acc_rt.id_rt
          FROM (SELECT id_rt FROM user_access_survey  
-         WHERE Periode_Sensus = ".$data2[0]->value_setting." AND id_rw = ".$wilayah[0]->id_rw.") acc_rt  
-         inner join rt on acc_rt.id_rt=rt.id_rt"
+         WHERE Periode_Sensus = ".$data2[0]->value_setting." AND id_rw = ".$wilayah[0]->id_rw.") acc_rt INNER JOIN
+         rt on 
+         acc_rt.id_rt=rt.id_rt "
          ));
          
          $agama = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 4"));

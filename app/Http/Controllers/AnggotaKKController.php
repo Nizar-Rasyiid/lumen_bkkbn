@@ -38,11 +38,14 @@ class AnggotaKKController extends Controller {
 
     }
 
+
+
     public function storeAnggotaKK(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
         && $request->isJson()
     ) {
+    
         $dataReq = $request->json()->all();
         $Arryrequest = json_decode(json_encode($dataReq), true);
 
@@ -122,19 +125,16 @@ class AnggotaKKController extends Controller {
         $dataReq = $request->json()->all();
         //json_decode($dataReq, true);
         $arrDataReq =json_decode(json_encode($dataReq),true);
-        $anggota_kk_id=$arrDataReq["anggota_kk_id"];
+        $KK_id=$arrDataReq["KK_id"];
     }else{
-        $anggota_kk_id=$request->input["anggota_kk_id"];
+        $KK_id=$request->input["KK_id"];
     }
 
 
-    $data = new AnggotaKK();
-    $data = $data->select('KK_id','periode_sensus','NIK','jenis_    kelamin',
-    'tempat_lahir','tanggal_lahir','agama','pendidikan','jenis_pekerjaan','status_nikah',
-    'tanggal_pernikahan','status_dalam_keluarga','kewarganegaraan','no_paspor',
-    'no_katas','nama_ayah','nama_ibu'
-    )
-    ->where('anggota_kk_id',$anggota_kk_id)
+    $data = DB::table('anggota_kk_periode_sensus')
+    ->join('table_kk_periode_sensus','anggota_kk_periode_sensus.KK_id','=','table_kk_periode_sensus.KK_id')
+    ->select('anggota_kk_periode_sensus.*','table_kk_periode_sensus.nama_kk')
+    ->where('KK_id',$KK_id)
     ->get();
     
 
