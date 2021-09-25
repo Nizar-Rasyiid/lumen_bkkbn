@@ -132,12 +132,32 @@ $router->post('/laporan-sensus/perkab','LaporanSensusController@showLaporanSensu
 $router->post('/laporan-sensus/perkec','LaporanSensusController@showLaporanSensusPerKec');
 $router->post('/laporan-sensus/perkel','LaporanSensusController@showLaporanSensusPerKel');
 
+//Form KK
+$router->post('/form-kk/showFormKK','FormKKController@showFormKK');
+$router->get('/form-kk/getFormKK', 'FormKKController@getFormKK');
+$router->post('/form-kk/storeFormKK','FormKKController@storeFormKK');
+
+//Anggota KK
+$router->get('/anggota-kk/getAnggotaKK','AnggotaKKController@getAnggotaKK');
+$router->post('/anggota-kk/updateAnggotaKK','AnggotaKKController@updateAnggotaKK');
+$router->post('/anggota-kk/showAnggotaKK','AnggotaKKController@showAnggotaKK');
+$router->post('/anggota-kk/storeAnggotaKK',   'AnggotaKKController@storeAnggotaKK');
+
+
+//Email
+$router->get('/mail','MailController@mail');
+
+//FormKK
+$router->post('/form-kk/showFormKK', 'FormKKController@showFormKK');
+$router->get('/form-kk/getFormKK', 'FormKKController@getFormKK');
+$router->get('/form-kk/getIdKK','FormKKController@getIdKK');
+$router->post('/form-kk/storeFormKK', 'FormKKController@storeFormKK');
+$router->post('/form-kk/updateFormKK', 'FormKKController@updateFormKK');
+$router->post('/form-kk/deleteFormKK', 'FormKKController@deleteFormKK');
+
 //KB
 $router->get('/data-kb/getKB','KBController@getKB');
 $router->post('/data-kb/updateKB','KBController@updateKB');
 $router->post('/data-kb/addKB','KBController@addKB');
 $router->post('/data-kb/deleteKB','KBController@deleteKB');
 $router->post('/data-kb/editKB','KBController@editKB');
-
-
-$router->get('/mail','MailController@mail');

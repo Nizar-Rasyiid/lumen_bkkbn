@@ -144,13 +144,20 @@ class UserAccessSurveyController extends Controller
          rt on 
          acc_rt.id_rt=rt.id_rt 
          GROUP BY acc_rt.id_provinsi,acc_rt.id_kabupaten,acc_rt.id_kecamatan,acc_rt.id_kelurahan,acc_rt.id_rw "));
-         $rt = DB::select(DB::raw("SELECT nama_rt
+         $rt = DB::select(DB::raw("SELECT nama_rt,acc_rt.id_rt
          FROM (SELECT id_rt FROM user_access_survey  
-         WHERE Periode_Sensus = ".$data2[0]->value_setting." AND id_rw = ".$wilayah[0]->id_rw.") acc_rt  
-         inner join rt on acc_rt.id_rt=rt.id_rt"
+         WHERE Periode_Sensus = ".$data2[0]->value_setting." AND id_rw = ".$wilayah[0]->id_rw.") acc_rt INNER JOIN
+         rt on 
+         acc_rt.id_rt=rt.id_rt "
          ));
          
-    
+         $agama = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 4"));
+         $status_nikah = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 3"));
+         $jenis_kelamin = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 1"));
+         $kewarganegaraan = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 10"));
+         $pendidikan = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 11"));
+         $status_dalam_keluarga = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 12"));
+         $pekerjaan = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 13"));
     
         
         try {
@@ -164,8 +171,15 @@ class UserAccessSurveyController extends Controller
                     'data3'         =>$data3,
                     'data4'         =>$data4,   
                     'wilayah'        =>$wilayah,
-                    'data5'       =>$data5, 
-                    'rt'       =>$rt, 
+                    'data5'         =>$data5, 
+                    'agama'             =>$agama,
+                    'status_nikah'      =>$status_nikah,
+                    'jenis_kelamin'     =>$jenis_kelamin,
+                    'kewarganegaraan'   =>$kewarganegaraan,
+                    'pendidikan'           =>$pendidikan,
+                    'status_dalam_keluarga' =>$status_dalam_keluarga,
+                    'pekerjaan'             =>$pekerjaan,
+                    'rt'                     =>$rt, 
                     
                 ];
                 
