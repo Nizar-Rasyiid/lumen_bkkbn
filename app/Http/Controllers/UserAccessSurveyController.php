@@ -119,28 +119,6 @@ class UserAccessSurveyController extends Controller
         $data2 = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 2"));
         $data =  $data->select('Password','UserName','NamaLengkap','Jabatan','NIK','Email','Alamat','id')
         ->from('v_user')
-        // ->join('v_user','user_access_survey.id_user','=','v_user.id')
-        // ->join('provinsi','user_access_survey.id_provinsi','=','provinsi.id_provinsi')
-        // ->join('kabupaten','user_access_survey.id_kabupaten','=','kabupaten.id_kabupaten')
-        // ->join('kecamatan','user_access_survey.id_kecamatan','=','kecamatan.id_kecamatan')
-        // ->join('kelurahan','user_access_survey.id_kelurahan','=','kelurahan.id_kelurahan')
-        // ->join('rw','user_access_survey.id_rw','=','rw.id_rw')
-        // ->join('rt','user_access_survey.id_rt','=','rt.id_rt')
-        // ->select('user_access_survey.*',
-        // 'v_user.Password',
-        // 'v_user.UserName',
-        // 'v_user.NamaLengkap',
-        // 'v_user.Jabatan',
-        // 'v_user.NIK',
-        // 'v_user.Email',
-        // 'v_user.Alamat',
-        // 'provinsi.nama_provinsi',
-        // 'kabupaten.nama_kabupaten',
-        // 'kecamatan.nama_kecamatan',
-        // 'kelurahan.nama_kelurahan',
-        // 'rw.nama_rw',
-        // 'rt.nama_rt',
-        // )
         ->where(['UserName'=>$UserName,
         'Password'=>md5($password)])->get();
         
@@ -166,7 +144,6 @@ class UserAccessSurveyController extends Controller
          rt on 
          acc_rt.id_rt=rt.id_rt 
          GROUP BY acc_rt.id_provinsi,acc_rt.id_kabupaten,acc_rt.id_kecamatan,acc_rt.id_kelurahan,acc_rt.id_rw "));
-         var_dump($wilayah);
          $rt = DB::select(DB::raw("SELECT nama_rt
          FROM (SELECT id_rt FROM user_access_survey  
          WHERE Periode_Sensus = ".$data2[0]->value_setting." AND id_rw = ".$wilayah[0]->id_rw.") acc_rt  

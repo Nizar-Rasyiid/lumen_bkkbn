@@ -132,5 +132,12 @@ $router->post('/laporan-sensus/perkab','LaporanSensusController@showLaporanSensu
 $router->post('/laporan-sensus/perkec','LaporanSensusController@showLaporanSensusPerKec');
 $router->post('/laporan-sensus/perkel','LaporanSensusController@showLaporanSensusPerKel');
 
+//KB
+$router->get('/data-kb/getKB','KBController@getKB');
+$router->post('/data-kb/updateKB','KBController@updateKB');
+$router->post('/data-kb/addKB','KBController@addKB');
+$router->post('/data-kb/deleteKB','KBController@deleteKB');
+$router->post('/data-kb/editKB','KBController@editKB');
+
 
 $router->get('/mail','MailController@mail');

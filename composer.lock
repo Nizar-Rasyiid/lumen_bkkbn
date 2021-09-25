@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e87a9f59dd1dc93d23c181254dac6a17",
+    "content-hash": "7a3ecbdb66d5433b46fbce3047af8fff",
     "packages": [
         {
             "name": "brick/math",
@@ -1545,7 +1545,7 @@
         },
         {
             "name": "illuminate/mail",
-            "version": "v8.58.0",
+            "version": "v8.61.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/mail.git",
