@@ -141,6 +141,7 @@ $router->post('/form-kk/storeFormKK','FormKKController@storeFormKK');
 $router->get('/anggota-kk/getAnggotaKK','AnggotaKKController@getAnggotaKK');
 $router->post('/anggota-kk/updateAnggotaKK','AnggotaKKController@updateAnggotaKK');
 $router->post('/anggota-kk/showAnggotaKK','AnggotaKKController@showAnggotaKK');
+$router->get('/anggota-kk/getNIKAnggota','AnggotaKKController@getNIKAnggota');
 $router->post('/anggota-kk/storeAnggotaKK',   'AnggotaKKController@storeAnggotaKK');
 
 
@@ -158,6 +159,6 @@ $router->post('/form-kk/deleteFormKK', 'FormKKController@deleteFormKK');
 //KB
 $router->get('/data-kb/getKB','KBController@getKB');
 $router->post('/data-kb/updateKB','KBController@updateKB');
-$router->post('/data-kb/addKB','KBController@addKB');
+$router->post('/data-kb/addKB','KBController@storeKB');
 $router->post('/data-kb/deleteKB','KBController@deleteKB');
 $router->post('/data-kb/editKB','KBController@editKB');

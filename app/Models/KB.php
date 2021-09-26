@@ -15,6 +15,8 @@ class KB extends Model
         "NIK",
         "alat_kontrasepsi",
         "tahun_pemakaian",
-        "alasan"
+        "alasan",
+        "CreatedBy",
+        "LastModifiedBy"
     ];
 }

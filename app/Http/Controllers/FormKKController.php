@@ -46,7 +46,7 @@ class FormKKController extends Controller {
     }
     public function getIdKK()
     {
-        $data = DB::select(DB::raw("SELECT KK_id FROM table_kk_periode_sensus ORDER BY KK_id DESC LIMIT 1"
+        $data = DB::select(DB::raw("SELECT KK_id,NIK_KK FROM table_kk_periode_sensus ORDER BY KK_id DESC LIMIT 1"
     )
         );
        if($data){

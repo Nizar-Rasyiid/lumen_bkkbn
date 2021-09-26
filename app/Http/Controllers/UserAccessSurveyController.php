@@ -158,6 +158,7 @@ class UserAccessSurveyController extends Controller
          $pendidikan = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 11"));
          $status_dalam_keluarga = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 12"));
          $pekerjaan = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 13"));
+         $alatKB = DB::select(DB::raw("SELECT * FROM setting WHERE Id_kelompok_data = 14"));
     
         
         try {
@@ -180,6 +181,7 @@ class UserAccessSurveyController extends Controller
                     'status_dalam_keluarga' =>$status_dalam_keluarga,
                     'pekerjaan'             =>$pekerjaan,
                     'rt'                     =>$rt, 
+                    'alatKB'                 =>$alatKB
                     
                 ];
                 

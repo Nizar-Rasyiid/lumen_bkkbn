@@ -116,6 +116,29 @@ class AnggotaKKController extends Controller {
     }
     }
 
+    public function getNIKAnggota()
+    {
+        $data = DB::select(DB::raw("SELECT NIK FROM anggota_kk_periode_sensus ORDER BY anggota_kk_id DESC LIMIT 1"
+    )
+        );
+       if($data){
+        $response = [
+            'message'		=> 'Get NIK Anggota',
+            'data' 		    => $data,
+        ];
+
+        // echo(response()->json(data));
+        return response()->json($response, 200);
+    }
+
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
+
+    return response()->json($response, 500);
+
+    }
+
     public function showAnggotaKK(Request $request)
     {
         
