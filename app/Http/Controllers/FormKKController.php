@@ -186,6 +186,80 @@ class FormKKController extends Controller {
         }
     }
 
+    public function acceptFormKK(Request $request)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+            && $request->isJson()
+        ) {
+            $dataReq = $request->json()->all();
+            $Arryrequest = json_decode(json_encode($dataReq), true);
+
+        }else{
+            $Arryrequest["KK"] =$request->$request->input("KK");
+        }
+
+        try {
+            var_dump($Arryrequest["KK"]);
+            for ($i=0; $i < $Arryrequest["KK"].length() ; $i++) { 
+                // $p = new FormKK([
+                //     // 'KK' => $Arryrequest["KK"],
+                //     'KK' => $Arryrequest['KK'][0].periode_sensus,
+                //     // 'NoKK' => $Arryrequest['NoKK'],
+                //     // 'NIK_KK' => $Arryrequest['NIK_KK'],
+                //     // 'nama_kk' => $Arryrequest['nama_kk'],
+                //     // 'alamat_kk' => $Arryrequest['alamat_kk'],
+                //     // 'id_provinsi' => $Arryrequest['id_provinsi'],
+                //     // 'id_kab' => $Arryrequest['id_kab'],
+                //     // 'id_kec' => $Arryrequest['id_kec'],
+                //     // 'id_kel' => $Arryrequest['id_kel'],
+                //     // 'id_rw' => $Arryrequest['id_rw'],
+                //     // 'id_rt' => $Arryrequest['id_rt'],
+                //     // 'create_by' => $Arryrequest['create_by'],
+                //     // 'update_by' => $Arryrequest['update_by'],
+                // ]);
+    
+            }
+
+
+            DB::beginTransaction();
+            // $p = new FormKK([
+              
+            //     'periode_sensus' => $Arryrequest['periode_sensus'],
+            //     'NoKK' => $Arryrequest['NoKK'],
+            //     'NIK_KK' => $Arryrequest['NIK_KK'],
+            //     'nama_kk' => $Arryrequest['nama_kk'],
+            //     'alamat_kk' => $Arryrequest['alamat_kk'],
+            //     'id_provinsi' => $Arryrequest['id_provinsi'],
+            //     'id_kab' => $Arryrequest['id_kab'],
+            //     'id_kec' => $Arryrequest['id_kec'],
+            //     'id_kel' => $Arryrequest['id_kel'],
+            //     'id_rw' => $Arryrequest['id_rw'],
+            //     'id_rt' => $Arryrequest['id_rt'],
+            //     'create_by' => $Arryrequest['create_by'],
+            //     'update_by' => $Arryrequest['update_by'],
+            // ]);
+
+            // $p->save();
+
+            // DB::commit();
+        
+            // $response = [
+            //     'message'        => 'Input Data Sukses',
+            //     'data'         => $p
+            // ];
+
+            // return response()->json($response, 201);
+        }
+         catch (\Exception $e) {
+            // DB::rollback();
+            // $response = [
+            //     'message'        => 'Transaction DB Error',
+            //     'data'      => $e->getMessage()
+            // ];
+            // return response()->json($response, 500);
+        }
+    }
+
     public function updateFormKK(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
