@@ -118,8 +118,7 @@ class AnggotaKKController extends Controller {
 
     public function getNIKAnggota()
     {
-        $data = DB::select(DB::raw("SELECT NIK FROM anggota_kk_periode_sensus ORDER BY anggota_kk_id DESC LIMIT 1"
-    )
+        $data = DB::select(DB::raw("SELECT NIK FROM anggota_kk_periode_sensus ORDER BY anggota_kk_id")
         );
        if($data){
         $response = [

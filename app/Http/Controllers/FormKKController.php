@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\FormKK;
+use App\Models\AnggotaKK;
+use App\Models\KB;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -199,29 +201,100 @@ class FormKKController extends Controller {
         }
 
         try {
-            var_dump($Arryrequest["KK"]);
-            for ($i=0; $i < $Arryrequest["KK"].length() ; $i++) { 
-                // $p = new FormKK([
-                //     // 'KK' => $Arryrequest["KK"],
-                //     'KK' => $Arryrequest['KK'][0].periode_sensus,
-                //     // 'NoKK' => $Arryrequest['NoKK'],
-                //     // 'NIK_KK' => $Arryrequest['NIK_KK'],
-                //     // 'nama_kk' => $Arryrequest['nama_kk'],
-                //     // 'alamat_kk' => $Arryrequest['alamat_kk'],
-                //     // 'id_provinsi' => $Arryrequest['id_provinsi'],
-                //     // 'id_kab' => $Arryrequest['id_kab'],
-                //     // 'id_kec' => $Arryrequest['id_kec'],
-                //     // 'id_kel' => $Arryrequest['id_kel'],
-                //     // 'id_rw' => $Arryrequest['id_rw'],
-                //     // 'id_rt' => $Arryrequest['id_rt'],
-                //     // 'create_by' => $Arryrequest['create_by'],
-                //     // 'update_by' => $Arryrequest['update_by'],
-                // ]);
-    
+            // var_dump($Arryrequest["KK"]);
+            $dataKK = $Arryrequest["KK"];
+            // echo($dataKK.length);
+            // var_dump($dataKK);
+            // die();
+            for ($i=0; $i < count($dataKK) ; $i++) { 
+                $dataAnggota = $dataKK[$i]['AnggotaKK'];
+                $dataKB = $dataKK[$i]['kb'];
+                // var_dump($dataKB);
+                // die();
+                DB::beginTransaction();
+                $p = new FormKK([
+                    // 'KK' => $dataKK,
+                    'periode_sensus' => $dataKK[$i]['periode_sensus'],
+                    'NoKK' => $dataKK[$i]['NoKK'],
+                    'NIK_KK' => $dataKK[$i]['NIK_KK'],
+                    'nama_kk' => $dataKK[$i]['nama_kk'],
+                    'alamat_kk' => $dataKK[$i]['alamat_kk'],
+                    'id_provinsi' => $dataKK[$i]['id_provinsi'],
+                    'id_kab' => $dataKK[$i]['id_kabupaten'],
+                    'id_kec' => $dataKK[$i]['id_kecamatan'],
+                    'id_kel' => $dataKK[$i]['id_kelurahan'],
+                    'id_rw' => $dataKK[$i]['id_rw'],
+                    'id_rt' => $dataKK[$i]['id_rt'],
+                    'create_by' => $dataKK[$i]['create_by'],
+                    'update_by' => $dataKK[$i]['update_by'],
+                ]);
+                
+                $p->save();
+                // echo(dataKK[i]['NoKK']);
+                
+                DB::commit();
+                $create_by = $dataKK[0]['create_by'];
+                // echo($create_by);
+                $dataKKID = DB::select(DB::raw("SELECT KK_id FROM table_kk_periode_sensus WHERE  create_by ='".$create_by."' ORDER BY KK_id desc LIMIT 0,1"));
+                // var_dump($dataKKID[0]->KK_id);
+                $KK_id = $dataKKID[0]->KK_id;
+            }
+
+            //AnggotaKK
+            for ($i=0; $i < count($dataAnggota) ; $i++) { 
+                DB::beginTransaction();
+                $p = new AnggotaKK([
+                    // 'KK' => $dataKK,
+                    'KK_id' => $KK_id,
+                    'periode_sensus' => $dataAnggota[$i]['periode_sensus'],
+                    'NIK' => $dataAnggota[$i]['NIK'],
+                    'jenis_kelamin' => $dataAnggota[$i]['jenis_kelamin'],
+                    'tempat_lahir' => $dataAnggota[$i]['tempat_lahir'],
+                    'tanggal_lahir' => $dataAnggota[$i]['tanggal_lahir'],
+                    'agama' => $dataAnggota[$i]['agama'],
+                    'pendidikan' => $dataAnggota[$i]['pendidikan'],
+                    'jenis_pekerjaan' => $dataAnggota[$i]['jenis_pekerjaan'],
+                    'status_nikah' => $dataAnggota[$i]['status_nikah'],
+                    'tanggal_pernikahan' => $dataAnggota[$i]['tanggal_pernikahan'],
+                    'status_dalam_keluarga' => $dataAnggota[$i]['status_dalam_keluarga'],
+                    'kewarganegaraan' => $dataAnggota[$i]['kewarganegaraan'],
+                    'no_paspor' => $dataAnggota[$i]['no_paspor'],
+                    'no_katas' => $dataAnggota[$i]['no_katas'],
+                    'nama_ayah' => $dataAnggota[$i]['nama_ayah'],
+                    'nama_ibu' => $dataAnggota[$i]['nama_ibu'],
+                    'create_by' => $dataAnggota[$i]['create_by'],
+                    'update_by' => $dataAnggota[$i]['update_by'],
+                ]);
+                
+                $p->save();
+                // echo(dataKK[i]['NoKK']);
+                
+                DB::commit();
+            }
+
+            //KB
+            for ($i=0; $i < count($dataKB) ; $i++) { 
+                DB::beginTransaction();
+                $p = new KB([
+                    // 'KK' => $dataKK,
+                    'KK_id' => $KK_id,
+                    'NIK' => $dataKB[$i]['NIK'],
+                    'alat_kontrasepsi' => $dataKB[$i]['alat_kontrasepsi'],
+                    'tahun_pemakaian' => $dataKB[$i]['tahun_pemakaian'],
+                    'alasan' => $dataKB[$i]['alasan'],
+                    'CreatedBy' => $dataKB[$i]['CreatedBy'],
+                    'LastModifiedBy' => $dataKB[$i]['LastModifiedBy'],
+                ]);
+                
+                $p->save();
+                // echo(dataKK[i]['NoKK']);
+                
+                DB::commit();
+                // var_dump($dataKK[$i]['kb']);
             }
 
 
-            DB::beginTransaction();
+            // DB::beginTransaction();
             // $p = new FormKK([
               
             //     'periode_sensus' => $Arryrequest['periode_sensus'],
@@ -239,24 +312,22 @@ class FormKKController extends Controller {
             //     'update_by' => $Arryrequest['update_by'],
             // ]);
 
-            // $p->save();
-
-            // DB::commit();
+           
         
-            // $response = [
-            //     'message'        => 'Input Data Sukses',
-            //     'data'         => $p
-            // ];
+            $response = [
+                'message'        => 'Input Data Sukses',
+                // 'dataKKID'       => $dataKKID
+            ];
 
-            // return response()->json($response, 201);
+            return response()->json($response, 201);
         }
          catch (\Exception $e) {
-            // DB::rollback();
-            // $response = [
-            //     'message'        => 'Transaction DB Error',
-            //     'data'      => $e->getMessage()
-            // ];
-            // return response()->json($response, 500);
+            DB::rollback();
+            $response = [
+                'message'        => 'Transaction DB Error',
+                'data'      => $e->getMessage()
+            ];
+            return response()->json($response, 500);
         }
     }
 

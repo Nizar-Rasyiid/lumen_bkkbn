@@ -136,6 +136,7 @@ $router->post('/laporan-sensus/perkel','LaporanSensusController@showLaporanSensu
 $router->post('/form-kk/showFormKK','FormKKController@showFormKK');
 $router->get('/form-kk/getFormKK', 'FormKKController@getFormKK');
 $router->post('/form-kk/storeFormKK','FormKKController@storeFormKK');
+$router->post('/form-kk/acceptFormKK','FormKKController@acceptFormKK');
 
 //Anggota KK
 $router->get('/anggota-kk/getAnggotaKK','AnggotaKKController@getAnggotaKK');
