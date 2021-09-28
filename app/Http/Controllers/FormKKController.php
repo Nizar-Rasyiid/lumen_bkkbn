@@ -238,60 +238,67 @@ class FormKKController extends Controller {
                 $dataKKID = DB::select(DB::raw("SELECT KK_id FROM table_kk_periode_sensus WHERE  create_by ='".$create_by."' ORDER BY KK_id desc LIMIT 0,1"));
                 // var_dump($dataKKID[0]->KK_id);
                 $KK_id = $dataKKID[0]->KK_id;
+
+                // anggotakk
+                for ($i=0; $i < count($dataAnggota) ; $i++) { 
+                    DB::beginTransaction();
+                    $p = new AnggotaKK([
+                        // 'KK' => $dataKK,
+                        'KK_id' => $KK_id,
+                        'periode_sensus' => $dataAnggota[$i]['periode_sensus'],
+                        'nama_anggota' => $dataAnggota[$i]['nama_anggota'],
+                        'NIK' => $dataAnggota[$i]['NIK'],
+                        'jenis_kelamin' => $dataAnggota[$i]['jenis_kelamin'],
+                        'tempat_lahir' => $dataAnggota[$i]['tempat_lahir'],
+                        'tanggal_lahir' => $dataAnggota[$i]['tanggal_lahir'],
+                        'agama' => $dataAnggota[$i]['agama'],
+                        'pendidikan' => $dataAnggota[$i]['pendidikan'],
+                        'jenis_pekerjaan' => $dataAnggota[$i]['jenis_pekerjaan'],
+                        'status_nikah' => $dataAnggota[$i]['status_nikah'],
+                        'tanggal_pernikahan' => $dataAnggota[$i]['tanggal_pernikahan'],
+                        'status_dalam_keluarga' => $dataAnggota[$i]['status_dalam_keluarga'],
+                        'kewarganegaraan' => $dataAnggota[$i]['kewarganegaraan'],
+                        'no_paspor' => $dataAnggota[$i]['no_paspor'],
+                        'no_katas' => $dataAnggota[$i]['no_katas'],
+                        'nama_ayah' => $dataAnggota[$i]['nama_ayah'],
+                        'nama_ibu' => $dataAnggota[$i]['nama_ibu'],
+                        'create_by' => $dataAnggota[$i]['create_by'],
+                        'update_by' => $dataAnggota[$i]['update_by'],
+                    ]);
+                    
+                    $p->save();
+                    // echo(dataKK[i]['NoKK']);
+                    
+                    DB::commit();
+
+                    // kb
+                    for ($i=0; $i < count($dataKB) ; $i++) { 
+                        DB::beginTransaction();
+                        $p = new KB([
+                            // 'KK' => $dataKK,
+                            'KK_id' => $KK_id,
+                            'NIK' => $dataKB[$i]['NIK'],
+                            'alat_kontrasepsi' => $dataKB[$i]['alat_kontrasepsi'],
+                            'tahun_pemakaian' => $dataKB[$i]['tahun_pemakaian'],
+                            'alasan' => $dataKB[$i]['alasan'],
+                            'CreatedBy' => $dataKB[$i]['CreatedBy'],
+                            'LastModifiedBy' => $dataKB[$i]['LastModifiedBy'],
+                        ]);
+                        
+                        $p->save();
+                        // echo(dataKK[i]['NoKK']);
+                        
+                        DB::commit();
+                        // var_dump($dataKK[$i]['kb']);
+                    }
+                }
             }
 
             //AnggotaKK
-            for ($i=0; $i < count($dataAnggota) ; $i++) { 
-                DB::beginTransaction();
-                $p = new AnggotaKK([
-                    // 'KK' => $dataKK,
-                    'KK_id' => $KK_id,
-                    'periode_sensus' => $dataAnggota[$i]['periode_sensus'],
-                    'NIK' => $dataAnggota[$i]['NIK'],
-                    'jenis_kelamin' => $dataAnggota[$i]['jenis_kelamin'],
-                    'tempat_lahir' => $dataAnggota[$i]['tempat_lahir'],
-                    'tanggal_lahir' => $dataAnggota[$i]['tanggal_lahir'],
-                    'agama' => $dataAnggota[$i]['agama'],
-                    'pendidikan' => $dataAnggota[$i]['pendidikan'],
-                    'jenis_pekerjaan' => $dataAnggota[$i]['jenis_pekerjaan'],
-                    'status_nikah' => $dataAnggota[$i]['status_nikah'],
-                    'tanggal_pernikahan' => $dataAnggota[$i]['tanggal_pernikahan'],
-                    'status_dalam_keluarga' => $dataAnggota[$i]['status_dalam_keluarga'],
-                    'kewarganegaraan' => $dataAnggota[$i]['kewarganegaraan'],
-                    'no_paspor' => $dataAnggota[$i]['no_paspor'],
-                    'no_katas' => $dataAnggota[$i]['no_katas'],
-                    'nama_ayah' => $dataAnggota[$i]['nama_ayah'],
-                    'nama_ibu' => $dataAnggota[$i]['nama_ibu'],
-                    'create_by' => $dataAnggota[$i]['create_by'],
-                    'update_by' => $dataAnggota[$i]['update_by'],
-                ]);
-                
-                $p->save();
-                // echo(dataKK[i]['NoKK']);
-                
-                DB::commit();
-            }
+            
 
             //KB
-            for ($i=0; $i < count($dataKB) ; $i++) { 
-                DB::beginTransaction();
-                $p = new KB([
-                    // 'KK' => $dataKK,
-                    'KK_id' => $KK_id,
-                    'NIK' => $dataKB[$i]['NIK'],
-                    'alat_kontrasepsi' => $dataKB[$i]['alat_kontrasepsi'],
-                    'tahun_pemakaian' => $dataKB[$i]['tahun_pemakaian'],
-                    'alasan' => $dataKB[$i]['alasan'],
-                    'CreatedBy' => $dataKB[$i]['CreatedBy'],
-                    'LastModifiedBy' => $dataKB[$i]['LastModifiedBy'],
-                ]);
-                
-                $p->save();
-                // echo(dataKK[i]['NoKK']);
-                
-                DB::commit();
-                // var_dump($dataKK[$i]['kb']);
-            }
+            
 
 
             // DB::beginTransaction();

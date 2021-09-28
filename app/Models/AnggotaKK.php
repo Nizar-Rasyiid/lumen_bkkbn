@@ -13,6 +13,7 @@ class AnggotaKK extends Model
     protected $fillable = [
     'KK_id',
      'periode_sensus',
+     'nama_anggota',
      'NIK',
      'jenis_kelamin',
      'tempat_lahir',
