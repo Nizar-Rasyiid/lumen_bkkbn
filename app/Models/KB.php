@@ -13,6 +13,8 @@ class KB extends Model
     protected $fillable = [
         "KK_id",
         "NIK",
+        // "nama_anggota",
+        // "anggota_kk_id",
         "alat_kontrasepsi",
         "tahun_pemakaian",
         "alasan",

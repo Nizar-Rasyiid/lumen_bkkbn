@@ -278,6 +278,8 @@ class FormKKController extends Controller {
                             // 'KK' => $dataKK,
                             'KK_id' => $KK_id,
                             'NIK' => $dataKB[$i]['NIK'],
+                            // 'nama_anggota' => $dataKB[$i]['nama_anggota'],
+                            // 'anggota_kk_id' => $dataKB[$i]['anggota_kk_id'],
                             'alat_kontrasepsi' => $dataKB[$i]['alat_kontrasepsi'],
                             'tahun_pemakaian' => $dataKB[$i]['tahun_pemakaian'],
                             'alasan' => $dataKB[$i]['alasan'],

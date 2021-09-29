@@ -21,13 +21,13 @@ class TargetKkController extends Controller
     public function getTargetKk()
     {
         $data = DB::table('target_kk')
-        // ->join('provinsi','target_kk.id_provinsi','=','provinsi.id_provinsi')
-        //  ->join('kabupaten','target_kk.id_kabupaten','=','kabupaten.id_kabupaten')
-        //  ->join('kecamatan','target_kk.id_kecamatan','=','kecamatan.id_kecamatan')
-        //  ->join('kelurahan','target_kk.id_kelurahan','=','kelurahan.id_kelurahan')
-        //  ->join('rw','target_kk.id_rw','=','rw.id_rw')
-        //  ->join('rt','target_kk.id_rt','=','rt.id_rw')
-        //  ->select('target_kk.*','provinsi.nama_provinsi','kabupaten.nama_kabupaten','kecamatan.nama_kecamatan','kelurahan.nama_kelurahan','rw.nama_rw','rt.nama_rt')
+        ->join('provinsi','target_kk.id_provinsi','=','provinsi.id_provinsi')
+         ->join('kabupaten','target_kk.id_kabupaten','=','kabupaten.id_kabupaten')
+         ->join('kecamatan','target_kk.id_kecamatan','=','kecamatan.id_kecamatan')
+         ->join('kelurahan','target_kk.id_kelurahan','=','kelurahan.id_kelurahan')
+         ->join('rw','target_kk.id_rw','=','rw.id_rw')
+         ->join('rt','target_kk.id_rt','=','rt.id_rw')
+         ->select('target_kk.*','provinsi.nama_provinsi','kabupaten.nama_kabupaten','kecamatan.nama_kecamatan','kelurahan.nama_kelurahan','rw.nama_rw','rt.nama_rt')
          ->get();
 
         if($data){
