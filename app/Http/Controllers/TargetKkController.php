@@ -20,15 +20,64 @@ class TargetKkController extends Controller
     }
     public function getTargetKk()
     {
-        $data = DB::table('target_kk')
-        ->join('provinsi','target_kk.id_provinsi','=','provinsi.id_provinsi')
-         ->join('kabupaten','target_kk.id_kabupaten','=','kabupaten.id_kabupaten')
-         ->join('kecamatan','target_kk.id_kecamatan','=','kecamatan.id_kecamatan')
-         ->join('kelurahan','target_kk.id_kelurahan','=','kelurahan.id_kelurahan')
-         ->join('rw','target_kk.id_rw','=','rw.id_rw')
-         ->join('rt','target_kk.id_rt','=','rt.id_rw')
-         ->select('target_kk.*','provinsi.nama_provinsi','kabupaten.nama_kabupaten','kecamatan.nama_kecamatan','kelurahan.nama_kelurahan','rw.nama_rw','rt.nama_rt')
-         ->get();
+        // $data = DB::table('target_kk')
+        // ->join('provinsi','target_kk.id_provinsi','=','provinsi.id_provinsi')
+        //  ->join('kabupaten','target_kk.id_kabupaten','=','kabupaten.id_kabupaten')
+        //  ->join('kecamatan','target_kk.id_kecamatan','=','kecamatan.id_kecamatan')
+        //  ->join('kelurahan','target_kk.id_kelurahan','=','kelurahan.id_kelurahan')
+        //  ->join('rw','target_kk.id_rw','=','rw.id_rw')
+        //  ->join('rt','target_kk.id_rt','=','rt.id_rw')
+        //  ->select('target_kk.*','provinsi.nama_provinsi','kabupaten.nama_kabupaten','kecamatan.nama_kecamatan','kelurahan.nama_kelurahan','rw.nama_rw','rt.nama_rt')
+        //  ->get();
+
+        $data = DB::select(DB::raw("SELECT 
+        target_sensus_indo.KK,
+        target_sensus_indo.CreatedBy,
+        target_sensus_indo.LastModifiedBy,
+        target_sensus_indo.Created,
+        target_sensus_indo.LastModified,
+        nama_kelurahan,
+        nama_provinsi,
+        nama_kabupaten,
+        nama_kecamatan,
+        nama_rw,
+        nama_rt,
+        Periode_Sensus
+        FROM (SELECT 
+        id_kelurahan,
+        id_provinsi,
+        id_kabupaten,
+        id_kecamatan,
+        id_rw,
+        id_rt,
+        CreatedBy,
+        Created,
+        LastModifiedBy,
+        LastModified,
+        Periode_Sensus,
+        sum(target_kk) as KK
+        FROM Target_KK GROUP BY id_kelurahan ,id_provinsi,
+        id_kabupaten,
+        id_kecamatan,
+        id_rw,
+        id_rt,
+        CreatedBy,
+        Created,
+        LastModifiedBy,
+        LastModified,
+        Periode_Sensus ) target_sensus_indo
+        INNER JOIN kelurahan ON target_sensus_indo.id_kelurahan = kelurahan.id_kelurahan
+        INNER JOIN provinsi ON target_sensus_indo.id_provinsi = provinsi.id_provinsi
+        INNER JOIN kabupaten ON target_sensus_indo.id_kabupaten = kabupaten.id_kabupaten
+        INNER JOIN kecamatan ON target_sensus_indo.id_kecamatan = kecamatan.id_kecamatan
+        INNER JOIN rw ON target_sensus_indo.id_rw = rw.id_rw
+        INNER JOIN rt ON target_sensus_indo.id_rt = rt.id_rt
+        "
+        )
+        );
+
+
+
 
         if($data){
             $response = [
