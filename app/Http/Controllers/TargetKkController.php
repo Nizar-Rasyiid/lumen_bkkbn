@@ -36,6 +36,7 @@ class TargetKkController extends Controller
         target_sensus_indo.LastModifiedBy,
         target_sensus_indo.Created,
         target_sensus_indo.LastModified,
+        target_sensus_indo.id_rt,
         nama_kelurahan,
         nama_provinsi,
         nama_kabupaten,
