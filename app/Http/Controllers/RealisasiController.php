@@ -29,14 +29,14 @@ class RealisasiController extends Controller
             $Periode_Sensus = $request->input["Periode_Sensus"];
         }
 
-        $data = DB::select(DB::raw("SELECT Nama_Provinsi,
-        sum(`target_kk`) as Jumlah_KK, 
-        COUNT(DISTINCT(KK.`KK_id`)) AS Jumlah_Realisasi
-        FROM target_kk Trgt 
-        LEFT JOIN provinsi prov ON prov.`id_provinsi`= Trgt.`id_provinsi`
-        LEFT JOIN  table_kk_periode_sensus KK ON KK.`id_provinsi`=Prov.`id_provinsi`
-        GROUP BY Trgt.`periode_sensus`,prov.`nama_provinsi`
-        HAVING Periode_Sensus = $Periode_Sensus")								
+            $data = DB::select(DB::raw("SELECT nama_provinsi,
+            sum(DISTINCT(`target_kk`))as Jumlah_KK, 
+            COUNT(DISTINCT(KK.`KK_id`)) AS Jumlah_Realisasi
+            FROM target_kk targets 
+            LEFT JOIN provinsi prov ON targets.`id_provinsi`= prov.`id_provinsi`
+            LEFT JOIN  table_kk_periode_sensus KK ON KK.`id_provinsi`=prov.`id_provinsi`
+            GROUP BY targets.`periode_sensus`, prov.id_provinsi
+            HAVING Periode_Sensus = $Periode_Sensus")								
         );
     
         if($data){
@@ -140,5 +140,47 @@ class RealisasiController extends Controller
         ];
     
         return response()->json($response, 500);    
+    }
+
+
+
+
+    public function LaporanAlatKBPerKab(Type $var = null)
+    {
+        if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
+        && $request->isJson()
+    ) {
+        $dataReq = $request->json()->all();
+        //json_decode($dataReq, true);
+        $arrDataReq =json_decode(json_encode($dataReq),true);
+        $Periode_Sensus = $arrDataReq["Periode_Sensus"];
+    }else{
+        $Periode_Sensus = $request->input["Periode_Sensus"];
+    }
+
+    $data = DB::select(DB::raw("SELECT nama_kecamatan,
+            sum(DISTINCT(`target_kk`))as Jumlah_KK,
+            COUNT(DISTINCT(KK.`KK_id`)) AS Jumlah_Realisasi
+            FROM target_kk targets 
+            LEFT JOIN kecamatan kec ON targets.`id_kecamatan`= kec.`id_kecamatan`
+            LEFT JOIN  table_kk_periode_sensus KK ON KK.`id_kec`=kec.`id_kecamatan`
+            GROUP BY targets.`periode_sensus`, kec.id_kecamatan
+            HAVING Periode_Sensus = $Periode_Sensus")								
+    );
+
+    if($data){
+        $response = [
+            'message'		=> 'Show Provinsi',
+            'data' 		    => $data,
+        ];
+    
+        return response()->json($response, 200);
+    }
+
+    $response = [
+        'message'		=> 'An Error Occured'
+    ];
+
+    return response()->json($response, 500);    
     }
 }
