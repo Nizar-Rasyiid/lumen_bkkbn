@@ -167,3 +167,5 @@ $router->post('/data-kb/editKB','KBController@editKB');
 
 // Realisasi
 $router->post('/realisasi/id','RealisasiController@RealisasiProv');
+$router->post('/realisasi/perprov','RealisasiController@RealisasiPerProv');
+$router->post('/realisasi/perkab','RealisasiController@RealisasiPerKab');

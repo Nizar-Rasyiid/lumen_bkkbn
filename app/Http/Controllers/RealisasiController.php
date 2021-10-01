@@ -29,12 +29,12 @@ class RealisasiController extends Controller
         }
 
         $data = DB::select(DB::raw("SELECT Nama_Provinsi,
-        sum(`target_kk`) as Jumlah_KK, 
+        SUM(DISTINCT(`target_kk`)) as Jumlah_KK, 
         COUNT(DISTINCT(KK.`KK_id`)) AS Jumlah_Realisasi
-        FROM target_kk Trgt 
-        LEFT JOIN provinsi prov ON prov.`id_provinsi`= Trgt.`id_provinsi`
-        LEFT JOIN  table_kk_periode_sensus KK ON KK.`id_provinsi`=Prov.`id_provinsi`
-        GROUP BY Trgt.`periode_sensus`,prov.`nama_provinsi`
+        FROM target_kk targets 
+        LEFT JOIN provinsi prov ON prov.`id_provinsi`= targets.`id_provinsi`
+        LEFT JOIN  table_kk_periode_sensus KK ON KK.`id_provinsi`=prov.`id_provinsi`
+        GROUP BY targets.`periode_sensus`, prov.nama_provinsi
         HAVING Periode_Sensus = $Periode_Sensus")								
         );
     
@@ -54,7 +54,7 @@ class RealisasiController extends Controller
         return response()->json($response, 500);    
     }
 
-    public function RealisasiPerProv()
+    public function RealisasiPerProv(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
@@ -71,16 +71,15 @@ class RealisasiController extends Controller
             $id_provinsi = $request->input["$id_provinsi"];
         }
 
-        $data = DB::select(DB::raw("SELECT Nama_Kabupaten,
-        sum(Target.`target_kk`) as Jumlah_KK, 
-        COUNT(DISTINCT(KK.`KK_id`)) AS Jumlah_Realisasi
+        $data = DB::select(DB::raw("SELECT Nama_Kabupaten, 
+        SUM(DISTINCT(Target.Target_KK)) AS Jumlah_KK,
+        COUNT(DISTINCT(KK.KK_id)) AS Jumlah_Realisasi 
         FROM target_kk Trgt 
-        LEFT JOIN provinsi prov ON prov.`id_provinsi`= Trgt.`id_provinsi`
-        LEFT JOIN Kabupaten Kab ON kab.`id_provinsi`= Prov.`id_provinsi`
-        LEFT JOIN  table_kk_periode_sensus KK ON KK.`id_kab`=kab.`id_kabupaten`
-        LEFT JOIN  target_kk Target ON Target.`id_kabupaten`=kab.`id_kabupaten`
-        GROUP BY Trgt.`periode_sensus`,Prov.`id_provinsi`,Kab.`nama_kabupaten`
-        HAVING Prov.`id_provinsi`=$id_provinsi AND Trgt.`periode_sensus`=$Periode_Sensus")								
+        LEFT JOIN Kabupaten Kab ON kab.`id_provinsi`= Trgt.`id_provinsi` 
+        LEFT JOIN table_kk_periode_sensus KK ON KK.`id_kab`=kab.`id_kabupaten`
+        LEFT JOIN target_kk Target ON Target.`id_kabupaten`=kab.`id_kabupaten` 
+        GROUP BY Trgt.`periode_sensus`,Trgt.`id_provinsi`,Kab.`nama_kabupaten` 
+        HAVING Trgt.id_provinsi=$id_provinsi AND Trgt.Periode_Sensus=$Periode_Sensus")								
         );
     
         if($data){
@@ -98,7 +97,7 @@ class RealisasiController extends Controller
     
         return response()->json($response, 500);    
     }
-    public function RealisasiPerKab()
+    public function RealisasiPerKab(Request $request)
     {
         if (in_array($request->method(), ['POST', 'PUT', 'PATCH'])
             && $request->isJson()
@@ -114,15 +113,15 @@ class RealisasiController extends Controller
             $Periode_Sensus = $request->input["Periode_Sensus"];
             $id_kabupaten = $request->input["$id_kabupaten"];
         }
-        $data = DB::select(DB::raw("SELECT Nama_Kecamatan,
-        sum(`target_kk`) as Jumlah_KK, 
-        COUNT(DISTINCT(KK.`KK_id`)) AS Jumlah_Realisasi
+        $data = DB::select(DB::raw("SELECT Nama_Kecamatan, 
+        SUM(DISTINCT(Target.Target_KK)) AS Jumlah_KK,
+        COUNT(DISTINCT(KK.KK_id)) AS Jumlah_Realisasi 
         FROM target_kk Trgt 
-        LEFT JOIN kabupaten kab ON kab.`id_kabupaten`= Trgt.`id_kabupaten`
-        LEFT JOIN kecamatan kec ON kec.`id_kabupaten`= kab.`id_kabupaten`
-        LEFT JOIN  table_kk_periode_sensus KK ON KK.`id_kec`=kec.`id_kecamatan`
-        GROUP BY Trgt.`periode_sensus`,Kab.`id_kabupaten`,Kec.`nama_kecamatan`
-        HAVING kab.`id_kabupaten`=5 AND Trgt.`periode_sensus`=2021")								
+        LEFT JOIN kecamatan kec ON kec.`id_kabupaten`= Trgt.`id_kabupaten` 
+        LEFT JOIN table_kk_periode_sensus KK ON KK.`id_kec`=kec.`id_kecamatan`
+        LEFT JOIN target_kk Target ON Target.`id_kecamatan`=kec.`id_kecamatan` 
+        GROUP BY Trgt.`periode_sensus`,Trgt.`id_kabupaten`,kec.`nama_kecamatan` 
+        HAVING Trgt.id_kabupaten=$id_kabupaten AND Trgt.Periode_Sensus=$Periode_Sensus")								
         );
     
         if($data){
