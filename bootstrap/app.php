@@ -83,6 +83,7 @@ $app->configure('app');
 $app->register(App\Providers\CatchAllOptionsRequestsProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
+$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 
 
 
