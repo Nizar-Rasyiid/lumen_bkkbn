@@ -153,6 +153,7 @@ $router->get('/mail','MailController@mail');
 $router->post('/form-kk/showFormKK', 'FormKKController@showFormKK');
 $router->get('/form-kk/getFormKK', 'FormKKController@getFormKK');
 $router->get('/form-kk/getIdKK','FormKKController@getIdKK');
+$router->get('/form-kk/acceptFormKK','FormKKController@acceptFormKK');
 $router->post('/form-kk/storeFormKK', 'FormKKController@storeFormKK');
 $router->post('/form-kk/updateFormKK', 'FormKKController@updateFormKK');
 $router->post('/form-kk/deleteFormKK', 'FormKKController@deleteFormKK');
@@ -163,3 +164,6 @@ $router->post('/data-kb/updateKB','KBController@updateKB');
 $router->post('/data-kb/addKB','KBController@storeKB');
 $router->post('/data-kb/deleteKB','KBController@deleteKB');
 $router->post('/data-kb/editKB','KBController@editKB');
+
+// Realisasi
+$router->post('/realisasi/id','RealisasiController@RealisasiProv');
