@@ -271,28 +271,29 @@ class FormKKController extends Controller {
                     
                     DB::commit();
 
+                }
+                
                     // kb
-                    for ($i=0; $i < count($dataKB) ; $i++) { 
-                        DB::beginTransaction();
-                        $p = new KB([
-                            // 'KK' => $dataKK,
-                            'KK_id' => $KK_id,
-                            'NIK' => $dataKB[$i]['NIK'],
-                            // 'nama_anggota' => $dataKB[$i]['nama_anggota'],
-                            // 'anggota_kk_id' => $dataKB[$i]['anggota_kk_id'],
-                            'alat_kontrasepsi' => $dataKB[$i]['alat_kontrasepsi'],
-                            'tahun_pemakaian' => $dataKB[$i]['tahun_pemakaian'],
-                            'alasan' => $dataKB[$i]['alasan'],
-                            'CreatedBy' => $dataKB[$i]['CreatedBy'],
-                            'LastModifiedBy' => $dataKB[$i]['LastModifiedBy'],
-                        ]);
-                        
-                        $p->save();
-                        // echo(dataKK[i]['NoKK']);
-                        
-                        DB::commit();
-                        // var_dump($dataKK[$i]['kb']);
-                    }
+                for ($i=0; $i < count($dataKB) ; $i++) { 
+                    DB::beginTransaction();
+                    $p = new KB([
+                        // 'KK' => $dataKK,
+                        'KK_id' => $KK_id,
+                        'NIK' => $dataKB[$i]['NIK'],
+                        // 'nama_anggota' => $dataKB[$i]['nama_anggota'],
+                        // 'anggota_kk_id' => $dataKB[$i]['anggota_kk_id'],
+                        'alat_kontrasepsi' => $dataKB[$i]['alat_kontrasepsi'],
+                        'tahun_pemakaian' => $dataKB[$i]['tahun_pemakaian'],
+                        'alasan' => $dataKB[$i]['alasan'],
+                        'CreatedBy' => $dataKB[$i]['CreatedBy'],
+                        'LastModifiedBy' => $dataKB[$i]['LastModifiedBy'],
+                    ]);
+                    
+                    $p->save();
+                    // echo(dataKK[i]['NoKK']);
+                    
+                    DB::commit();
+                    // var_dump($dataKK[$i]['kb']);
                 }
             }
 

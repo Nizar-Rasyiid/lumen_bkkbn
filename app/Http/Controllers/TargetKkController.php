@@ -43,6 +43,7 @@ class TargetKkController extends Controller
         nama_kecamatan,
         nama_rw,
         nama_rt,
+        target_sensus_indo.id_rt,
         Periode_Sensus
         FROM (SELECT 
         id_kelurahan,
