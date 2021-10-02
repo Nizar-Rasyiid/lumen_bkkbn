@@ -157,6 +157,7 @@ $router->get('/form-kk/acceptFormKK','FormKKController@acceptFormKK');
 $router->post('/form-kk/storeFormKK', 'FormKKController@storeFormKK');
 $router->post('/form-kk/updateFormKK', 'FormKKController@updateFormKK');
 $router->post('/form-kk/deleteFormKK', 'FormKKController@deleteFormKK');
+$router->post('/form-kk/showKKPerprov', 'FormKKController@showKKPerProv');
 
 //KB
 $router->get('/data-kb/getKB','KBController@getKB');
