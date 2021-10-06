@@ -71,7 +71,8 @@ $app->configure('app');
 |--------------------------------------------------------------------------
 */
  $app->middleware([
-     App\Http\Middleware\CorsMiddleware::class
+     App\Http\Middleware\CorsMiddleware::class,
+    //  Nord\Lumen\Cors\CorsMiddleware::class,
  ]);
 
 
@@ -84,7 +85,7 @@ $app->register(App\Providers\CatchAllOptionsRequestsProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(Illuminate\Mail\MailServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
-
+// $app->register(Nord\Lumen\Cors\CorsServiceProvider::class);
 
 
 
